@@ -2,14 +2,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 //header('Access-Control-Allow-Origin: *');
 
-class Clientes extends CI_Controller {
+class Usuarios extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("Clientes_model");
+		$this->load->model("Usuarios_model");
 	}
 
 	public function index(){
-		$this->load->view("clientes");
+		$this->load->view("usuarios");
 	}
 
 	public function mostrar()
@@ -21,8 +21,8 @@ class Clientes extends CI_Controller {
 		
 		$inicio = ($numeropagina -1)*$cantidad;
 		$data = array(
-			"clientes" => $this->Clientes_model->buscar($buscar,$inicio,$cantidad),
-			"totalregistros" => count($this->Clientes_model->buscar($buscar)),
+			"usuarios" => $this->Usuarios_model->buscar($buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Usuarios_model->buscar($buscar)),
 			"cantidad" =>$cantidad
 			
 		);

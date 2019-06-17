@@ -4,12 +4,15 @@ class Productos extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->model("ProductoModel");
-        $this->load->library('session');
+		$this->load->library('session');
+		$this->load->library('pagination');
     }
 
     public function agregar(){
         $this->load->view("partial/encabezado");
-        $this->load->view("productos/agregar");
+		$this->load->view("productos/agregar");
+		// load pagination library
+		$this->load->library('pagination');
         //$this->load->view("pie");
     }
 
@@ -67,14 +70,26 @@ class Productos extends CI_Controller{
     }
 
     public function index(){
-        
-        $this->load->view("partial/encabezado");
-        $this->load->view("productos/listar", array(
-            "productos" => $this->ProductoModel->todos()
-        ));
+
+		$this->load->view("partial/encabezado");
+		
+		$config = array();
+		$config['base_url'] = base_url() . 'index.php/productos';
+		$config['total_rows'] = $this->ProductoModel->getAllEmployeeCount();
+		$config['per_page'] = 10;
+		$config["uri_segment"] = 2;
+
+		$this->pagination->initialize($config);
+	
+		$data["links"] = $this->pagination->create_links();
+		$page = ($this->uri->segment(2)) ? $this->uri->segment(2) : 0;
+		$data['datos'] = $this->ProductoModel->todosNew($config["per_page"], $page);
+        $this->load->view("productos/listar", $data);
         //$this->load->view("pie");
     }
 
+
+	
     public function guardar(){
         $resultado = $this->ProductoModel->nuevo(
                 $this->input->post("codigo"),

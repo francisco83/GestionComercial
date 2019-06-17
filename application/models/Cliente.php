@@ -32,7 +32,17 @@
  
         public function todos(){
             return $this->db->get("productos")->result();
-        }
+		}
+		
+		        // Fetch data according to per_page limit.
+				public function employeeList() {       
+					$this->db->select(array('e.id', 'e.apellido', 'e.nombre', 'e.direccion', 'e.telefono'));
+					$this->db->from('productos as e');          
+					$this->db->limit($this->_pageNumber, $this->_offset);
+					$query = $this->db->get();
+					return $query->result_array();
+				}
+
  
         public function eliminar($id){
             return $this->db->delete("productos", array("id" => $id));

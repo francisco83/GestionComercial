@@ -53,5 +53,7 @@ $route['default_controller'] = 'home';
 $route['404_override'] = 'no_access';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['clientes'] = 'clientes';
-
+$route['clientes'] = "clientes";
+$route['authors/(:num)'] = 'authors';
+$route['productos/(:num)'] = 'productos';
+$route['usuarios'] = "usuarios";
