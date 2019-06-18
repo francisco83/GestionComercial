@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Ejemplos en Codeigniter</title>
-
-	<link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="<?php echo base_url();?>assets/css/style.css">
-</head>
-<body>
-<?php  $this->load->view("partial/menu"); ?>
+<?php  $this->load->view("partial/encabezado"); ?>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-2 pull-right">
@@ -18,10 +6,8 @@
 				  
 				    <input type="text" class="form-control" name="busqueda" placeholder="Buscar" />
 				    <i class="glyphicon glyphicon-search form-control-feedback"></i>
-				</div>
-				
-			</div>
-			
+				</div>				
+			</div>			
 		</div>
 		<br>
 		<div class="row">
@@ -30,8 +16,7 @@
 					<div class="panel-heading">
 						<h4>Lista de Usuarios</h4>
 					</div>
-					<div class="panel-body">
-						
+					<div class="panel-body">						
 						<p>
 							<strong>Mostrar por : </strong>
 							<select name="cantidad" id="cantidad">
@@ -61,9 +46,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-					<a href="#" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>
-					
-					<!-- <a href="<?php echo base_url().'index.php/usuarios/editar/'?>" class="btn btn-warning">Editar<i class='glyphicon glyphicon-edit'></i></a> -->
+					<a href="<?php echo base_url().'index.php/usuarios/agregar/'?>" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>										
 					<button class="btn btn-warning" onclick="Editar()"><i class='glyphicon glyphicon-edit'></i> Editar</button>
 					<button class="btn btn-danger" onclick="Eliminar()"><i class='glyphicon glyphicon-trash'></i> Eliminar</button>
 			</div>
@@ -75,22 +58,18 @@
 
 <script>
 
-	function Editar(){
-		var id = $("#tblusuarios tr.selected td:first").html();
-		if (id !=  undefined){
-			location.href ="<?php echo base_url().'index.php/usuarios/editar/'?>"+id;
-		}
-		
-	}
-
-
-	function Eliminar(){
-		var id = $("#tblusuarios tr.selected td:first").html();
-		if (id !=  undefined){
-			location.href ="<?php echo base_url().'index.php/usuarios/eliminar/'?>"+id;
-		}
-		
-	}
+function Editar(){
+	var id = $("#tblusuarios tr.selected td:first").html();
+	if (id !=  undefined){
+		location.href ="<?php echo base_url().'index.php/usuarios/editar/'?>"+id;
+	}		
+}
+function Eliminar(){
+	var id = $("#tblusuarios tr.selected td:first").html();
+	if (id !=  undefined){
+		location.href ="<?php echo base_url().'index.php/usuarios/eliminar/'?>"+id;
+	}		
+}
 
 function mostrarDatos(valorBuscar,pagina,cantidad){
 	$.ajax({
@@ -109,19 +88,15 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 				"<td>"+item.dni+"</td>"+
 				"<td>"+item.email+"</td>"+
 				"<td>"+item.celular+"</td>"+
-				// "<td><a class='btn btn-warning btn-sm' href='<?php echo base_url().'index.php/usuarios/editar/'?>"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>"+
-				// " <a class='btn btn-danger btn-sm' href='<?php echo base_url().'index.php/usuarios/eliminar/'?>"+item.id+"'><i class='glyphicon glyphicon-trash'></i></a></td>"
 				"</tr>";
 			});
 			$("#tblusuarios tbody").html(filas);
 			cargarPaginado(response, valorBuscar,pagina,cantidad);
 
 			$("#tblusuarios tbody tr").click(function(){
-
-			$(this).addClass('selected').siblings().removeClass('selected');    
-			var value=$(this).find('td:first').html(); 
-			console.log("seleciono",value);
-		});
+				$(this).addClass('selected').siblings().removeClass('selected');    
+				var value=$(this).find('td:first').html(); 				
+			});
 
 		}
 	});
@@ -130,8 +105,6 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 // En el onload
 $(function() {
 	main();  
-	
-
 });
 </script>
 
