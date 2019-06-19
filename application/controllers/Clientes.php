@@ -4,9 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Clientes extends CI_Controller {
 	
-
-	public function __construct(){
-		
+	public function __construct(){		
 		parent::__construct();
 		$this->load->model("Clientes_model");		
 	}
@@ -15,6 +13,14 @@ class Clientes extends CI_Controller {
 		$this->load->view("clientes/index");
 	}
 
+	public function agregar(){
+        $this->load->view("partial/encabezado");
+		$this->load->view("clientes/agregar");
+		// load pagination library
+		$this->load->library('pagination');
+        //$this->load->view("pie");
+	}
+	
 	public function mostrar()
 	{	
 		//valor a Buscar

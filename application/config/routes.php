@@ -57,3 +57,5 @@ $route['clientes'] = "clientes";
 $route['authors/(:num)'] = 'authors';
 $route['productos/(:num)'] = 'productos';
 $route['usuarios'] = "usuarios";
+$route['servicios'] = "servicios";
+$route['search'] = "search/index";

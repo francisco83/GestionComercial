@@ -15,7 +15,9 @@
 	    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      		<ul class="nav navbar-nav">
 	        		<li><a href="<?php echo base_url();?>index.php/usuarios">Usuarios <span class="sr-only">(current)</span></a></li>
-							<li class="active"><a href="<?php echo base_url();?>index.php/clientes">Clientes</a></li>	
+					<li><a href="<?php echo base_url();?>index.php/servicios">Servicios <span class="sr-only">(current)</span></a></li>
+					<li><a href="<?php echo base_url();?>index.php/registrar">Registrar <span class="sr-only">(current)</span></a></li>
+					<li class="active"><a href="<?php echo base_url();?>index.php/clientes">Clientes</a></li>	
 	      		</ul>
 	     	</div><!-- /.navbar-collapse -->
 	  	</div><!-- /.container-fluid -->

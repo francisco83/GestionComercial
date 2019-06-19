@@ -1,6 +1,4 @@
 function main(){
-
-	console.log("ingreso");
 	mostrarDatos("",1,5);
 
 	
