@@ -11,11 +11,12 @@ class Search extends CI_Controller {
 		$this->load->database();		
 		if(!empty($this->input->get("q"))){
 			$this->db->like('nombre', $this->input->get("q"));
+		}
 			$query = $this->db->select('id,nombre as text')
 						->limit(10)
 						->get("servicios");
 			$json = $query->result();
-		}
+		
 
 		
 		echo json_encode($json);
