@@ -48,12 +48,11 @@
 					<a href="<?php echo base_url().'index.php/clientes/agregar/'?>" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>										
 					<button class="btn btn-warning" onclick="Editar()"><i class='glyphicon glyphicon-edit'></i> Editar</button>
 					<button class="btn btn-danger" onclick="Eliminar()"><i class='glyphicon glyphicon-trash'></i> Eliminar</button>
+					<button class="btn btn-info" onclick="RegistrarServicio()"><i class='glyphicon glyphicon-tasks'></i> Registrar Servicio</button>
 			</div>
 		</div>
 	</div>
-	<script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
-	<script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
-	<script src="<?php echo base_url();?>assets/js/main.js"></script>
+
 <script>
 
 function Editar(){
@@ -66,6 +65,13 @@ function Eliminar(){
 	var id = $("#tbclientes tr.selected td:first").html();
 	if (id !=  undefined){
 		location.href ="<?php echo base_url().'index.php/clientes/eliminar/'?>"+id;
+	}		
+}
+
+function RegistrarServicio(){
+	var id = $("#tbclientes tr.selected td:first").html();
+	if (id !=  undefined){
+		location.href ="<?php echo base_url().'index.php/registrar/index/'?>"+id;
 	}		
 }
 

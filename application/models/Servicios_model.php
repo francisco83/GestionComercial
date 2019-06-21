@@ -42,4 +42,11 @@ class Servicios_model extends CI_Model {
 		return $consulta->result();
 	}
 
+	function search_blog($title){
+        $this->db->like('nombre', $title);
+        $this->db->order_by('nombre', 'ASC');
+        $this->db->limit(10);
+        return $this->db->get('servicios')->result();
+    }
+
 }

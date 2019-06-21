@@ -112,5 +112,20 @@ class Servicios extends CI_Controller {
 		$resultado = $this->Servicios_model->listar();
 		echo $resultado;
 	}
+
+	public function buscar_servicios()
+	{
+		$json = [];
+		$this->load->database();		
+		if(!empty($this->input->get("q"))){
+			$this->db->like('nombre', $this->input->get("q"));
+		}
+			$query = $this->db->select('id,nombre as text')
+						->limit(10)
+						->get("servicios");
+			$json = $query->result();		
+		
+		echo json_encode($json);
+	}
 	
 }

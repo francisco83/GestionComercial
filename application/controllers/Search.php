@@ -15,9 +15,7 @@ class Search extends CI_Controller {
 			$query = $this->db->select('id,nombre as text')
 						->limit(10)
 						->get("servicios");
-			$json = $query->result();
-		
-
+			$json = $query->result();		
 		
 		echo json_encode($json);
 	}
