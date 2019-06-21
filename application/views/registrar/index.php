@@ -44,10 +44,6 @@
 						<a href="<?php echo base_url().'index.php/servicios/agregar/'?>" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>
 					</div> 
 
-					<!-- <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="form-control" id="title" placeholder="Title" style="width:500px;">
-                  	</div> -->
 
 					  <input type="text" id="clienteid">
 					  <div class="form-group">
