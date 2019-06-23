@@ -42,4 +42,11 @@ class Clientes_model extends CI_Model {
 		return $this->db->update('clientes', $this, array("id" => $id));
 	}
 
+	function buscar_cliente($nombre){
+		$this->db->like('nombres', $nombre);
+		$this->db->order_by('nombres', 'ASC');
+		$this->db->limit(10);
+		return $this->db->get('clientes')->result();
+	}
+
 }

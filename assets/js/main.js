@@ -91,3 +91,26 @@ function cargarPaginado(response,valorBuscar,pagina,cantidad){
 {
     Message("Por favor, seleccione un registro.")
 }
+
+/*Fecha Actual*/ 
+function addZero(i) {
+    if (i < 10) {
+        i = '0' + i;
+    }
+    return i;
+}
+
+function hoyFecha(){
+	var hoy = new Date();
+	var dd = hoy.getDate();
+	var mm = hoy.getMonth()+1;
+	var yyyy = hoy.getFullYear();
+	
+	dd = addZero(dd);
+	mm = addZero(mm);
+
+	//return dd+'/'+mm+'/'+yyyy;
+	return yyyy+'-'+mm+'-'+dd;
+}
+/*fin fecha actual*/
+

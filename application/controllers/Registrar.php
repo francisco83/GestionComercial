@@ -10,7 +10,7 @@ class Registrar extends CI_Controller {
 		$this->load->model("Servicios_model");		
 	}
 
-	public function index($id){		
+	public function index($id){	
 		$this->load->view("registrar/index");
 	}
 
@@ -24,15 +24,15 @@ class Registrar extends CI_Controller {
 					'id' => $row->id,
 					'value'=> $row->nombre
 				);
-				//$data['id'] = $row['id'];
-				//$data['value'] = $row['nombre'];
-				//$data['value'] = $row->nombre;
-                //array_push($returnData, $data);
-			}	
-				//$arr_result[] = $row->nombre;				
-                print json_encode($data);
+			}				
+                echo json_encode($data);
             }
         }
+	}
+
+	public function listar(){
+		$resultado = $this->Servicios_model->listar();
+		echo json_encode($resultado);
 	}
 	
 }

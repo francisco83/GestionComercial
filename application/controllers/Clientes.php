@@ -114,4 +114,20 @@ class Clientes extends CI_Controller {
         ));
         redirect("Clientes");
 	}
+
+	function get_autocomplete(){
+        if (isset($_GET['term'])) {
+            $result = $this->Clientes_model->buscar_cliente($_GET['term']);
+            if (count($result) > 0) {
+			foreach ($result as $row)	
+			{
+				$data[] = array(
+					'id' => $row->id,
+					'value'=> $row->nombres
+				);
+			}				
+                echo json_encode($data);
+            }
+        }
+	}
 }
