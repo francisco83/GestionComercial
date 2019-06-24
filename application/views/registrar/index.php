@@ -16,9 +16,10 @@
     padding: 5px 10px;
   }
   .celda{	  
-	  border-top: 1px solid black;
-    	border-right: 1px solid black;
-    	height: 27px;
+	  	/* border-top: 1px solid black;
+    	border-right: 1px solid black; */
+		border: 1px solid black;
+		height: 36px;
   }
   </style> 
 
@@ -38,15 +39,58 @@
 						</div>
 						<div class="form-group">
 								<label for="fecha">Fecha:</label>
-								<input class="form-control" name="fecha" required type="date" id="fecha">
+								<input class="form-control" name="fecha" required type="date" id="fechaHoy">
 						</div> 
-						<div class="form-group">
+						<!-- <div class="form-group">
 								<label for="servicio">Tipo Servicio:</label>
 								<select class="form-control" id ="comboservicio"></select> 								
-						</div> 
+						</div> -->
 						<a onclick="agregarFila()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>
 
-						<table id ="tableRegistrar" class="table table-bordered table-hover">
+  					<form action="" id="form_insert">
+					<div class="form-group" id="detalle">
+  						<div class="row">
+						<div class="col-xs-2 celda">Fecha</div>
+						<div class="col-xs-4 celda">Tipo Servicio</div>
+						<div class="col-xs-1 celda">Precio</div>
+						<div class="col-xs-1 celda">Cantidad</div>
+						<div class="col-xs-1 celda">Total</div>
+						<div class="col-xs-2 celda">Detalle</div>
+						<div class="col-xs-1 celda"></div>
+					</div>
+
+
+						<!-- <div class="col-xs-2 celda"><input class="form-control" name="fecha[]" type="date" id="fecha_for"></div>
+						<div class="col-xs-4 celda">
+								<select class="form-control" id ="comboservicio"></select> 								
+						</div>
+						<div class="col-xs-1 celda">100</div>
+						<div class="col-xs-1 celda"><input class="form-control" name="cantidad[]" required type="number" id="cantidad_for" value="1"></div>
+						<div class="col-xs-1 celda">100</div>
+						<div class="col-xs-2 celda"><input class="form-control" name="detalle[]" required type="text" id="detalle_for" value="Pruaba de escritura de detalles ...pppppp."></div>
+						<div class="col-xs-1 celda">
+						<a onclick="borrarFila()"><i class="glyphicon glyphicon-trash"></i></a></div>
+
+
+						<div class="col-xs-2 celda"><input class="form-control" name="fecha[]" type="date" id="fecha_for"></div>
+						<div class="col-xs-4 celda">
+						
+						<select class="form-control" id ="comboservicio"></select> 	
+						
+						</div>
+						<div class="col-xs-1 celda">100</div>
+						<div class="col-xs-1 celda"><input class="form-control" name="cantidad[]" required type="number" id="cantidad_for" value="1"></div>
+						<div class="col-xs-1 celda">100</div>
+						<div class="col-xs-2 celda"><input class="form-control" name="detalle[]" required type="text" id="detalle_for" value="Solo una"></div>
+						<div class="col-xs-1 celda">
+						<a onclick="borrarFila()"><i class="glyphicon glyphicon-trash"></i></a></div>
+						 -->
+					</div>			
+  					<input type="submit" value="Guardar">		
+					</form>
+
+
+						<!-- <table id ="tableRegistrar" class="table table-bordered table-hover">
 							<thead>
 								<tr>	
 									<th>#</th>							
@@ -61,7 +105,7 @@
 							</thead>
 							<tbody>
 							</tbody>
-						</table>
+						</table> -->
 
 						</div><!-- fin pbody -->
 
@@ -77,7 +121,7 @@
 	
 	$(function() {
 
-		$("#fecha").val(hoyFecha());
+		$("#fechaHoy").val(hoyFecha());
 
 		//Buscar Cliente
 		$( "#combocliente" ).autocomplete({
@@ -99,34 +143,97 @@
 				$.each(response,function(key,item){
 					filas+="<option value='"+item.id+"'>"+item.nombre+"</option>";
 				});
-				$("#comboservicio").html(filas);		
-				$("#comboservicio").combobox();	
+				//$("#comboservicio").html(filas);		
+				//$("#comboservicio").combobox();		
 			}
 		});
+	
+
+		jQuery(document).on('submit','#form_insert',function(event)
+		{
+			event.preventDefault();
+			jQuery.ajax({
+				url:"<?php echo site_url('Registrar/insertar');?>",
+				type: 'POST',
+				datetype: 'json',
+				data: $(this).serialize(),
+			})
+			.done(function(respuesta)
+			{
+				console.log(respuesta);
+			})
+			.fail(function(resp)
+			{
+				console.log("Error");
+			})
+
+		}
+		)
 
 });
 
 
 
 
+// function agregarFila() {   
+//    var htmlTags = '<tr id="fila'+i+'">'+
+// 		'<td>' +i+'</td>'+
+//         '<td>' + $("#fecha").val() + '</td>'+
+//         '<td>' + $("#comboservicio").children("option:selected").text() + '</td>'+
+//         '<td>' + '<span id="Monto" contenteditable>200</span>' + '</td>'+
+// 		'<td>' + '<span id="cantidad" contenteditable>1</span>'+'</td>'+
+// 		'<td>' + 0 + '</td>'+
+// 		'<td>' + '<span id="detalle" contenteditable>1</span>'+ '</td>'+
+// 		'<td>'+'<a onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+'</td>'+
+//       '</tr>';     
+//    $('#tableRegistrar tbody').append(htmlTags);
+//    i++;
+// }
+
+
 function agregarFila() {   
+	var htmlTags =
+				'<div class="row" id="fila'+i+'">'+		 
+				'<div class="col-xs-2 celda">'+ '<input class="form-control" name="fecha[]" required type="date" id="fecha'+i+'">' + '</div>'+
+				'<div class="col-xs-4 celda">'+'<select class="form-control target'+i+'" name="servicio[]" id ="comboservicio'+i+'"></select> ' + '</div>'+
+				'<div class="col-xs-1 celda">'+'<input class="form-control" name="precio[]" required type="number" id="precio'+i+'" value="">'+'</div>'+
+				'<div class="col-xs-1 celda">'+'<input class="form-control" name="cantidad[]" required type="number" id="cantidad'+i+'" value="1">'+'</div>'+
+				'<div class="col-xs-1 celda">'+'<input class="form-control" name="total[]" required type="number" id="total'+i+'" value="">'+'</div>'+
+				'<div class="col-xs-2 celda">'+'<input class="form-control" name="detalle[]" required type="text" id="detalle_for" value="">'+'</div>'+
+				'<div class="col-xs-1 celda">'+'<a onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+'</div>'+
+				'</div>';
 
-// 	$("#tableRegistrar tbody tr").click(function(){
-// 				$(this).addClass('selected').siblings().removeClass('selected');    
-// 				var value=$(this).find('td:first').html(); 
-// });
+	$.when($('#detalle').append(htmlTags)).then
+	{
+		$("#comboservicio"+i).html(filas);
+		$("#comboservicio"+i).combobox();
+		var fecha = $("#fechaHoy").val();
+		var precio =100;
+		$("#fecha"+i).val(fecha);
 
-   var htmlTags = '<tr id="fila'+i+'">'+
-		'<td>' +i+'</td>'+
-        '<td>' + $("#fecha").val() + '</td>'+
-        '<td>' + $("#comboservicio").children("option:selected").text() + '</td>'+
-        '<td>' + '<span id="Monto" contenteditable>200</span>' + '</td>'+
-		'<td>' + '<span id="cantidad" contenteditable>1</span>'+'</td>'+
-		'<td>' + 0 + '</td>'+
-		'<td>' + '<span id="detalle" contenteditable>1</span>'+ '</td>'+
-		'<td>'+'<a onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+'</td>'+
-      '</tr>';     
-   $('#tableRegistrar tbody').append(htmlTags);
+
+		$("#cantidad"+i).bind('change',function(){
+  			//alert("The text has been changed.");
+			  console.log("cambios");
+			  $("#total"+i).val("222");  
+		}
+		);
+
+		$("#comboservicio"+i).combobox({ 
+        select: function (event, ui) { 
+            //alert("the select event has fired!"); 
+			//delay(550);
+			
+			//console.log(i,ui,precio,"#precio"+i,$("#precio"+i-1))
+				$.when(console.log("the select event has fired!")).then
+				{
+					$("#precio"+i-1).val(precio);
+				}
+        	} 
+    	});
+
+	}
+
    i++;
 }
 
