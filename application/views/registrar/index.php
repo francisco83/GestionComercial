@@ -191,17 +191,23 @@
 // }
 
 
+
+
 function agregarFila() {   
 	var htmlTags =
-				'<div class="row" id="fila'+i+'">'+		 
+			
+				'<div class="row" id="fila'+i+'">'+	
+				'<div class="id_" hidden>'+i+'</div>'+	 
 				'<div class="col-xs-2 celda">'+ '<input class="form-control" name="fecha[]" required type="date" id="fecha'+i+'">' + '</div>'+
 				'<div class="col-xs-4 celda">'+'<select class="form-control target'+i+'" name="servicio[]" id ="comboservicio'+i+'"></select> ' + '</div>'+
 				'<div class="col-xs-1 celda">'+'<input class="form-control" name="precio[]" required type="number" id="precio'+i+'" value="">'+'</div>'+
 				'<div class="col-xs-1 celda">'+'<input class="form-control" name="cantidad[]" required type="number" id="cantidad'+i+'" value="1">'+'</div>'+
-				'<div class="col-xs-1 celda">'+'<input class="form-control" name="total[]" required type="number" id="total'+i+'" value="">'+'</div>'+
+				'<div class="col-xs-1 celda">'+'<input class="form-control tot'+i+'" name="total[]" required type="number" id="total'+i+'" value="">'+'</div>'+
 				'<div class="col-xs-2 celda">'+'<input class="form-control" name="detalle[]" required type="text" id="detalle_for" value="">'+'</div>'+
 				'<div class="col-xs-1 celda">'+'<a onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+'</div>'+
 				'</div>';
+
+	var total = 'total'+i;			
 
 	$.when($('#detalle').append(htmlTags)).then
 	{
@@ -211,24 +217,24 @@ function agregarFila() {
 		var precio =100;
 		$("#fecha"+i).val(fecha);
 
+		$("#fila"+i).click(function(){
+				$(this).addClass('selected').siblings().removeClass('selected');    
+				var value=$(this).find('div:first').html(); 
+				console.log(value);				
+			});
 
-		$("#cantidad"+i).bind('change',function(){
-  			//alert("The text has been changed.");
-			  console.log("cambios");
-			  $("#total"+i).val("222");  
-		}
-		);
+		
+		$("#cantidad"+i).on('change',function(){
+			  var a = $('.selected').find('div:first').html();
+			  console.log("cambios",a);
+			  $("#total"+a).val("22233");  
+		});
 
 		$("#comboservicio"+i).combobox({ 
         select: function (event, ui) { 
-            //alert("the select event has fired!"); 
-			//delay(550);
-			
-			//console.log(i,ui,precio,"#precio"+i,$("#precio"+i-1))
-				$.when(console.log("the select event has fired!")).then
-				{
-					$("#precio"+i-1).val(precio);
-				}
+			var a = $('.selected').find('div:first').html()
+			$("#precio"+a).val("2334");
+
         	} 
     	});
 
