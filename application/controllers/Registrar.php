@@ -37,22 +37,37 @@ class Registrar extends CI_Controller {
 	}
 
 	public function insertar(){
-		$fecha = $_POST['fecha'];
+		$clienteid = $_POST['clienteid']; 
+		$fecha = $_POST['fechahoy'];
 		$cantidad = $_POST['cantidad'];
 		$servicio = $_POST['servicio'];
 		$detalle = $_POST['detalle'];
+		$precio = $_POST['precio'];
 
-		for ($i=0; $i < count($fecha); $i++) 
+		for ($i=0; $i < count($servicio); $i++) 
 		{   
-			$data[$i]['id_cliente'] = '1';
+			$data[$i]['id_cliente'] = $clienteid;
 			$data[$i]['id_servicio'] = $servicio[$i];;
-			$data[$i]['fecha'] = $fecha[$i];
-			$data[$i]['precio'] = '300';
+			$data[$i]['fecha'] = $fecha;
+			$data[$i]['precio'] = $precio[$i];
 			$data[$i]['cantidad'] = $cantidad[$i];
 			$data[$i]['descripcion'] = $detalle[$i];
 		}
+
+		$resultado = $this->Cliente_servicios_model->guardarCambios($data);
+
+		if($resultado){
+            $mensaje = "Registro cargado correctamente";
+            $clase = "success";
+        }else{
+            $mensaje = "Error al registrar la carga de servicios";
+            $clase = "danger";
+        }
+        $this->session->set_flashdata(array(
+            "mensaje" => $mensaje,
+            "clase" => $clase,
+		));
 		
-		$result = $this->Cliente_servicios_model->guardarCambios($data);
 		//$resultado = $this->Servicios_model->listar();
 		//echo json_encode($resultado);
 	}

@@ -127,5 +127,22 @@ class Servicios extends CI_Controller {
 		
 		echo json_encode($json);
 	}
+
+	function get_autocomplete(){
+        if (isset($_GET['term'])) {
+            $result = $this->Servicios_model->search_blog($_GET['term']);
+            if (count($result) > 0) {
+			foreach ($result as $row)	
+			{
+				$data[] = array(
+					'id' => $row->id,
+					'value'=> $row->nombre,
+					'precio'=>$row->precio
+				);
+			}				
+                echo json_encode($data);
+            }
+        }
+	}
 	
 }

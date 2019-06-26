@@ -10,7 +10,7 @@
     bottom: 0;
     margin-left: -1px;
     padding: 0;
-  }
+  } 
   .custom-combobox-input {
     margin: 0;
     padding: 5px 10px;
@@ -31,32 +31,48 @@
 					<div class="panel-heading">
 						<h4>Registrar servicios</h4>
 					</div>
+					
+					<?php if(!empty($this->session->flashdata())): ?>
+					<div class="alert alert-<?php echo $this->session->flashdata('clase')?>">
+						<?php echo $this->session->flashdata('mensaje') ?>
+					</div>
+					<?php endif; ?>
+
 					<div class="panel-body">
+
+					<form action="" id="form_insert">
+
+						<div class="form-group">
+								<label for="fecha">Fecha:</label>
+								<input class="form-control" id="fechahoy" name="fechahoy" required type="date" id="fechaHoy">
+						</div> 
 
 						<div class="form-group">
 								<label>Cliente:</label>
-								<input type="text" class="form-control" id="combocliente" placeholder="Buscar Cliente">
+								<input type ="text" id="clienteid" name="clienteid">
+								<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
 						</div>
-						<div class="form-group">
-								<label for="fecha">Fecha:</label>
-								<input class="form-control" name="fecha" required type="date" id="fechaHoy">
-						</div> 
+
+						
+						
 						<!-- <div class="form-group">
 								<label for="servicio">Tipo Servicio:</label>
-								<select class="form-control" id ="comboservicio"></select> 								
-						</div> -->
+								<select class="form-control" id ="comboservicioNew"></select> 								
+						</div>  -->
+
 						<a onclick="agregarFila()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>
 
-  					<form action="" id="form_insert">
+
 					<div class="form-group" id="detalle">
   						<div class="row">
-						<div class="col-xs-2 celda">Fecha</div>
+						<!-- <div class="col-xs-2 celda">Fecha</div> -->
 						<div class="col-xs-4 celda">Tipo Servicio</div>
 						<div class="col-xs-1 celda">Precio</div>
 						<div class="col-xs-1 celda">Cantidad</div>
-						<div class="col-xs-1 celda">Total</div>
-						<div class="col-xs-2 celda">Detalle</div>
+						<div class="col-xs-2 celda">Total</div>
+						<div class="col-xs-3 celda">Detalle</div>
 						<div class="col-xs-1 celda"></div>
+						</div>
 					</div>
 
 
@@ -121,13 +137,17 @@
 	
 	$(function() {
 
-		$("#fechaHoy").val(hoyFecha());
+
+
+
+		$("#fechahoy").val(hoyFecha());
 
 		//Buscar Cliente
 		$( "#combocliente" ).autocomplete({
 		source: "<?php echo site_url('Clientes/get_autocomplete/?');?>",
 		autoFill:true,
 		select: function(event, ui){
+			console.log(ui);
 			$('#clienteid').val(ui.item.id);
 			$("#combocliente").val(ui.item.value);
 		},
@@ -141,10 +161,12 @@
 			success:function(response){
 				filas = "<option value='-1'></option>";	
 				$.each(response,function(key,item){
-					filas+="<option value='"+item.id+"'>"+item.nombre+"</option>";
+					filas+="<option value='"+item.id+"' precio='"+item.precio+"'>"+item.nombre+"</option>";
+					//filas+="<option value='"+item.id+"'>"+item.nombre+"</option>";
+
 				});
 				//$("#comboservicio").html(filas);		
-				//$("#comboservicio").combobox();		
+				//$("#comboservicio").combobox();				
 			}
 		});
 	
@@ -174,7 +196,6 @@
 
 
 
-
 // function agregarFila() {   
 //    var htmlTags = '<tr id="fila'+i+'">'+
 // 		'<td>' +i+'</td>'+
@@ -198,12 +219,12 @@ function agregarFila() {
 			
 				'<div class="row" id="fila'+i+'">'+	
 				'<div class="id_" hidden>'+i+'</div>'+	 
-				'<div class="col-xs-2 celda">'+ '<input class="form-control" name="fecha[]" required type="date" id="fecha'+i+'">' + '</div>'+
-				'<div class="col-xs-4 celda">'+'<select class="form-control target'+i+'" name="servicio[]" id ="comboservicio'+i+'"></select> ' + '</div>'+
-				'<div class="col-xs-1 celda">'+'<input class="form-control" name="precio[]" required type="number" id="precio'+i+'" value="">'+'</div>'+
+				//'<div class="col-xs-2 celda">'+ '<input class="form-control" name="fecha[]" required type="date" id="fecha'+i+'">' + '</div>'+
+				'<div class="col-xs-4 celda">'+'<select class="form-control" name="servicio[]" id ="comboservicio'+i+'"></select> ' + '</div>'+
+				'<div class="col-xs-1 celda">'+'<input class="form-control" name="precio[]" required type="number" id="precio'+i+'" value="0">'+'</div>'+
 				'<div class="col-xs-1 celda">'+'<input class="form-control" name="cantidad[]" required type="number" id="cantidad'+i+'" value="1">'+'</div>'+
-				'<div class="col-xs-1 celda">'+'<input class="form-control tot'+i+'" name="total[]" required type="number" id="total'+i+'" value="">'+'</div>'+
-				'<div class="col-xs-2 celda">'+'<input class="form-control" name="detalle[]" required type="text" id="detalle_for" value="">'+'</div>'+
+				'<div class="col-xs-2 celda">'+'<input class="form-control tot'+i+'" name="total[]" required type="number" id="total'+i+'" value="0">'+'</div>'+
+				'<div class="col-xs-3 celda">'+'<input class="form-control" name="detalle[]" type="text" id="detalle_for" value="">'+'</div>'+
 				'<div class="col-xs-1 celda">'+'<a onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+'</div>'+
 				'</div>';
 
@@ -213,6 +234,7 @@ function agregarFila() {
 	{
 		$("#comboservicio"+i).html(filas);
 		$("#comboservicio"+i).combobox();
+		//$("#comboservicio"+i).resizable();
 		var fecha = $("#fechaHoy").val();
 		var precio =100;
 		$("#fecha"+i).val(fecha);
@@ -227,13 +249,15 @@ function agregarFila() {
 		$("#cantidad"+i).on('change',function(){
 			  var a = $('.selected').find('div:first').html();
 			  console.log("cambios",a);
-			  $("#total"+a).val("22233");  
+			  Resultado = $("#precio"+a).val() * $("#cantidad"+a).val();
+			  $("#total"+a).val(Resultado);  
 		});
 
 		$("#comboservicio"+i).combobox({ 
         select: function (event, ui) { 
-			var a = $('.selected').find('div:first').html()
-			$("#precio"+a).val("2334");
+			var a = $('.selected').find('div:first').html();
+			///console.log($("#comboservicio"+a).find("option:selected").attr("name"));
+			$("#precio"+a).val($("#comboservicio"+a+ " option:selected").attr("precio"));
 
         	} 
     	});
