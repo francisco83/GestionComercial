@@ -20,6 +20,14 @@
     	border-right: 1px solid black; */
 		border: 1px solid black;
 		height: 36px;
+		font-size: small important!;
+  } 
+  .fila{
+	border: 1px solid lightgray;
+	margin-top: 20px;
+	padding: 10px;
+
+
   }
   </style> 
 
@@ -63,32 +71,77 @@
 						<a onclick="agregarFila()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>
 
 
-					<div class="form-group" id="detalle">
-  						<div class="row">
-						<!-- <div class="col-xs-2 celda">Fecha</div> -->
-						<div class="col-xs-4 celda">Tipo Servicio</div>
-						<div class="col-xs-1 celda">Precio</div>
-						<div class="col-xs-1 celda">Cantidad</div>
-						<div class="col-xs-2 celda">Total</div>
-						<div class="col-xs-3 celda">Detalle</div>
-						<div class="col-xs-1 celda"></div>
+					<div class="col-md-12" id="detalle">
+  						<!-- <div class="col-md-12">
+	
+							<div class="col-xs-4 celda">Tipo Servicio</div>
+							<div class="col-xs-1 celda">Precio</div>
+							<div class="col-xs-1 celda">Cantidad</div>
+							<div class="col-xs-2 celda">Total</div>
+							<div class="col-xs-3 celda">Detalle</div>
+							<div class="col-xs-1 celda"></div>
+						</div> -->
+
+  						<!-- <div class="row">
+  							<div class="col-md-12">
+								<div class="col-md-6">
+									Tipo de Servicio:
+									<select class="form-control" name="servicio[]" id ="comboservicio'+i+'"></select>
+								</div>
+								<div class="col-md-2">
+									Precio:
+									<input class="form-control" name="precio" required type="number" id="precio" value="0">
+								</div>
+								<div class="col-md-2">
+									Cantidad:
+									<input class="form-control" name="precio" required type="number" id="precio" value="0">
+								</div>
+								<div class="col-md-2">
+									Total:
+									<input class="form-control" name="precio" required type="number" id="precio" value="0">
+								</div>
+							</div>
+							<div class="col-md-12">		
+								<div class="col-md-12">					
+									Detalle:
+									<textarea  class="form-control" name="textarea" rows="2"></textarea>
+								</div>	
+							</div>
 						</div>
-					</div>
 
+					</div> -->
 
-						<!-- <div class="col-xs-2 celda"><input class="form-control" name="fecha[]" type="date" id="fecha_for"></div>
+					<!-- <div class="col-md-12">
+  						<div class="row">
+						  <div class="col-md-4">
+								Servicio<select class="form-control" name="servicio[]" id ="comboservicio'+i+'"></select>
+							</div>
+							<div class="col-md-4 col-xs-6">
+								Precio:<input class="form-control" name="precio" required type="number" id="precio" value="0">
+							</div>
+							<div class="col-md-4 col-xs-6">
+								Cantidad:<input class="form-control" name="precio" required type="number" id="precio" value="0">
+							</div>
+							<div class="col-md-12">
+								Descripción:<input class="form-control" name="detalle[]" type="text" id="detalle_for" value="">
+							</div>
+						</div>					
+					</div> -->
+
+<!-- 
+						<div class="col-xs-2 celda"><input class="form-control" name="fecha[]" type="date" id="fecha_for"></div>
 						<div class="col-xs-4 celda">
 								<select class="form-control" id ="comboservicio"></select> 								
 						</div>
-						<div class="col-xs-1 celda">100</div>
-						<div class="col-xs-1 celda"><input class="form-control" name="cantidad[]" required type="number" id="cantidad_for" value="1"></div>
-						<div class="col-xs-1 celda">100</div>
+						<div class="col-xs-3 celda">100</div>
+						<div class="col-xs-3 celda"><input class="form-control" name="cantidad[]" required type="number" id="cantidad_for" value="1"></div>
+						<div class="col-xs-3 celda">100</div>
 						<div class="col-xs-2 celda"><input class="form-control" name="detalle[]" required type="text" id="detalle_for" value="Pruaba de escritura de detalles ...pppppp."></div>
 						<div class="col-xs-1 celda">
 						<a onclick="borrarFila()"><i class="glyphicon glyphicon-trash"></i></a></div>
 
 
-						<div class="col-xs-2 celda"><input class="form-control" name="fecha[]" type="date" id="fecha_for"></div>
+						 <div class="col-xs-2 celda"><input class="form-control" name="fecha[]" type="date" id="fecha_for"></div>
 						<div class="col-xs-4 celda">
 						
 						<select class="form-control" id ="comboservicio"></select> 	
@@ -99,8 +152,8 @@
 						<div class="col-xs-1 celda">100</div>
 						<div class="col-xs-2 celda"><input class="form-control" name="detalle[]" required type="text" id="detalle_for" value="Solo una"></div>
 						<div class="col-xs-1 celda">
-						<a onclick="borrarFila()"><i class="glyphicon glyphicon-trash"></i></a></div>
-						 -->
+						<a onclick="borrarFila()"><i class="glyphicon glyphicon-trash"></i></a></div> -->
+						 
 					</div>			
   					<input type="submit" value="Guardar">		
 					</form>
@@ -121,7 +174,7 @@
 							</thead>
 							<tbody>
 							</tbody>
-						</table> -->
+						</table>  -->
 
 						</div><!-- fin pbody -->
 
@@ -214,19 +267,127 @@
 
 
 
+// function agregarFila() {   
+// 	var htmlTags =
+			
+// 				'<div class="col-md-12" id="fila'+i+'">'+	
+// 				'<div class="id_" hidden>'+i+'</div>'+	 
+// 				//'<div class="col-xs-2 celda">'+ '<input class="form-control" name="fecha[]" required type="date" id="fecha'+i+'">' + '</div>'+
+// 				'<div class="col-xs-4 celda">'+'<select class="form-control" name="servicio[]" id ="comboservicio'+i+'"></select> ' + '</div>'+
+// 				'<div class="col-xs-1 celda">'+'<input class="form-control" name="precio[]" required type="number" id="precio'+i+'" value="0">'+'</div>'+
+// 				'<div class="col-xs-1 celda">'+'<input class="form-control" name="cantidad[]" required type="number" id="cantidad'+i+'" value="1">'+'</div>'+
+// 				'<div class="col-xs-2 celda">'+'<input class="form-control tot'+i+'" name="total[]" required type="number" id="total'+i+'" value="0">'+'</div>'+
+// 				'<div class="col-xs-3 celda">'+'<input class="form-control" name="detalle[]" type="text" id="detalle_for" value="">'+'</div>'+
+// 				'<div class="col-xs-1 celda">'+'<a onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+'</div>'+
+// 				'</div>';
+
+
+// 	// var htmlTags =
+			
+// 	// 		'<div class="row" style="border: 1px solid gray;" id="fila'+i+'">'+	
+// 	// 		'<div class="col-md-12">'+
+// 	// 		'<div class="id_" hidden>'+i+'</div>'+	 
+// 	// 		//'<div class="col-xs-2 celda">'+ '<input class="form-control" name="fecha[]" required type="date" id="fecha'+i+'">' + '</div>'+
+// 	// 		'<div class="col-md-3 ">'+'<select class="form-control" name="servicio[]" id ="comboservicio'+i+'"></select> ' + '</div>'+
+// 	// 		'<div class="col-md-3 ">'+'<input class="form-control" name="precio[]" required type="number" id="precio'+i+'" value="0">'+'</div>'+
+// 	// 		'<div class="col-md-3 ">'+'<input class="form-control" name="cantidad[]" required type="number" id="cantidad'+i+'" value="1">'+'</div>'+
+// 	// 		'<div class="col-md-3 ">'+'<input class="form-control tot'+i+'" name="total[]" required type="number" id="total'+i+'" value="0">'+'</div>'+
+// 	// 		'</div>'+
+// 	// 		'<div class="col-md-12">'+
+// 	// 		'<div class="col-md-10 ">'+'<input class="form-control" name="detalle[]" type="text" id="detalle_for" value="">'+'</div>'+
+// 	// 		'<div class="col-md-2 ">'+'<a onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+'</div>'+
+// 	// 		'</div>';
+
+// 	var total = 'total'+i;			
+
+// 	$.when($('#detalle').append(htmlTags)).then
+// 	{
+// 		$("#comboservicio"+i).html(filas);
+// 		$("#comboservicio"+i).combobox();
+// 		//$("#comboservicio"+i).resizable();
+// 		var fecha = $("#fechaHoy").val();
+// 		var precio =100;
+// 		$("#fecha"+i).val(fecha);
+
+// 		$("#fila"+i).click(function(){
+// 				$(this).addClass('selected').siblings().removeClass('selected');    
+// 				var value=$(this).find('div:first').html(); 
+// 				console.log(value);				
+// 			});
+
+		
+// 		$("#cantidad"+i).on('change',function(){
+// 			  var a = $('.selected').find('div:first').html();
+// 			  console.log("cambios",a);
+// 			  Resultado = $("#precio"+a).val() * $("#cantidad"+a).val();
+// 			  $("#total"+a).val(Resultado);  
+// 		});
+
+// 		$("#comboservicio"+i).combobox({ 
+//         select: function (event, ui) { 
+// 			var a = $('.selected').find('div:first').html();
+// 			///console.log($("#comboservicio"+a).find("option:selected").attr("name"));
+// 			$("#precio"+a).val($("#comboservicio"+a+ " option:selected").attr("precio"));
+
+//         	} 
+//     	});
+
+// 	}
+
+//    i++;
+// }
+
+function borrarFila(index){
+	console.log("ingreso");
+	$("#fila"+index).remove();
+
+}
+
+
 function agregarFila() {   
 	var htmlTags =
 			
-				'<div class="row" id="fila'+i+'">'+	
-				'<div class="id_" hidden>'+i+'</div>'+	 
-				//'<div class="col-xs-2 celda">'+ '<input class="form-control" name="fecha[]" required type="date" id="fecha'+i+'">' + '</div>'+
-				'<div class="col-xs-4 celda">'+'<select class="form-control" name="servicio[]" id ="comboservicio'+i+'"></select> ' + '</div>'+
-				'<div class="col-xs-1 celda">'+'<input class="form-control" name="precio[]" required type="number" id="precio'+i+'" value="0">'+'</div>'+
-				'<div class="col-xs-1 celda">'+'<input class="form-control" name="cantidad[]" required type="number" id="cantidad'+i+'" value="1">'+'</div>'+
-				'<div class="col-xs-2 celda">'+'<input class="form-control tot'+i+'" name="total[]" required type="number" id="total'+i+'" value="0">'+'</div>'+
-				'<div class="col-xs-3 celda">'+'<input class="form-control" name="detalle[]" type="text" id="detalle_for" value="">'+'</div>'+
-				'<div class="col-xs-1 celda">'+'<a onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+'</div>'+
-				'</div>';
+				// '<div class="col-md-12" id="fila'+i+'">'+	
+				// '<div class="id_" hidden>'+i+'</div>'+	 				
+				// '<div class="col-xs-4 celda">'+'<select class="form-control" name="servicio[]" id ="comboservicio'+i+'"></select> ' + '</div>'+
+				// '<div class="col-xs-1 celda">'+'<input class="form-control" name="precio[]" required type="number" id="precio'+i+'" value="0">'+'</div>'+
+				// '<div class="col-xs-1 celda">'+'<input class="form-control" name="cantidad[]" required type="number" id="cantidad'+i+'" value="1">'+'</div>'+
+				// '<div class="col-xs-2 celda">'+'<input class="form-control tot'+i+'" name="total[]" required type="number" id="total'+i+'" value="0">'+'</div>'+
+				// '<div class="col-xs-3 celda">'+'<input class="form-control" name="detalle[]" type="text" id="detalle_for" value="">'+'</div>'+
+				// '<div class="col-xs-1 celda">'+'<a onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+'</div>'+
+				// '</div>';
+
+				'<div class="row fila" id="fila'+i+'">'+
+				'<div class="id_" hidden>'+i+'</div>'+
+  							'<div class="col-md-12">'+
+								'<div class="col-md-6">'+
+									'Tipo de Servicio:'+
+									'<select class="form-control" name="servicio[]" required id ="comboservicio'+i+'"></select>'+
+								'</div>'+
+								'<div class="col-md-2">'+
+									'Precio:'+
+									'<input class="form-control" name="precio[]" required type="number" id="precio'+i+'" value="0">'+
+								'</div>'+
+								'<div class="col-md-2">'+
+									'Cantidad:'+
+									'<input class="form-control" name="cantidad[]" required type="number" id="cantidad'+i+'" value="1">'+
+								'</div>'+
+								'<div class="col-md-2">'+
+									'Total:'+
+									'<input class="form-control tot'+i+'" name="total[]" required type="number" id="total'+i+'" value="0">'+
+								'</div>'+
+							'</div>'+
+							'<div class="col-md-12">'+		
+								'<div class="col-md-10">'+					
+									'Detalle:'+
+									'<textarea  class="form-control" name="detalle[]" rows="2"></textarea>'+
+								'</div>'+
+								'<div class="col-md-2">'+	
+									''+
+									'<a class="btn btn-sm btn-danger" onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+
+								'</div>'+	
+							'</div>'+
+						'</div>';
 
 	var total = 'total'+i;			
 
@@ -236,7 +397,6 @@ function agregarFila() {
 		$("#comboservicio"+i).combobox();
 		//$("#comboservicio"+i).resizable();
 		var fecha = $("#fechaHoy").val();
-		var precio =100;
 		$("#fecha"+i).val(fecha);
 
 		$("#fila"+i).click(function(){
@@ -258,6 +418,7 @@ function agregarFila() {
 			var a = $('.selected').find('div:first').html();
 			///console.log($("#comboservicio"+a).find("option:selected").attr("name"));
 			$("#precio"+a).val($("#comboservicio"+a+ " option:selected").attr("precio"));
+			$("#total"+a).val($("#precio"+a).val());
 
         	} 
     	});
@@ -265,12 +426,6 @@ function agregarFila() {
 	}
 
    i++;
-}
-
-function borrarFila(index){
-	console.log("ingreso");
-	$("#fila"+index).remove();
-
 }
 
 </script>
