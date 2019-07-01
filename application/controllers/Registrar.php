@@ -58,10 +58,15 @@ class Registrar extends CI_Controller {
 
 		if($resultado){
             $mensaje = "Registro cargado correctamente";
-            $clase = "success";
+			$clase = "success";
+			
+			$json['success'] = 'You have upload your selected files!';
+
+
         }else{
             $mensaje = "Error al registrar la carga de servicios";
-            $clase = "danger";
+			$clase = "danger";
+			$json['error'] = $this->upload->display_errors();
         }
         $this->session->set_flashdata(array(
             "mensaje" => $mensaje,
@@ -69,7 +74,11 @@ class Registrar extends CI_Controller {
 		));
 		
 		//$resultado = $this->Servicios_model->listar();
-		//echo json_encode($resultado);
+		echo json_encode($this);
+		
+		//redirect('registrar');
+		//redirect("registrar/"+$clienteid);
+		
 	}
 	
 }
