@@ -173,6 +173,7 @@ function agregarFila() {
   							'<div class="col-md-12">'+
 								'<div class="col-md-6">'+
 									'Tipo de Servicio:'+
+									'</br>'+
 									'<select class="form-control" name="servicio[]" required id ="comboservicio'+i+'"></select>'+
 								'</div>'+
 								'<div class="col-md-2">'+
@@ -194,7 +195,7 @@ function agregarFila() {
 									'<textarea  class="form-control" name="detalle[]" rows="2"></textarea>'+
 								'</div>'+
 								'<div class="col-md-2">'+	
-									''+
+									'</br>'+
 									'<a class="btn btn-sm btn-danger" onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+
 								'</div>'+	
 							'</div>'+

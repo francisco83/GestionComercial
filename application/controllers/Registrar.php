@@ -8,11 +8,17 @@ class Registrar extends CI_Controller {
 		parent::__construct();
 		$this->load->model("Clientes_model");		
 		$this->load->model("Servicios_model");	
-		$this->load->model("Cliente_servicios_model");		
+		//$this->load->model("Cliente_servicios_model");
+		$this->load->model("Cli_servicios_detalle_model");
+		$this->load->model("Cli_servicios_model");		
 	}
 
 	public function index($id){	
 		$this->load->view("registrar/index");
+	}
+
+	public function ver(){	
+		$this->load->view("registrar/ver");
 	}
 
 	function get_autocomplete(){
@@ -44,17 +50,22 @@ class Registrar extends CI_Controller {
 		$detalle = $_POST['detalle'];
 		$precio = $_POST['precio'];
 
+
+		$id = $this->Cli_servicios_model->guardarCambios($clienteid,$fecha);
+
 		for ($i=0; $i < count($servicio); $i++) 
 		{   
-			$data[$i]['id_cliente'] = $clienteid;
-			$data[$i]['id_servicio'] = $servicio[$i];;
-			$data[$i]['fecha'] = $fecha;
+			//$data[$i]['id_cliente'] = $clienteid;
+			$data[$i]['id_cli_servicios'] = $id;
+			$data[$i]['id_servicio'] = $servicio[$i];
+			//$data[$i]['fecha'] = $fecha;
 			$data[$i]['precio'] = $precio[$i];
 			$data[$i]['cantidad'] = $cantidad[$i];
 			$data[$i]['descripcion'] = $detalle[$i];
 		}
 
-		$resultado = $this->Cliente_servicios_model->guardarCambios($data);
+
+		$resultado = $this->Cli_servicios_detalle_model->guardarCambios($data);
 
 		if($resultado){
             $mensaje = "Registro cargado correctamente";
@@ -79,6 +90,24 @@ class Registrar extends CI_Controller {
 		//redirect('registrar');
 		//redirect("registrar/"+$clienteid);
 		
+	}
+
+
+	public function mostrar()
+	{	
+		//valor a Buscar
+		$buscar = $this->input->post("buscar");
+		$numeropagina = $this->input->post("nropagina");
+		$cantidad = $this->input->post("cantidad");
+		
+		$inicio = ($numeropagina -1)*$cantidad;
+		$data = array(
+			"cli_servicios" => $this->Cli_servicios_model->buscar($buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Cli_servicios_model->buscar($buscar)),
+			"cantidad" =>$cantidad
+			
+		);
+		echo json_encode($data);
 	}
 	
 }
