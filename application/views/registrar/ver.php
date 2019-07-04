@@ -1,4 +1,23 @@
-<?php  $this->load->view("partial/encabezado"); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Gestion Comercial</title>
+
+	<link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="<?php echo base_url();?>assets/css/style.css">
+	<link rel="stylesheet" href="<?php echo base_url();?>assets/css/jquery-ui.min.css">
+
+	<script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
+	<script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
+	<script src="<?php echo base_url().'assets/js/jquery-ui.min.js'?>"></script>
+	<!-- <script src="<?php echo base_url();?>assets/js/main.js"></script> -->
+</head>
+<body>
+<?php  $this->load->view("partial/menu"); ?>
+
 <style>
   .custom-combobox {
     position: relative;
@@ -57,7 +76,14 @@
 							<div class="form-group">
 									<label>Cliente:</label>
 									<input type ="text" id="clienteid" name="clienteid" hidden>
-									<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
+									<div class="row">
+										<div class="col-md-8">
+											<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
+										</div>
+										<div class="col-md-4">
+											<input class="btn btn-primary" value="Buscar" onclick="Filtrar($('#clienteid').val())"  >	
+										</div>
+									</div>							
 							</div>
 						</div>
 						</div>
@@ -105,8 +131,8 @@
 	
 	$(function() {
 
-		main(); 
-		$("#fechahoy").val(hoyFecha());
+		//main(); 
+		//$("#fechahoy").val(hoyFecha());
 
 		//Buscar Cliente
 		$( "#combocliente" ).autocomplete({
@@ -124,12 +150,12 @@
 		});
 
 
-	function mostrarDatos(valorBuscar,pagina,cantidad){
-		console.log("Ingreso a mostrar datos",valorBuscar,pagina,cantidad);
+	function mostrarDatosCliente(clienteId,valorBuscar,pagina,cantidad){
+		console.log("Ingreso a mostrar datos",clienteId, valorBuscar,pagina,cantidad);
 	$.ajax({
-		url : "../registrar/mostrar",
+		url : "../registrar/mostrarXcliente",
 		type: "POST",
-		data: {buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
+		data: {clienteId:clienteId,buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
 		success:function(response){
 			console.log("response",response);
@@ -155,9 +181,97 @@
 	});
 }
 
-// En el onload
-$(function() {
-	main();  
-});
+function Filtrar($cliente_id){
+	mostrarDatosCliente($cliente_id,"",1,5);
+
+	
+	$("input[name=busqueda]").keyup(function(){
+		textobuscar = $(this).val();
+		valoroption = $("#cantidad").val();
+		mostrarDatosCliente($cliente_id,textobuscar,1,valoroption);
+	});
+
+	$("body").on("click",".paginacion li a",function(e){
+		e.preventDefault();
+		valorhref = $(this).attr("href");
+		valorBuscar = $("input[name=busqueda]").val();
+		valoroption = $("#cantidad").val();
+		mostrarDatosCliente($cliente_id,valorBuscar,valorhref,valoroption);
+	});
+
+	$("#cantidad").change(function(){
+		valoroption = $(this).val();
+		valorBuscar = $("input[name=busqueda]").val();
+		mostrarDatosCliente($cliente_id,valorBuscar,1,valoroption);
+	});
+}
+
+function cargarPaginado(response,valorBuscar,pagina,cantidad){
+	linkseleccionado = Number(pagina);
+	//total registros
+	totalregistros = response.totalregistros;
+	//cantidad de registros por pagina
+	cantidadregistros = response.cantidad;
+	
+	numerolinks = Math.ceil(totalregistros/cantidadregistros);
+	paginador = "<ul class='pagination'>";
+	if(linkseleccionado>1)
+	{
+		paginador+="<li><a href='1'>&laquo;</a></li>";
+		paginador+="<li><a href='"+(linkseleccionado-1)+"' '>&lsaquo;</a></li>";
+	
+	}
+	else
+	{
+		paginador+="<li class='disabled'><a href='#'>&laquo;</a></li>";
+		paginador+="<li class='disabled'><a href='#'>&lsaquo;</a></li>";
+	}
+	//muestro de los enlaces 
+	//cantidad de link hacia atras y adelante
+	 cant = 2;
+	 //inicio de donde se va a mostrar los links
+	pagInicio = (linkseleccionado > cant) ? (linkseleccionado - cant) : 1;
+	//condicion en la cual establecemos el fin de los links
+	if (numerolinks > cant)
+	{
+		//conocer los links que hay entre el seleccionado y el final
+		pagRestantes = numerolinks - linkseleccionado;
+		//defino el fin de los links
+		pagFin = (pagRestantes > cant) ? (linkseleccionado + cant) :numerolinks;
+	}
+	else 
+	{
+		pagFin = numerolinks;
+	}
+	
+	for (var i = pagInicio; i <= pagFin; i++) {
+		if (i == linkseleccionado)
+			paginador +="<li class='active'><a href='javascript:void(0)'>"+i+"</a></li>";
+		else
+			paginador +="<li><a href='"+i+"'>"+i+"</a></li>";
+	}
+	//condicion para mostrar el boton sigueinte y ultimo
+	if(linkseleccionado<numerolinks)
+	{
+		paginador+="<li><a href='"+(linkseleccionado+1)+"' >&rsaquo;</a></li>";
+		paginador+="<li><a href='"+numerolinks+"'>&raquo;</a></li>";
+	
+	}
+	else
+	{
+		paginador+="<li class='disabled'><a href='#'>&rsaquo;</a></li>";
+		paginador+="<li class='disabled'><a href='#'>&raquo;</a></li>";
+	}
+	
+	paginador +="</ul>";
+	$(".paginacion").html(paginador);
+	
+	}
+	
+
+	function NoSelect()
+{
+    Message("Por favor, seleccione un registro.")
+}
 
 </script>

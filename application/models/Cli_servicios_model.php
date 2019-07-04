@@ -23,5 +23,15 @@ class Cli_servicios_model extends CI_Model {
 		return $consulta->result();
 	}
 
+	public function buscarXcliente($clienteId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
+	{
+		$this->db->where("id_cliente",$clienteId);
+		$this->db->like("fecha",$buscar);
+		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
+		 	$this->db->limit($cantidadregistro,$inicio);
+		 }
+		$consulta = $this->db->get("cli_servicios");
+		return $consulta->result();
+	}
 
 }

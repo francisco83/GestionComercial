@@ -13,6 +13,8 @@ class Servicios_model extends CI_Model {
 		return $consulta->result();
 	}
 
+
+
 	public function nuevo($nombre, $descripcion, $precio){
 		$this->nombre = $nombre;
 		$this->descripcion = $descripcion;
