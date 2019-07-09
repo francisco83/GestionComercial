@@ -45,12 +45,12 @@
 
 <div class="container">
 <div class="row">
-			<div class="col-md-4 col-md-offset-2 pull-right">
+			<!-- <div class="col-md-4 col-md-offset-2 pull-right">
 				<div class="form-group has-feedback has-feedback-left">				  
 				    <input type="text" class="form-control" name="busqueda" placeholder="Buscar" />
 				    <i class="glyphicon glyphicon-search form-control-feedback"></i>
 				</div>				
-			</div>			
+			</div>			 -->
 		</div>
 
 			<div class="col-md-12">
@@ -93,8 +93,6 @@
 
 						<!-- <input class="btn btn-primary" type="submit" value="Guardar">		 -->
 					</form>
-
-
 						<p>
 							<strong>Mostrar por : </strong>
 							<select name="cantidad" id="cantidad">
@@ -116,6 +114,31 @@
 						</table>
 						<div class="text-center paginacion">							
 						</div>
+
+  						<h3>Detalle ventas</h3>
+						  <p>
+							<strong>Mostrar por : </strong>
+							<select name="cantidadDetalle" id="cantidadDetalle">
+								<option value="5">5</option>
+								<option value="10">10</option>
+							</select>
+						</p>
+						<table id="tbldetalle" class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Servicio</th>
+									<th>Precio</th>
+									<th>Cantidad</th>
+									<th>Descripcion</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div class="text-center paginacionDetalle">							
+						</div>
+
 
 					</div><!-- fin pbody -->
 
@@ -166,13 +189,47 @@
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.fecha+"</td>"+
-				"<td></td>"+
+				"<td>"+"<a class='btn btn-sm btn-primary' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+"</td>"+
 				"</tr>";
 			});
+
 			$("#tblusuarios tbody").html(filas);
 			cargarPaginado(response, valorBuscar,pagina,cantidad);
 
 			$("#tblusuarios tbody tr").click(function(){
+				$(this).addClass('selected').siblings().removeClass('selected');    
+				var value=$(this).find('td:first').html(); 				
+			});
+
+		}
+	});
+}
+
+function verDetalle(servicioId,valorBuscar,pagina,cantidad){
+		console.log("Servicio a ver",servicioId);
+	$.ajax({
+		url : "../registrar/mostrarDetalleXcliente",
+		type: "POST",
+		data: {servicioId:servicioId,buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
+		dataType:"json",
+		success:function(response){
+			console.log("response",response);
+			
+			filas = "";
+			$.each(response.cli_servicios_detalle,function(key,item){
+				filas+="<tr>"+
+				"<td>"+item.id+"</td>"+
+				"<td>"+item.servicio+"</td>"+
+				"<td>"+item.precio+"</td>"+
+				"<td>"+item.cantidad+"</td>"+
+				"<td>"+item.descripcion+"</td>"+			
+				"</tr>";
+			});
+
+			$("#tbldetalle tbody").html(filas);
+			cargarPaginadoDetalle(response, valorBuscar,pagina,cantidad);
+
+			$("#tbldetalle tbody tr").click(function(){
 				$(this).addClass('selected').siblings().removeClass('selected');    
 				var value=$(this).find('td:first').html(); 				
 			});
@@ -206,6 +263,33 @@ function Filtrar($cliente_id){
 	});
 }
 
+
+function FiltrarDetalle($servicioId){
+	verDetalle($servicioId,"",1,5);
+
+	
+	$("input[name=busqueda]").keyup(function(){
+		textobuscar = $(this).val();
+		valoroption = $("#cantidadDetalle").val();
+		verDetalle($servicioId,textobuscar,1,valoroption);
+	});
+
+	$("body").on("click",".paginacionDetalle li a",function(e){
+		e.preventDefault();
+		valorhref = $(this).attr("href");
+		valorBuscar = $("input[name=busqueda]").val();
+		valoroption = $("#cantidadDetalle").val();
+		console.log($servicioId,valorBuscar,valorhref,valoroption);
+		verDetalle($servicioId,valorBuscar,valorhref,valoroption);
+	});
+
+	$("#cantidadDetalle").change(function(){
+		valoroption = $(this).val();
+		valorBuscar = $("input[name=busqueda]").val();
+		verDetalle($servicioId,valorBuscar,1,valoroption);
+	});
+}
+	
 function cargarPaginado(response,valorBuscar,pagina,cantidad){
 	linkseleccionado = Number(pagina);
 	//total registros
@@ -269,9 +353,78 @@ function cargarPaginado(response,valorBuscar,pagina,cantidad){
 	}
 	
 
+
+	function cargarPaginadoDetalle(response,valorBuscar,pagina,cantidad){
+	linkseleccionado = Number(pagina);
+	//total registros
+	totalregistros = response.totalregistros;
+	//cantidad de registros por pagina
+	cantidadregistros = response.cantidad;
+	
+	numerolinks = Math.ceil(totalregistros/cantidadregistros);
+	
+	paginador = "<ul class='pagination'>";
+	if(linkseleccionado>1)
+	{
+		paginador+="<li><a href='1'>&laquo;</a></li>";
+		paginador+="<li><a href='"+(linkseleccionado-1)+"' '>&lsaquo;</a></li>";
+	
+	}
+	else
+	{
+		paginador+="<li class='disabled'><a href='#'>&laquo;</a></li>";
+		paginador+="<li class='disabled'><a href='#'>&lsaquo;</a></li>";
+	}
+	//muestro de los enlaces 
+	//cantidad de link hacia atras y adelante
+	 cant = 2;
+	 //inicio de donde se va a mostrar los links
+	pagInicio = (linkseleccionado > cant) ? (linkseleccionado - cant) : 1;
+	//condicion en la cual establecemos el fin de los links
+	if (numerolinks > cant)
+	{
+		//conocer los links que hay entre el seleccionado y el final
+		pagRestantes = numerolinks - linkseleccionado;
+		//defino el fin de los links
+		pagFin = (pagRestantes > cant) ? (linkseleccionado + cant) :numerolinks;
+	}
+	else 
+	{
+		pagFin = numerolinks;
+	}
+	
+	for (var i = pagInicio; i <= pagFin; i++) {
+		if (i == linkseleccionado)
+			paginador +="<li class='active'><a href='javascript:void(0)'>"+i+"</a></li>";
+		else
+			paginador +="<li><a href='"+i+"'>"+i+"</a></li>";
+	}
+	//condicion para mostrar el boton sigueinte y ultimo
+	if(linkseleccionado<numerolinks)
+	{
+		paginador+="<li><a href='"+(linkseleccionado+1)+"' >&rsaquo;</a></li>";
+		paginador+="<li><a href='"+numerolinks+"'>&raquo;</a></li>";
+	
+	}
+	else
+	{
+		paginador+="<li class='disabled'><a href='#'>&rsaquo;</a></li>";
+		paginador+="<li class='disabled'><a href='#'>&raquo;</a></li>";
+	}
+	
+	paginador +="</ul>";
+	$(".paginacionDetalle").html(paginador);
+	
+	}
+
 	function NoSelect()
 {
     Message("Por favor, seleccione un registro.")
 }
+
+
+
+
+
 
 </script>

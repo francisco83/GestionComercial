@@ -121,11 +121,30 @@ class Registrar extends CI_Controller {
 		$inicio = ($numeropagina -1)*$cantidad;
 		$data = array(
 			"cli_servicios" => $this->Cli_servicios_model->buscarXcliente($clienteId,$buscar,$inicio,$cantidad),
-			"totalregistros" => count($this->Cli_servicios_model->buscar($clienteId, $buscar)),
+			"totalregistros" => count($this->Cli_servicios_model->buscar($clienteId,$buscar)),
 			"cantidad" =>$cantidad
 			
 		);
 		echo json_encode($data);
 	}
+
+	public function mostrarDetalleXcliente()
+	{	
+		//valor a Buscar
+		$servicioId = $this->input->post("servicioId");
+		$buscar = $this->input->post("buscar");
+		$numeropagina = $this->input->post("nropagina");
+		$cantidad = $this->input->post("cantidad");
+		
+		$inicio = ($numeropagina -1)*$cantidad;
+		$data = array(
+			"cli_servicios_detalle" => $this->Cli_servicios_detalle_model->buscarDetalleXcliente($servicioId,$buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Cli_servicios_detalle_model->buscarDetalleXcliente($servicioId,$buscar)),
+			"cantidad" =>$cantidad
+			
+		);
+		echo json_encode($data);
+	}
+	
 	
 }

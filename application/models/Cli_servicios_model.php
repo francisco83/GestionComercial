@@ -13,9 +13,10 @@ class Cli_servicios_model extends CI_Model {
 		
 	}
 
-	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
+	public function buscar($clienteId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
-		$this->db->like("fecha",$buscar);
+		//$this->db->like("fecha",$buscar);
+		$this->db->where("id_cliente",$clienteId);
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
@@ -26,7 +27,8 @@ class Cli_servicios_model extends CI_Model {
 	public function buscarXcliente($clienteId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
 		$this->db->where("id_cliente",$clienteId);
-		$this->db->like("fecha",$buscar);
+		//$this->db->where("dni",$clienteId);
+		//$this->db->like("fecha",$buscar);
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 		 	$this->db->limit($cantidadregistro,$inicio);
 		 }
