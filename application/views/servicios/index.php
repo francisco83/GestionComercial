@@ -1,4 +1,5 @@
 <?php  $this->load->view("partial/encabezado"); ?>
+
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -22,12 +23,12 @@
 								</div>				
 							</div>			
 						</div>
-						<table id="tblservicios" class="table table-bordered table-hover">
+						<table id="tbl" class="table table-bordered table-hover">
 							<thead>
 								<tr>
 									<th>#</th>
 									<th>Nombre</th>
-									<th>Descripcion</th>
+									<th>Descripción</th>
 									<th>Precio</th>
 								</tr>
 							</thead>
@@ -40,9 +41,9 @@
 				</div>
 			</div>
 		</div>
-		<button class="btn btn-success" onclick="add_person()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
-		<button class="btn btn-warning" onclick="Editar_person()"><i class="glyphicon glyphicon-edit"></i> Editar</button>
-		<button class="btn btn-danger" onclick="Delete_person()"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>
+		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
+		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
+		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>
 	</div>
 	
 <script>
@@ -58,8 +59,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		type: "POST",
 		data: {buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
-		success:function(response){
-			
+		success:function(response){			
 			filas = "";
 			$.each(response.servicios,function(key,item){
 				filas+="<tr>"+
@@ -69,10 +69,10 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 				"<td>"+item.precio+"</td>"+
 				"</tr>";
 			});
-			$("#tblservicios tbody").html(filas);
+			$("#tbl tbody").html(filas);
 			cargarPaginado(response, valorBuscar,pagina,cantidad);
 
-			$("#tblservicios tbody tr").click(function(){
+			$("#tbl tbody tr").click(function(){
 				$(this).addClass('selected').siblings().removeClass('selected');    
 				var value=$(this).find('td:first').html(); 				
 			});
@@ -86,44 +86,38 @@ $(function() {
 	main();  
 });
 
-function add_person()
+function add()
 {
     save_method = 'add';
-    $('#form')[0].reset(); // reset form on modals
-    $('.form-group').removeClass('has-error'); // clear error class
-    $('.help-block').empty(); // clear error string
-    $('#modal_form').modal('show'); // show bootstrap modal
-    $('.modal-title').text('Agregar servicio'); // Set Title to Bootstrap modal title
-	
+    $('#form')[0].reset(); 
+    $('.form-group').removeClass('has-error'); 
+	$('.panel-body').removeClass('has-error'); 
+    $('.help-block').empty();
+    $('#modal_form').modal('show'); 
+    $('.modal-title').text('Agregar servicio');
 	$('.modal-backdrop').remove();
 }
 
 
-function Editar_person(){
-	var id = $("#tblservicios tr.selected td:first").html();
+function action(option){
+	var id = $("#tbl tr.selected td:first").html();
 	if (id !=  undefined){
-		edit_person(id);
-	}		
+		if (option=="edit")
+			edit(id);				
+		if (option =="delete")
+			delete_(id);						
+	}	
 }
 
-function Delete_person(){
-	var id = $("#tblservicios tr.selected td:first").html();
-	if (id !=  undefined){
-		delete_person(id);
-	}		
-}
 
-function edit_person(id)
+function edit(id)
 {
-
-	console.log("editar a ",id);
     save_method = 'update';
-    $('#form')[0].reset(); // reset form on modals
-    $('.form-group').removeClass('has-error'); // clear error class
-    $('.help-block').empty(); // clear error string
+    $('#form')[0].reset(); 
+    $('.form-group').removeClass('has-error'); 
+	$('.panel-body').removeClass('has-error'); 
+    $('.help-block').empty();
 
-
-    //Ajax Load data from ajax
     $.ajax({
         url : "<?php echo site_url('/servicios/ajax_edit')?>/" + id,
         type: "GET",
@@ -134,8 +128,8 @@ function edit_person(id)
             $('[name="nombre"]').val(data.nombre);
             $('[name="descripcion"]').val(data.descripcion);
             $('[name="precio"]').val(data.precio);
-            $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
-            $('.modal-title').text('Editar Servicio'); // Set title to Bootstrap modal title
+            $('#modal_form').modal('show');
+            $('.modal-title').text('Editar Servicio');
 			$('.modal-backdrop').remove();
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -147,10 +141,9 @@ function edit_person(id)
 
 function save()
 {
-    $('#btnSave').text('Guardando...'); //change button text
-    $('#btnSave').attr('disabled',true); //set button disable 
+    $('#btnSave').text('Guardando...'); 
+    $('#btnSave').attr('disabled',true); 
     var url;
-
 
     if(save_method == 'add') {
         url = "<?php echo site_url('servicios/ajax_add')?>";
@@ -158,10 +151,7 @@ function save()
         url = "<?php echo site_url('servicios/ajax_update')?>";
     }
 
-    // ajax adding data to database
-
 	var formData = new FormData($('#form')[0]);
-	console.log(formData);
     $.ajax({
         url : url,
         type: "POST",
@@ -172,7 +162,7 @@ function save()
         success: function(data)
         {
 
-            if(data.status) //if success close modal and reload ajax table
+            if(data.status)
             {
                 $('#modal_form').modal('hide');
                 reload_table();
@@ -185,20 +175,20 @@ function save()
                     $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
                 }
             }
-            $('#btnSave').text('Guardar'); //change button text
-            $('#btnSave').attr('disabled',false); //set button enable 
+            $('#btnSave').text('Guardar');
+            $('#btnSave').attr('disabled',false); 
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert('Error adding / update data');
-            $('#btnSave').text('Guardar'); //change button text
-            $('#btnSave').attr('disabled',false); //set button enable 
+            $('#btnSave').text('Guardar'); 
+            $('#btnSave').attr('disabled',false); 
 
         }
     });
 }
 
-function delete_person(id)
+function delete_(id)
 {
     if(confirm('¿Esta seguro que desea eliminar el registro?'))
     {
@@ -235,18 +225,18 @@ function delete_person(id)
 					<div class="panel-body">
 						<div class="form-group">
 							<label for="nombre">Nombre:</label>
-							<input class="form-control" name="nombre" required type="text" id="nombre" placeholder="Escribe el nombre">
+							<input class="form-control" name="nombre" required type="text" id="nombre" placeholder="Ingrese el nombre">
 							<span class="help-block"></span>
 						</div> 		
 
 						<div class="form-group">
-							<label for="descripcion">descripcion:</label>
-							<input class="form-control" id="descripcion" name="descripcion" placeholder="Ingrese el/los descripcion" class="form-control">
+							<label for="descripcion">Descripción:</label>
+							<input class="form-control" id="descripcion" name="descripcion" placeholder="Ingrese la descripción" class="form-control">
 							<span class="help-block"></span>
 						</div>
 
 						<div class="form-group">
-							<label for="precio">precio:</label>
+							<label for="precio">Precio:</label>
 							<input class="form-control" id="precio" name="precio" placeholder="Ingrese el precio" class="form-control">
 							<span class="help-block"></span>
 						</div>

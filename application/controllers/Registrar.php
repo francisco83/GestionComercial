@@ -37,8 +37,8 @@ class Registrar extends CI_Controller {
         }
 	}
 
-	public function listar(){
-		$resultado = $this->Servicios_model->listar();
+	public function get_all(){
+		$resultado = $this->Servicios_model->get_all();
 		echo json_encode($resultado);
 	}
 

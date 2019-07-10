@@ -104,7 +104,7 @@
 		
 		//Combo de Servicios			 
 		$.ajax({
-			url : "<?php echo site_url('Registrar/listar');?>",
+			url : "<?php echo site_url('Registrar/get_all');?>",
 			type: "POST",
 			dataType:"json",
 			success:function(response){
