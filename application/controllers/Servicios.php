@@ -32,60 +32,6 @@ class Servicios extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	// public function guardar(){
-    //     $resultado = $this->Servicios_model->nuevo(
-    //             $this->input->post("nombre"),
-    //             $this->input->post("descripcion"),
-    //             $this->input->post("precio")
-    //         );
-    //     if($resultado){
-    //         $mensaje = "Servicio guardado correctamente";
-    //         $clase = "success";
-    //     }else{
-    //         $mensaje = "Error al guardar el Servicio";
-    //         $clase = "danger";
-    //     }
-    //     $this->session->set_flashdata(array(
-    //         "mensaje" => $mensaje,
-    //         "clase" => $clase,
-    //     ));
-    //     redirect("Servicios/agregar");
-	// }
-	
-	// public function guardarCambios(){
-    //     $resultado = $this->Servicios_model->guardarCambios(
-	// 		$this->input->post("id"),
-	// 		$this->input->post("nombre"),
-	// 		$this->input->post("descripcion"),
-	// 		$this->input->post("precio")
-    //     );
-    //     if($resultado){
-    //         $mensaje = "Servicio actualizado correctamente";
-    //         $clase = "success";
-    //     }else{
-    //         $mensaje = "Error al actualizar el servicio";
-    //         $clase = "danger";
-    //     }
-    //     $this->session->set_flashdata(array(
-    //         "mensaje" => $mensaje,
-    //         "clase" => $clase
-    //     ));
-    //     redirect("Servicios");
-	// }
-	
-	// public function editar($id){
-    //     $servicios = $this->Servicios_model->uno($id);
-    //     if(null === $servicios){
-    //         $this->session->set_flashdata(array(
-    //             "mensaje" => "El servicio que quieres editar no existe",
-    //             "clase" => "danger",
-    //         ));
-    //         redirect("Servicios/");
-    //     }
-    //     $this->load->view("partial/encabezado");
-    //     $this->load->view("Servicios/editar", array("servicios" => $servicios));
-    // }
-
 	public function buscar_servicios()
 	{
 		$json = [];
@@ -128,6 +74,20 @@ class Servicios extends CI_Controller {
 			);
 
 		$insert = $this->Servicios_model->save($data);
+
+		// if($insert){
+        //     $mensaje = "Servicio actualizado correctamente";
+        //     $clase = "success";
+        // }else{
+	    //      $mensaje = "Error al actualizar el servicio";
+        //      $clase = "danger";
+		//  }
+		 
+        // $this->session->set_flashdata(array(
+        //     "mensaje" => $mensaje,
+        //     "clase" => $clase
+	    // ));
+	
 		echo json_encode(array("status" => TRUE));
 	}
 
@@ -184,6 +144,36 @@ class Servicios extends CI_Controller {
 			exit();
 		}
 	}
+
+	public function createXLS() {
+        // create file name
+       // load excel library
+       $this->load->library('excel');
+       $empInfo = $this->Servicios_model->get_all_export();
+       $objPHPExcel = new PHPExcel();
+       $objPHPExcel->setActiveSheetIndex(0);
+       // set Header
+       $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Nombre');
+       $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Descripcion');
+       $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Precio');  
+       // set Row
+       $rowCount = 2;
+       foreach ($empInfo as $element) {
+           $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $element['nombre']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['descripcion']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['precio']);
+           $rowCount++;
+        }
+        
+       $archivo = "Servicios.xls";
+       header('Content-Type: application/vnd.ms-excel');
+       header('Content-Disposition: attachment;filename="'.$archivo.'"');
+       header('Cache-Control: max-age=0');
+       $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+       //Hacemos una salida al navegador con el archivo Excel.
+       $objWriter->save('php://output');  
+   }
+
 
 
 

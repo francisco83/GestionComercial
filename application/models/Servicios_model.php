@@ -21,6 +21,14 @@ class Servicios_model extends CI_Model {
 		return $consulta->result();
 	}
 
+	public function get_all_export() {
+		$this->db->select(array('e.id', 'e.nombre', 'e.descripcion', 'e.precio'));
+		$this->db->from('servicios as e');
+		$query = $this->db->get();
+		return $query->result_array();
+	 }
+ 
+
 	function search_autocomplete($title){
         $this->db->like('nombre', $title);
         $this->db->order_by('nombre', 'ASC');

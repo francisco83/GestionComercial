@@ -6,6 +6,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h4>Lista de servicios</h4>
+						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/servicios/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -43,7 +44,7 @@
 		</div>
 		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
 		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
-		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>
+		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>	
 	</div>
 	
 <script>
@@ -164,8 +165,8 @@ function save()
 
             if(data.status)
             {
-                $('#modal_form').modal('hide');
-                reload_table();
+                //$('#modal_form').modal('hide');
+                //reload_table();
             }
             else
             {
@@ -220,6 +221,13 @@ function delete_(id)
                 <h3 class="modal-title">Servicio</h3>
             </div>
             <div class="modal-body form">
+
+			<!-- <?php if(!empty($this->session->flashdata())): ?>
+				<div class="alert alert-<?php echo $this->session->flashdata('clase')?>">
+					<?php echo $this->session->flashdata('mensaje') ?>
+				</div>
+			<?php endif; ?> -->
+
                 <form action="#" id="form" class="form-horizontal">
 					<input type="hidden" value="" name="id"/> 
 					<div class="panel-body">
