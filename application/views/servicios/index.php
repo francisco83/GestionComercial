@@ -31,6 +31,7 @@
 									<th>Nombre</th>
 									<th>Descripción</th>
 									<th>Precio</th>
+									<th>Habilitado</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -49,12 +50,16 @@
 	
 <script>
 
+var valor, pag;
 
 function reload_table(){
-	mostrarDatos('',1,5);
+	mostrarDatos(valor,pag,$("#cantidad").val());	
 };
 
 function mostrarDatos(valorBuscar,pagina,cantidad){
+	valor = valorBuscar;
+	pag = pagina;
+	cant = cantidad;
 	$.ajax({
 		url : "servicios/mostrar",
 		type: "POST",
@@ -63,11 +68,16 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		success:function(response){			
 			filas = "";
 			$.each(response.servicios,function(key,item){
+				if(item.estado)
+					estado ='SI';		
+				else
+					estado ='NO';
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.nombre+"</td>"+
 				"<td>"+item.descripcion+"</td>"+
 				"<td>"+item.precio+"</td>"+
+				"<td>"+estado+"</td>"+
 				"</tr>";
 			});
 			$("#tbl tbody").html(filas);
@@ -144,12 +154,14 @@ function save()
 {
     $('#btnSave').text('Guardando...'); 
     $('#btnSave').attr('disabled',true); 
-    var url;
+    var url,men;
 
     if(save_method == 'add') {
-        url = "<?php echo site_url('servicios/ajax_add')?>";
+		url = "<?php echo site_url('servicios/ajax_add')?>";
+		men="Se creo el registro correctamente";
     } else {
-        url = "<?php echo site_url('servicios/ajax_update')?>";
+		url = "<?php echo site_url('servicios/ajax_update')?>";
+		men="Se actualizo el registro correctamente";
     }
 
 	var formData = new FormData($('#form')[0]);
@@ -165,8 +177,15 @@ function save()
 
             if(data.status)
             {
-                //$('#modal_form').modal('hide');
-                //reload_table();
+                $('#modal_form').modal('hide');
+				reload_table();
+				$.notify({
+                   title: '<strong>Correcto!</strong>',
+                   message: men
+               },{
+                   type: 'success'
+               });
+
             }
             else
             {
@@ -181,7 +200,12 @@ function save()
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
-            alert('Error adding / update data');
+			$.notify({
+                   title: '<strong>Error!</strong>',
+                   message: 'Se produjo un error al guardar.'
+               },{
+                   type: 'danger'
+               });
             $('#btnSave').text('Guardar'); 
             $('#btnSave').attr('disabled',false); 
 
@@ -200,15 +224,60 @@ function delete_(id)
             success: function(data)
             {
                 $('#modal_form').modal('hide');
-                reload_table();
+				reload_table();
+				$.notify({
+                   title: '<strong>Correcto!</strong>',
+                   message: 'El registro se elimino correctamente.'
+               },{
+                   type: 'success'
+               });
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-                alert('Error eliminando el registro');
+				$.notify({
+                   title: '<strong>Error!</strong>',
+                   message: 'Se produjo un error al eliminar el registro.'
+               },{
+                   type: 'danger'
+               });
             }
         });
 
     }
+}
+
+
+function enabled(id)
+{
+    //if(confirm('¿Esta seguro que desea eliminar el registro?'))
+    //{
+        $.ajax({
+            url : "<?php echo site_url('servicios/ajax_enabled')?>/"+id,
+            type: "POST",
+            dataType: "JSON",
+            success: function(data)
+            {
+                $('#modal_form').modal('hide');
+				reload_table();
+				$.notify({
+                   title: '<strong>Correcto!</strong>',
+                   message: 'El registro se elimino correctamente.'
+               },{
+                   type: 'success'
+               });
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+				$.notify({
+                   title: '<strong>Error!</strong>',
+                   message: 'Se produjo un error al eliminar el registro.'
+               },{
+                   type: 'danger'
+               });
+            }
+        });
+
+    //}
 }
 </script>
 
@@ -221,13 +290,6 @@ function delete_(id)
                 <h3 class="modal-title">Servicio</h3>
             </div>
             <div class="modal-body form">
-
-			<!-- <?php if(!empty($this->session->flashdata())): ?>
-				<div class="alert alert-<?php echo $this->session->flashdata('clase')?>">
-					<?php echo $this->session->flashdata('mensaje') ?>
-				</div>
-			<?php endif; ?> -->
-
                 <form action="#" id="form" class="form-horizontal">
 					<input type="hidden" value="" name="id"/> 
 					<div class="panel-body">

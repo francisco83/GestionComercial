@@ -14,6 +14,7 @@
 	<script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
 	<script src="<?php echo base_url().'assets/js/jquery-ui.min.js'?>"></script>
 	<script src="<?php echo base_url();?>assets/js/main.js"></script>
+	<script src="<?php echo base_url();?>assets/js/bootstrap-notify.min.js"></script>
 </head>
 <body>
 <?php  $this->load->view("partial/menu"); ?>

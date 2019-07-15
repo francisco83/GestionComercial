@@ -58,5 +58,9 @@ class Servicios_model extends CI_Model {
 	 $this->db->delete($this->tabla, array("id" => $id));
 	}
 
+	public function enabled($where, $data)
+	{
+		$this->db->update($this->tabla, $data, $where);
+	}
 
 }

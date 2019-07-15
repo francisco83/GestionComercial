@@ -74,20 +74,6 @@ class Servicios extends CI_Controller {
 			);
 
 		$insert = $this->Servicios_model->save($data);
-
-		// if($insert){
-        //     $mensaje = "Servicio actualizado correctamente";
-        //     $clase = "success";
-        // }else{
-	    //      $mensaje = "Error al actualizar el servicio";
-        //      $clase = "danger";
-		//  }
-		 
-        // $this->session->set_flashdata(array(
-        //     "mensaje" => $mensaje,
-        //     "clase" => $clase
-	    // ));
-	
 		echo json_encode(array("status" => TRUE));
 	}
 
@@ -111,9 +97,19 @@ class Servicios extends CI_Controller {
 
 
 	public function ajax_delete($id)
-	{
-		$Servicios_model = $this->Servicios_model->get_by_id($id);		
+	{	
 		$this->Servicios_model->delete_by_id($id);
+		echo json_encode(array("status" => TRUE));
+	}
+
+	public function ajax_enabled($id)
+	{
+		//$Servicios_model = $this->Servicios_model->get_by_id($id);		
+		$data = array(
+			'estado' => $this->input->post('estado')
+		);
+
+		$this->Servicios_model->enabled(array('id' => $this->input->post('id')), $data);
 		echo json_encode(array("status" => TRUE));
 	}
 
@@ -146,8 +142,7 @@ class Servicios extends CI_Controller {
 	}
 
 	public function createXLS() {
-        // create file name
-       // load excel library
+
        $this->load->library('excel');
        $empInfo = $this->Servicios_model->get_all_export();
        $objPHPExcel = new PHPExcel();
