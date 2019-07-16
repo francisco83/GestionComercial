@@ -46,6 +46,7 @@
 		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
 		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
 		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>	
+		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
 <script>
@@ -68,16 +69,16 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		success:function(response){			
 			filas = "";
 			$.each(response.servicios,function(key,item){
-				if(item.estado)
-					estado ='SI';		
+				if(item.habilitado=="1")
+					habilitado ='SI';		
 				else
-					estado ='NO';
+					habilitado ='NO';
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.nombre+"</td>"+
 				"<td>"+item.descripcion+"</td>"+
 				"<td>"+item.precio+"</td>"+
-				"<td>"+estado+"</td>"+
+				"<td>"+habilitado+"</td>"+
 				"</tr>";
 			});
 			$("#tbl tbody").html(filas);
@@ -85,7 +86,13 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 
 			$("#tbl tbody tr").click(function(){
 				$(this).addClass('selected').siblings().removeClass('selected');    
-				var value=$(this).find('td:first').html(); 				
+				var value=$(this).find('td:first').html(); 		
+				var hab = $("#tbl tr.selected td:last").html();
+				if (hab=="SI")
+					$("#btn_enabled").text("Deshabilitar");		
+				else
+					$("#btn_enabled").text("Habilitar");		
+
 			});
 
 		}
@@ -112,11 +119,14 @@ function add()
 
 function action(option){
 	var id = $("#tbl tr.selected td:first").html();
+
 	if (id !=  undefined){
 		if (option=="edit")
 			edit(id);				
+		if (option =="enabled")
+			enabled(id);
 		if (option =="delete")
-			delete_(id);						
+			delete_(id);	
 	}	
 }
 
@@ -249,19 +259,16 @@ function delete_(id)
 
 function enabled(id)
 {
-    //if(confirm('¿Esta seguro que desea eliminar el registro?'))
-    //{
         $.ajax({
             url : "<?php echo site_url('servicios/ajax_enabled')?>/"+id,
             type: "POST",
             dataType: "JSON",
             success: function(data)
             {
-                $('#modal_form').modal('hide');
 				reload_table();
 				$.notify({
                    title: '<strong>Correcto!</strong>',
-                   message: 'El registro se elimino correctamente.'
+                   message: 'El registro se actualizo correctamente.'
                },{
                    type: 'success'
                });
@@ -270,14 +277,12 @@ function enabled(id)
             {
 				$.notify({
                    title: '<strong>Error!</strong>',
-                   message: 'Se produjo un error al eliminar el registro.'
+                   message: 'Se produjo un error al actualizar el registro.'
                },{
                    type: 'danger'
                });
             }
         });
-
-    //}
 }
 </script>
 

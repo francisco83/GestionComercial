@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Servicios_model extends CI_Model {
 
-	var $tabla = 'servicios';
+	var $table = 'servicios';
 
 	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
@@ -11,13 +11,13 @@ class Servicios_model extends CI_Model {
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
-		$consulta = $this->db->get($this->tabla);
+		$consulta = $this->db->get($this->table);
 		return $consulta->result();
 	}
 
 	public function get_all()
 	{
-		$consulta = $this->db->get($this->tabla);
+		$consulta = $this->db->get($this->table);
 		return $consulta->result();
 	}
 
@@ -33,34 +33,48 @@ class Servicios_model extends CI_Model {
         $this->db->like('nombre', $title);
         $this->db->order_by('nombre', 'ASC');
         $this->db->limit(10);
-        return $this->db->get($this->tabla)->result();
+        return $this->db->get($this->table)->result();
 	}
 	
 	public function save($data)
 	{
-		$this->db->insert($this->tabla, $data);
+		$this->db->insert($this->table, $data);
 		return $this->db->insert_id();
 	}
 
 	public function get_by_id($id)
 	{
-		return $this->db->get_where($this->tabla, array("id" => $id))->row();
+		return $this->db->get_where($this->table, array("id" => $id))->row();
 	}
 
 	public function update($where, $data)
 	{
-		$this->db->update($this->tabla, $data, $where);
+		$this->db->update($this->table, $data, $where);
 		return $this->db->affected_rows();
 	}
 
 	public function delete_by_id($id)
 	{
-	 $this->db->delete($this->tabla, array("id" => $id));
+	 $this->db->delete($this->table, array("id" => $id));
 	}
 
-	public function enabled($where, $data)
+
+	public function enabled_by_id($id)
 	{
-		$this->db->update($this->tabla, $data, $where);
+		$reg = $this->db->get_where($this->table, array("id" => $id))->row();
+
+		if($reg->habilitado == "1"){
+			$this->habilitado = 0;
+		}
+		else{
+			$this->habilitado = 1;
+		}
+		$data = array(
+			'habilitado' => $this->habilitado
+		);
+
+		$this->db->update($this->table, $data, array("id" => $id));
+
 	}
 
 }

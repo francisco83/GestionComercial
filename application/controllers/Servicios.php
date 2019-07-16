@@ -103,13 +103,8 @@ class Servicios extends CI_Controller {
 	}
 
 	public function ajax_enabled($id)
-	{
-		//$Servicios_model = $this->Servicios_model->get_by_id($id);		
-		$data = array(
-			'estado' => $this->input->post('estado')
-		);
-
-		$this->Servicios_model->enabled(array('id' => $this->input->post('id')), $data);
+	{		
+		$this->Servicios_model->enabled_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
 
