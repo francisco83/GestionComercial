@@ -5,8 +5,8 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h4>Lista de servicios</h4>
-						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/servicios/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
+						<h4>Lista de Usuarios</h4>
+						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/users/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -29,9 +29,10 @@
 								<tr>
 									<th>#</th>
 									<th>Nombre</th>
-									<th>Descripción</th>
-									<th>Precio</th>
-									<th>Habilitado</th>
+                                    <th>Apellido</th>
+                                    <th>Email</th>
+                                    <th>Grupos</th>
+                                    <th>habilitado</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -45,14 +46,14 @@
 		</div>
 		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
 		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
-		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>	
-		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
+        <button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>			
+        <button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
 <script>
 
 var valor, pag;
-var controller ='servicios';
+var controller ='users';
 
 function reload_table(){
 	mostrarDatos(valor,pag,$("#cantidad").val());	
@@ -67,19 +68,22 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		type: "POST",
 		data: {buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
-		success:function(response){			
-			filas = "";
-			$.each(response.servicios,function(key,item){
-				if(item.habilitado=="1")
-					habilitado ='SI';		
-				else
-					habilitado ='NO';
+		success:function(response){		
+            console.log(response);	
+            filas = "";
+			$.each(response.users,function(key,item){
+                console.log(item.active);
+                if(item.active=="1")
+                    active ='SI';		
+			    else
+                    active ='NO';
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
-				"<td>"+item.nombre+"</td>"+
-				"<td>"+item.descripcion+"</td>"+
-				"<td>"+item.precio+"</td>"+
-				"<td>"+habilitado+"</td>"+
+				"<td>"+item.first_name+"</td>"+
+                "<td>"+item.last_name+"</td>"+
+                "<td>"+item.email+"</td>"+
+                "<td></td>"+
+                "<td>"+active+"</td>"+
 				"</tr>";
 			});
 			$("#tbl tbody").html(filas);
@@ -113,7 +117,7 @@ function add()
 	$('.panel-body').removeClass('has-error'); 
     $('.help-block').empty();
     $('#modal_form').modal('show'); 
-    $('.modal-title').text('Agregar servicio');
+    $('.modal-title').text('Agregar Usuario');
 	$('.modal-backdrop').remove();
 }
 
@@ -147,11 +151,11 @@ function edit(id)
         success: function(data)
         {
             $('[name="id"]').val(data.id);
-            $('[name="nombre"]').val(data.nombre);
-            $('[name="descripcion"]').val(data.descripcion);
-            $('[name="precio"]').val(data.precio);
+            $('[name="first_name"]').val(data.first_name);
+            $('[name="last_name"]').val(data.last_name);
+            $('[name="email"]').val(data.email);            
             $('#modal_form').modal('show');
-            $('.modal-title').text('Editar Servicio');
+            $('.modal-title').text('Editar Usuarios');
 			$('.modal-backdrop').remove();
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -257,7 +261,6 @@ function delete_(id)
     }
 }
 
-
 function enabled(id)
 {
         $.ajax({
@@ -285,6 +288,7 @@ function enabled(id)
             }
         });
 }
+
 </script>
 
 <!-- Bootstrap modal -->
@@ -293,7 +297,7 @@ function enabled(id)
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Servicio</h3>
+                <h3 class="modal-title">Usuario</h3>
             </div>
             <div class="modal-body form">
                 <form action="#" id="form" class="form-horizontal">
@@ -301,21 +305,34 @@ function enabled(id)
 					<div class="panel-body">
 						<div class="form-group">
 							<label for="nombre">Nombre:</label>
-							<input class="form-control" name="nombre" required type="text" id="nombre" placeholder="Ingrese el nombre">
+							<input class="form-control" name="first_name" required type="text" id="first_name" placeholder="Ingrese el nombre">
+							<span class="help-block"></span>
+                        </div> 	
+                        <div class="form-group">
+							<label for="nombre">Apellido:</label>
+							<input class="form-control" name="last_name" required type="text" id="last_name" placeholder="Ingrese el apellido">
 							<span class="help-block"></span>
 						</div> 		
-
 						<div class="form-group">
-							<label for="descripcion">Descripción:</label>
-							<input class="form-control" id="descripcion" name="descripcion" placeholder="Ingrese la descripción" class="form-control">
+							<label for="descripcion">Email:</label>
+							<input class="form-control" id="email" name="email" type="email" placeholder="Ingrese el email" class="form-control">
 							<span class="help-block"></span>
 						</div>
-
 						<div class="form-group">
-							<label for="precio">Precio:</label>
-							<input class="form-control" id="precio" name="precio" placeholder="Ingrese el precio" class="form-control">
+							<label for="nombre">Teléfono:</label>
+							<input class="form-control" name="phone" required type="number" id="phone" placeholder="Ingrese el teléfono">
 							<span class="help-block"></span>
-						</div>
+						</div> 	
+						<div class="form-group">
+							<label for="nombre">Password:</label>
+							<input class="form-control" name="password" required type="password" id="password" placeholder="Ingrese la contraseña">
+							<span class="help-block"></span>
+						</div> 
+						<div class="form-group">
+							<label for="nombre">Confirmar password:</label>
+							<input class="form-control" name="password_confirm" required type="password" id="password_confirm" placeholder="Ingrese nuevamente la contraseña">
+							<span class="help-block"></span>
+						</div> 
 					</div>
                 </form>
             </div>

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
   <script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
   <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="<?php echo base_url();?>assets/css/style.css">
 
 </head>
 <body>
@@ -32,29 +33,15 @@
    <div id="infoMessage"><?php echo $message;?></div>
 
    <?php echo form_open("auth/login");?>
-
-   <div class="form-group">
-         <label for="nombre"><?php echo lang('login_identity_label', 'identity');?></label>
-         <input class="form-control" name="identity" id="identity" placeholder="Ingrese el Email">
-         <span class="help-block"></span>
-   </div>  
-              
-     <!-- <p>
+     <p>
        <?php echo lang('login_identity_label', 'identity');?>
        <?php echo form_input($identity);?>
-     </p> -->
+     </p> 
 
-     <!-- <p>
+     <p>
        <?php echo lang('login_password_label', 'password');?>
        <?php echo form_input($password);?>
-     </p> -->
-
-     <div class="form-group">
-         <label for="password"><?php echo lang('login_password_label', 'password');?></label>
-         <input class="form-control" name="password" id="password" placeholder="Ingrese el password">
-         <span class="help-block"></span>
-   </div>  
-
+     </p>
      <p>
        <?php echo lang('login_remember_label', 'remember');?>
        <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?>

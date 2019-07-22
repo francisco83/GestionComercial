@@ -16,8 +16,10 @@
 	      		<ul class="nav navbar-nav">
 	        		<li><a href="<?php echo base_url();?>usuarios">Usuarios <span class="sr-only">(current)</span></a></li>
 					<li><a href="<?php echo base_url();?>servicios">Servicios <span class="sr-only">(current)</span></a></li>
-					<li><a href="<?php echo base_url();?>registrar">Registrar <span class="sr-only">(current)</span></a></li>
+					<li><a href="<?php echo base_url();?>users">Users <span class="sr-only">(current)</span></a></li>
+					<li><a href="<?php echo base_url();?>groups">Grupos <span class="sr-only">(current)</span></a></li>
 					<li class="active"><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
+					<li><a href="<?php echo base_url();?>registrar/ver">Ver Servicios <span class="sr-only">(current)</span></a></li>
 	      		</ul>
 	     	</div><!-- /.navbar-collapse -->
 	  	</div><!-- /.container-fluid -->
