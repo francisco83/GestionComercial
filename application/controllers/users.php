@@ -5,10 +5,14 @@ class Users extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Users_model");
+		$this->load->model("Users_groups_model");
+		$this->load->library(['ion_auth', 'form_validation']);
 	}
 
 	public function index(){
-		$this->load->view("users/index");
+		$groups = $this->ion_auth->groups()->result_array();
+		$this->data['groups'] = $groups;
+		$this->load->view("users/index",$this->data);
 	}
 
 	public function get_all(){
@@ -66,6 +70,7 @@ class Users extends CI_Controller {
 
 	public function ajax_add()
 	{
+		
 		$this->_validate();		
 		$data = array(
 				'first_name' => $this->input->post('first_name'),
@@ -73,14 +78,33 @@ class Users extends CI_Controller {
 				'email' => $this->input->post('email'),
 				'phone' => $this->input->post('phone'),
 				'password' => $this->input->post('password'),
+				
 			);
 
 		$insert = $this->Users_model->save($data);
+
+		$grupos = $_POST['groups']; 
+
+		for ($i=0; $i < count($grupos); $i++) 
+		{   
+			
+			$datarel[$i]['group_id'] = $grupos[$i];
+			$datarel[$i]['user_id'] = $insert;
+			
+		}
+
+		$resultado = $this->Users_groups_model->saveAll($datarel);
+
 		echo json_encode(array("status" => TRUE));
 	}
 
 	public function ajax_edit($id)
 	{
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$data = $this->Users_model->get_by_id($id);
 		echo json_encode($data);
 	}

@@ -333,6 +333,31 @@ function enabled(id)
 							<input class="form-control" name="password_confirm" required type="password" id="password_confirm" placeholder="Ingrese nuevamente la contraseña">
 							<span class="help-block"></span>
 						</div> 
+
+						<div class="form-group">
+							<label for="nombre">Grupos:</label>
+							
+							<div style="margin-left:25px;">
+
+								<?php if ($this->ion_auth->is_admin()): ?>
+								
+								<?php foreach ($groups as $group):?>
+									<label class="checkbox">
+									<?php
+										$gID=$group['id'];
+										$checked = null;
+										$item = null;
+									?>
+									<input type="checkbox" name="groups[]" value="<?php echo $group['id'];?>"<?php echo $checked;?>>
+									<?php echo htmlspecialchars($group['name'],ENT_QUOTES,'UTF-8');?>
+									</label>
+								<?php endforeach?>
+
+								<?php endif ?>
+							</div>
+						</div> 
+
+
 					</div>
                 </form>
             </div>

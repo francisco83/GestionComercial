@@ -40,7 +40,7 @@ class Groups extends CI_Controller {
 		if(!empty($this->input->get("q"))){
 			$this->db->like('name', $this->input->get("q"));
 		}
-			$query = $this->db->select('id,nombre as text')
+			$query = $this->db->select('id,name as text')
 						->limit(10)
 						->get("groups");
 			$json = $query->result();		
@@ -86,8 +86,8 @@ class Groups extends CI_Controller {
 	{
 		$this->_validate();
 		$data = array(
-				'name' => $this->input->post('nombre'),
-				'description' => $this->input->post('descripcion'),				
+				'name' => $this->input->post('name'),
+				'description' => $this->input->post('description'),				
 			);
 		$this->Groups_model->update_(array('id' => $this->input->post('id')), $data);
 		echo json_encode(array("status" => TRUE));
@@ -113,7 +113,7 @@ class Groups extends CI_Controller {
 		$data['inputerror'] = array();
 		$data['status'] = TRUE;
 
-		if($this->input->post('nombre') == '')
+		if($this->input->post('name') == '')
 		{
 			$data['inputerror'][] = 'nombre';
 			$data['error_string'][] = 'Debe ingresar un nombre.';

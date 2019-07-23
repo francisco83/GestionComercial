@@ -139,10 +139,10 @@ function edit(id)
         success: function(data)
         {
             $('[name="id"]').val(data.id);
-            $('[name="nombre"]').val(data.name);
-            $('[name="descripcion"]').val(data.description);            
+            $('[name="name"]').val(data.name);
+            $('[name="description"]').val(data.description);            
             $('#modal_form').modal('show');
-            $('.modal-title').text('Editar Servicio');
+            $('.modal-title').text('Editar Grupo');
 			$('.modal-backdrop').remove();
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -264,13 +264,13 @@ function delete_(id)
 					<div class="panel-body">
 						<div class="form-group">
 							<label for="nombre">Nombre:</label>
-							<input class="form-control" name="nombre" required type="text" id="nombre" placeholder="Ingrese el nombre">
+							<input class="form-control" name="name" required type="text" id="name" placeholder="Ingrese el nombre">
 							<span class="help-block"></span>
 						</div> 		
 
 						<div class="form-group">
 							<label for="descripcion">Descripción:</label>
-							<input class="form-control" id="descripcion" name="descripcion" placeholder="Ingrese la descripción" class="form-control">
+							<input class="form-control" id="description" name="description" placeholder="Ingrese la descripción" class="form-control">
 							<span class="help-block"></span>
 						</div>
 					</div>
