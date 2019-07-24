@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Clientes_model extends CI_Model {
+class Sucursales_model extends CI_Model {
 
-	var $table = 'clientes';
+	var $table = 'sucursales';
 
 	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
@@ -22,8 +22,8 @@ class Clientes_model extends CI_Model {
 	}
 
 	public function get_all_export() {
-		$this->db->select(array('e.id', 'e.nombre', 'e.apellido', 'e.dni','e.email','e.telefono'));
-		$this->db->from('clientes as e');
+		$this->db->select(array('e.id', 'e.nombre', 'e.direccion','e.telefono','e.email','e.fechainicio'));
+		$this->db->from('sucursales as e');
 		$query = $this->db->get();
 		return $query->result_array();
 	 }

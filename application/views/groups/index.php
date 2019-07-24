@@ -263,15 +263,18 @@ function delete_(id)
 					<input type="hidden" value="" name="id"/> 
 					<div class="panel-body">
 						<div class="form-group">
-							<label for="nombre">Nombre:</label>
-							<input class="form-control" name="name" required type="text" id="name" placeholder="Ingrese el nombre">
-							<span class="help-block"></span>
+                            <label for="nombre" class="col-sm-2">Nombre:</label>
+                            <div class="col-sm-10">
+							    <input class="form-control" name="name" required type="text" id="name" placeholder="Ingrese el nombre">
+                                <span class="help-block"></span>
+                            </div>   
 						</div> 		
-
 						<div class="form-group">
-							<label for="descripcion">Descripción:</label>
-							<input class="form-control" id="description" name="description" placeholder="Ingrese la descripción" class="form-control">
-							<span class="help-block"></span>
+                            <label for="descripcion" class="col-sm-2">Descripción:</label>
+                            <div class="col-sm-10">
+							    <input class="form-control" id="description" name="description" placeholder="Ingrese la descripción" class="form-control">
+                                <span class="help-block"></span>
+                            </div>    
 						</div>
 					</div>
                 </form>

@@ -5,9 +5,9 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-                        <h4>Lista de Clientes</h4>
-                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/clientes" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
-						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/clientes/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
+                        <h4>Lista de empresas</h4>
+                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/empresas" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
+						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/empresas/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -30,10 +30,11 @@
 								<tr>
 									<th>#</th>
 									<th>Nombre</th>
-									<th>Apellido</th>
-									<th>DNI</th>
-									<th>Email</th>
+									<th>CUIT</th>
+									<th>Ingreso Bruto</th>
+									<th>Dirección</th>
 									<th>Telefono</th>
+									<th>Email</th>
 									<th>Habilitado</th>
 								</tr>
 							</thead>
@@ -49,14 +50,13 @@
 		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
 		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
 		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>	
-		<button class="btn btn-info" onclick="RegistrarServicio()"><i class='glyphicon glyphicon-tasks'></i> Registrar Servicio</button>
 		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
 <script>
 
 var valor, pag;
-var controller ='clientes';
+var controller ='empresas';
 
 function reload_table(){
 	mostrarDatos(valor,pag,$("#cantidad").val());	
@@ -73,7 +73,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		dataType:"json",
 		success:function(response){		
 			filas = "";
-			$.each(response.Clientes,function(key,item){
+			$.each(response.Empresas,function(key,item){
 				if(item.habilitado=="1")
 					habilitado ='SI';		
 				else
@@ -81,10 +81,11 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.nombre+"</td>"+
-				"<td>"+item.apellido+"</td>"+
-				"<td>"+item.dni+"</td>"+
-				"<td>"+item.email+"</td>"+
+				"<td>"+item.cuit+"</td>"+
+				"<td>"+item.ingresosbrutos+"</td>"+
+				"<td>"+item.direccion+"</td>"+
 				"<td>"+item.telefono+"</td>"+
+				"<td>"+item.email+"</td>"+
 				"<td>"+habilitado+"</td>"+
 				"</tr>";
 			});
@@ -119,7 +120,7 @@ function add()
 	$('.panel-body').removeClass('has-error'); 
     $('.help-block').empty();
     $('#modal_form').modal('show'); 
-    $('.modal-title').text('Agregar Clientes');
+    $('.modal-title').text('Agregar empresa');
 	$('.modal-backdrop').remove();
 }
 
@@ -154,12 +155,13 @@ function edit(id)
         {
             $('[name="id"]').val(data.id);
             $('[name="nombre"]').val(data.nombre);
-            $('[name="apellido"]').val(data.apellido);
-			$('[name="dni"]').val(data.dni);
-			$('[name="email"]').val(data.email);
-			$('[name="telefono"]').val(data.telefono);			
+            $('[name="cuit"]').val(data.cuit);
+            $('[name="ingresosbrutos"]').val(data.ingresosbrutos);
+            $('[name="direccion"]').val(data.direccion);
+			$('[name="telefono"]').val(data.telefono);
+            $('[name="email"]').val(data.email);			
             $('#modal_form').modal('show');
-            $('.modal-title').text('Editar Cliente');
+            $('.modal-title').text('Editar Servicio');
 			$('.modal-backdrop').remove();
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -293,14 +295,6 @@ function enabled(id)
             }
         });
 }
-
-function RegistrarServicio(){
-	var id = $("#tbl tr.selected td:first").html();
-	if (id !=  undefined){
-		location.href ="<?php echo base_url().'index.php/registrar/index/'?>"+id;
-	}		
-}
-
 </script>
 
 <!-- Bootstrap modal -->
@@ -323,26 +317,26 @@ function RegistrarServicio(){
                             </div>   
 						</div>
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Apellido:</label>
+                            <label for="nombre" class="col-sm-2">CUIT:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" name="apellido" required type="text" id="apellido" placeholder="Ingrese el apellido">
+							    <input class="form-control" name="cuit" required type="text" id="cuit" placeholder="Ingrese el CUIT">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 	 	
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">DNI:</label>
+                            <label for="nombre" class="col-sm-2">Ingreso Brutos:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" name="dni" required type="text" id="dni" placeholder="Ingrese el DNI">
+							    <input class="form-control" name="ingresosbrutos" required type="text" id="ingresosbrutos" placeholder="Ingrese el ingreso bruto">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Email:</label>
+                            <label for="nombre" class="col-sm-2">Dirección:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" name="email" required type="text" id="email" placeholder="Ingrese el email">
+							    <input class="form-control" name="direccion" required type="text" id="direccion" placeholder="Ingrese la dirección">
                                 <span class="help-block"></span>
                             </div>   
-						</div>  
+						</div> 	
 						<div class="form-group">
                             <label for="nombre" class="col-sm-2">Teléfono:</label>
                             <div class="col-sm-10">
@@ -350,6 +344,13 @@ function RegistrarServicio(){
                                 <span class="help-block"></span>
                             </div>   
 						</div> 	 	
+						<div class="form-group">
+                            <label for="nombre" class="col-sm-2">Email:</label>
+                            <div class="col-sm-10">
+							    <input class="form-control" name="email" required type="text" id="email" placeholder="Ingrese el email">
+                                <span class="help-block"></span>
+                            </div>   
+						</div>  	 	
 					</div>
                 </form>
             </div>

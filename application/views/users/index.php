@@ -5,8 +5,8 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h4>Lista de Usuarios</h4>
-						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/users/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
+						<h4>Lista de Usuarios</h4>                        
+                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>users/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -303,41 +303,53 @@ function enabled(id)
                 <form action="#" id="form" class="form-horizontal">
 					<input type="hidden" value="" name="id"/> 
 					<div class="panel-body">
-						<div class="form-group">
-							<label for="nombre">Nombre:</label>
-							<input class="form-control" name="first_name" required type="text" id="first_name" placeholder="Ingrese el nombre">
-							<span class="help-block"></span>
+						<div class="form-group">                            
+                            <label for="nombre" class="col-sm-2">Nombre:</label>                            
+                            <div class="col-sm-10">
+                                <input class="form-control" name="first_name" required type="text" id="first_name" placeholder="Ingrese el nombre">
+                                <span class="help-block"></span>
+                            </div>							
                         </div> 	
-                        <div class="form-group">
-							<label for="nombre">Apellido:</label>
-							<input class="form-control" name="last_name" required type="text" id="last_name" placeholder="Ingrese el apellido">
-							<span class="help-block"></span>
+                        <div class="form-group">                            
+                            <label for="nombre" class="col-sm-2">Apellido:</label>                             
+                            <div class="col-sm-10">
+							    <input class="form-control" name="last_name" required type="text" id="last_name" placeholder="Ingrese el apellido">
+                                <span class="help-block"></span>
+                            </div>    
 						</div> 		
 						<div class="form-group">
-							<label for="descripcion">Email:</label>
-							<input class="form-control" id="email" name="email" type="email" placeholder="Ingrese el email" class="form-control">
-							<span class="help-block"></span>
+                            <label for="descripcion" class="col-sm-2">Email:</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="email" name="email" type="email" placeholder="Ingrese el email" class="form-control">
+                                <span class="help-block"></span>
+                            </div>    							
 						</div>
-						<div class="form-group">
-							<label for="nombre">Teléfono:</label>
-							<input class="form-control" name="phone" required type="number" id="phone" placeholder="Ingrese el teléfono">
-							<span class="help-block"></span>
+						<div class="form-group">                            
+                            <label for="nombre" class="col-sm-2">Teléfono:</label>                            
+                            <div class="col-sm-10">
+                                <input class="form-control" name="phone" required type="number" id="phone" placeholder="Ingrese el teléfono">
+                                <span class="help-block"></span>
+                            </div>							
 						</div> 	
-						<div class="form-group">
-							<label for="nombre">Password:</label>
-							<input class="form-control" name="password" required type="password" id="password" placeholder="Ingrese la contraseña">
-							<span class="help-block"></span>
+						<div class="form-group">                            
+                            <label for="nombre" class="col-sm-2">Password:</label>                            
+                            <div class="col-sm-10">
+                                <input class="form-control" name="password" required type="password" id="password" placeholder="Ingrese la contraseña">
+                                <span class="help-block"></span>
+                            </div>							
 						</div> 
-						<div class="form-group">
-							<label for="nombre">Confirmar password:</label>
-							<input class="form-control" name="password_confirm" required type="password" id="password_confirm" placeholder="Ingrese nuevamente la contraseña">
-							<span class="help-block"></span>
+						<div class="form-group" >                            
+                                <label for="nombre" class="col-sm-2">Confirmar password:</label>                            
+                            <div class="col-sm-10">
+                                <input class="form-control" name="password_confirm" required type="password" id="password_confirm" placeholder="Ingrese nuevamente la contraseña">
+                                <span class="help-block"></span> 
+                            </div>                                                       
 						</div> 
 
 						<div class="form-group">
-							<label for="nombre">Grupos:</label>
+							<label class="col-sm-2" for="nombre">Grupos:</label>
 							
-							<div style="margin-left:25px;">
+							<div class="col-sm-10" style="margin-left:25px;">
 
 								<?php if ($this->ion_auth->is_admin()): ?>
 								

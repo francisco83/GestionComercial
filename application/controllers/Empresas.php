@@ -1,18 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Servicios extends CI_Controller {
+class Empresas extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("Servicios_model");
+		$this->load->model("Empresas_model");
 	}
 
 	public function index(){
-		$this->load->view("servicios/index");
+		$this->load->view("Empresas/index");
 	}
 
 	public function get_all(){
-		$resultado = $this->Servicios_model->get_all();
+		$resultado = $this->Empresas_model->get_all();
 		echo $resultado;
 	}
 
@@ -24,15 +24,15 @@ class Servicios extends CI_Controller {
 		
 		$inicio = ($numeropagina -1)*$cantidad;
 		$data = array(
-			"servicios" => $this->Servicios_model->buscar($buscar,$inicio,$cantidad),
-			"totalregistros" => count($this->Servicios_model->buscar($buscar)),
+			"Empresas" => $this->Empresas_model->buscar($buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Empresas_model->buscar($buscar)),
 			"cantidad" =>$cantidad
 			
 		);
 		echo json_encode($data);
 	}
 
-	public function buscar_servicios()
+	public function buscar_Empresas()
 	{
 		$json = [];
 		$this->load->database();		
@@ -41,7 +41,7 @@ class Servicios extends CI_Controller {
 		}
 			$query = $this->db->select('id,nombre as text')
 						->limit(10)
-						->get("servicios");
+						->get("Empresas");
 			$json = $query->result();		
 		
 		echo json_encode($json);
@@ -49,14 +49,13 @@ class Servicios extends CI_Controller {
 
 	function get_autocomplete(){
         if (isset($_GET['term'])) {
-            $result = $this->Servicios_model->search_autocomplete($_GET['term']);
+            $result = $this->Empresas_model->search_autocomplete($_GET['term']);
             if (count($result) > 0) {
 			foreach ($result as $row)	
 			{
 				$data[] = array(
 					'id' => $row->id,
-					'value'=> $row->nombre,
-					'precio'=>$row->precio
+					'value'=> $row->nombre
 				);
 			}				
                 echo json_encode($data);
@@ -69,17 +68,20 @@ class Servicios extends CI_Controller {
 		$this->_validate();		
 		$data = array(
 				'nombre' => $this->input->post('nombre'),
-				'descripcion' => $this->input->post('descripcion'),
-				'precio' => $this->input->post('precio'),
+				'cuit' => $this->input->post('cuit'),
+				'ingresosbrutos' => $this->input->post('ingresosbrutos'),
+				'direccion' => $this->input->post('direccion'),
+				'telefono' => $this->input->post('telefono'),
+				'email' => $this->input->post('email'),
 			);
 
-		$insert = $this->Servicios_model->save($data);
+		$insert = $this->Empresas_model->save($data);
 		echo json_encode(array("status" => TRUE));
 	}
 
 	public function ajax_edit($id)
 	{
-		$data = $this->Servicios_model->get_by_id($id);
+		$data = $this->Empresas_model->get_by_id($id);
 		echo json_encode($data);
 	}
 
@@ -88,23 +90,26 @@ class Servicios extends CI_Controller {
 		$this->_validate();
 		$data = array(
 				'nombre' => $this->input->post('nombre'),
-				'descripcion' => $this->input->post('descripcion'),
-				'precio' => $this->input->post('precio'),
+				'cuit' => $this->input->post('cuit'),
+				'ingresosbrutos' => $this->input->post('ingresosbrutos'),
+				'direccion' => $this->input->post('direccion'),
+				'telefono' => $this->input->post('telefono'),
+				'email' => $this->input->post('email'),
 			);
-		$this->Servicios_model->update(array('id' => $this->input->post('id')), $data);
+		$this->Empresas_model->update(array('id' => $this->input->post('id')), $data);
 		echo json_encode(array("status" => TRUE));
 	}
 
 
 	public function ajax_delete($id)
 	{	
-		$this->Servicios_model->delete_by_id($id);
+		$this->Empresas_model->delete_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
 
 	public function ajax_enabled($id)
 	{		
-		$this->Servicios_model->enabled_by_id($id);
+		$this->Empresas_model->enabled_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
 
@@ -122,13 +127,6 @@ class Servicios extends CI_Controller {
 			$data['status'] = FALSE;
 		}
 
-		if($this->input->post('precio') == '')
-		{
-			$data['inputerror'][] = 'precio';
-			$data['error_string'][] = 'Debe ingresar un precio.';
-			$data['status'] = FALSE;
-		}
-
 		if($data['status'] === FALSE)
 		{
 			echo json_encode($data);
@@ -139,23 +137,29 @@ class Servicios extends CI_Controller {
 	public function createXLS() {
 
        $this->load->library('excel');
-       $empInfo = $this->Servicios_model->get_all_export();
+       $empInfo = $this->Empresas_model->get_all_export();
        $objPHPExcel = new PHPExcel();
        $objPHPExcel->setActiveSheetIndex(0);
        // set Header
        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Nombre');
-       $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Descripcion');
-       $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Precio');  
+       $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Cuit');
+       $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Ingresos Brutos');  
+       $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Dirección');  
+       $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Teléfono');  
+       $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Email');  
        // set Row
        $rowCount = 2;
        foreach ($empInfo as $element) {
            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $element['nombre']);
-           $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['descripcion']);
-           $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['precio']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['cuit']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['ingresosbrutos']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $element['direccion']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $element['telefono']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $element['email']);
            $rowCount++;
         }
         
-       $archivo = "Servicios.xls";
+       $archivo = "Empresas.xls";
        header('Content-Type: application/vnd.ms-excel');
        header('Content-Disposition: attachment;filename="'.$archivo.'"');
        header('Cache-Control: max-age=0');
