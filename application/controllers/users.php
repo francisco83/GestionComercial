@@ -10,9 +10,11 @@ class Users extends CI_Controller {
 	}
 
 	public function index(){
-		$groups = $this->ion_auth->groups()->result_array();
-		$this->data['groups'] = $groups;
-		$this->load->view("users/index",$this->data);
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+		$this->load->view("users/index");
 	}
 
 	public function get_all(){
@@ -27,10 +29,21 @@ class Users extends CI_Controller {
 		$cantidad = $this->input->post("cantidad");
 		
 		$inicio = ($numeropagina -1)*$cantidad;
+
+
+		$this->data['users'] = $this->Users_model->buscar($buscar,$inicio,$cantidad);
+			
+	   //Cargo los grupos de los usuarios		
+		foreach ($this->data['users'] as $k => $user)
+		{
+			$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
+		}
+
 		$data = array(
-			"users" => $this->Users_model->buscar($buscar,$inicio,$cantidad),
+			"users" => $this->data['users'],
 			"totalregistros" => count($this->Users_model->buscar($buscar)),
-			"cantidad" =>$cantidad
+			"cantidad" =>$cantidad,
+
 			
 		);
 		echo json_encode($data);
@@ -111,6 +124,11 @@ class Users extends CI_Controller {
 
 	public function ajax_update()
 	{
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->_validate();
 		$data = array(
 				'first_name' => $this->input->post('first_name'),
@@ -126,12 +144,22 @@ class Users extends CI_Controller {
 
 	public function ajax_delete($id)
 	{	
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->Users_model->delete_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
 
 	public function ajax_enabled($id)
 	{		
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->Users_model->enabled_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
@@ -160,7 +188,7 @@ class Users extends CI_Controller {
 
 		if($this->input->post('email') == '')
 		{
-			$data['inputerror'][] = 'precio';
+			$data['inputerror'][] = 'email';
 			$data['error_string'][] = 'Debe ingresar un email.';
 			$data['status'] = FALSE;
 		}
@@ -174,6 +202,11 @@ class Users extends CI_Controller {
 
 	public function createXLS() {
 
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+		
        $this->load->library('excel');
        $empInfo = $this->Users_model->get_all_export();
        $objPHPExcel = new PHPExcel();

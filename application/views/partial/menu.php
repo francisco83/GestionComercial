@@ -17,7 +17,7 @@
 	        		<li><a href="<?php echo base_url();?>usuarios">Usuarios <span class="sr-only">(current)</span></a></li>
 					<li><a href="<?php echo base_url();?>servicios">Servicios <span class="sr-only">(current)</span></a></li>
 					<li><a href="<?php echo base_url();?>users">Users <span class="sr-only">(current)</span></a></li>					
-					<li class="active"><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
+					<li><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
 					<li><a href="<?php echo base_url();?>registrar/ver">Ver Servicios <span class="sr-only">(current)</span></a></li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,6 +28,16 @@
 							<li><a href="<?php echo base_url();?>empresas">Empresas <span class="sr-only">(current)</span></a></li>
 							<li><a href="<?php echo base_url();?>sucursales">Sucursales <span class="sr-only">(current)</span></a></li>
 							<li><a href="<?php echo base_url();?>groups">Grupos Usuarios <span class="sr-only">(current)</span></a></li>
+						</ul>
+					</li>
+					<li class="dropdown active">					
+						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-user"></i> Usuario: <?php $user = $this->ion_auth->user()->row();echo $user->first_name;?>
+						<span class="caret"></span>
+						</a>						
+						<ul class="dropdown-menu">					
+							<li><a href="<?php echo base_url();?>auth/change_password">Cambiar Contraseña <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>auth/logout"><i class="glyphicon glyphicon-off"></i> Cerrar Sesión <span class="sr-only">(current)</span></a></li>							
 						</ul>
 					</li>
 	      		</ul>

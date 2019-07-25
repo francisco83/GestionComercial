@@ -137,6 +137,7 @@ class Auth extends CI_Controller
 	 */
 	public function change_password()
 	{
+		$this->load->view("partial/encabezado");
 		$this->form_validation->set_rules('old', $this->lang->line('change_password_validation_old_password_label'), 'required');
 		$this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[new_confirm]');
 		$this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 'required');
@@ -159,17 +160,20 @@ class Auth extends CI_Controller
 				'name' => 'old',
 				'id' => 'old',
 				'type' => 'password',
+				'class'=>'form-control',
 			];
 			$this->data['new_password'] = [
 				'name' => 'new',
 				'id' => 'new',
 				'type' => 'password',
+				'class'=>'form-control',
 				'pattern' => '^.{' . $this->data['min_password_length'] . '}.*$',
 			];
 			$this->data['new_password_confirm'] = [
 				'name' => 'new_confirm',
 				'id' => 'new_confirm',
 				'type' => 'password',
+				'class'=>'form-control',
 				'pattern' => '^.{' . $this->data['min_password_length'] . '}.*$',
 			];
 			$this->data['user_id'] = [
@@ -511,7 +515,7 @@ class Auth extends CI_Controller
 			// check to see if we are creating the user
 			// redirect them back to the admin page
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect("auth", 'refresh');
+			redirect("users", 'refresh');
 		}
 		else
 		{
@@ -670,14 +674,16 @@ class Auth extends CI_Controller
 				{
 					// redirect them back to the admin page if admin, or to the base url if non admin
 					$this->session->set_flashdata('message', $this->ion_auth->messages());
-					$this->redirectUser();
+					//$this->redirectUser();
+					redirect("users", 'refresh');
 
 				}
 				else
 				{
 					// redirect them back to the admin page if admin, or to the base url if non admin
 					$this->session->set_flashdata('message', $this->ion_auth->errors());
-					$this->redirectUser();
+					//$this->redirectUser();
+					redirect("users", 'refresh');
 
 				}
 

@@ -5,9 +5,15 @@ class Groups extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Groups_model");
+		$this->load->library(['ion_auth', 'form_validation']);
 	}
 
 	public function index(){
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->load->view("groups/index");
 	}
 
@@ -66,6 +72,11 @@ class Groups extends CI_Controller {
 
 	public function ajax_add()
 	{
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->_validate();		
 		$data = array(
 				'name' => $this->input->post('name'),
@@ -78,12 +89,22 @@ class Groups extends CI_Controller {
 
 	public function ajax_edit($id)
 	{
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$data = $this->Groups_model->get_by_id($id);
 		echo json_encode($data);
 	}
 
 	public function ajax_update()
 	{
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->_validate();
 		$data = array(
 				'name' => $this->input->post('name'),
@@ -96,12 +117,22 @@ class Groups extends CI_Controller {
 
 	public function ajax_delete($id)
 	{	
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->Groups_model->delete_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
 
 	public function ajax_enabled($id)
 	{		
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->Groups_model->enabled_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
@@ -130,6 +161,11 @@ class Groups extends CI_Controller {
 
 	public function createXLS() {
 
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+		
        $this->load->library('excel');
        $empInfo = $this->Groups_model->get_all_export();
        $objPHPExcel = new PHPExcel();

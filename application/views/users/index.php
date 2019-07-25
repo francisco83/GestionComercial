@@ -43,8 +43,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
+        </div>
+        <a class="btn btn-success" href="<?php echo base_url();?>auth/create_user"><i class="glyphicon glyphicon-plus"></i>Nuevo</a>		
+		<!-- <button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button> -->
 		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
         <button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>			
         <button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
@@ -63,28 +64,36 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 	valor = valorBuscar;
 	pag = pagina;
 	cant = cantidad;
+    var g;
 	$.ajax({
 		url : controller+"/mostrar",
 		type: "POST",
 		data: {buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
-		success:function(response){		
-            console.log(response);	
+		success:function(response){		            
             filas = "";
-			$.each(response.users,function(key,item){
-                console.log(item.active);
+            
+			$.each(response.users,function(key,item){               
                 if(item.active=="1")
                     active ='SI';		
 			    else
                     active ='NO';
+                    console.log(item);
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.first_name+"</td>"+
                 "<td>"+item.last_name+"</td>"+
                 "<td>"+item.email+"</td>"+
-                "<td></td>"+
+                "<td>";
+                g="";
+                for(i=0;i<item.groups.length;i++){
+                    g = g +" "+ item.groups[i].name;
+                }
+                filas+=g
+                +"</td>"+
                 "<td>"+active+"</td>"+
 				"</tr>";
+               
 			});
 			$("#tbl tbody").html(filas);
 			cargarPaginado(response, valorBuscar,pagina,cantidad);
@@ -126,8 +135,8 @@ function action(option){
 	var id = $("#tbl tr.selected td:first").html();
 
 	if (id !=  undefined){
-		if (option=="edit")
-			edit(id);				
+		if (option=="edit")			
+            location.href="<?php echo base_url();?>auth/edit_user/"+id;
 		if (option =="enabled")
 			enabled(id);
 		if (option =="delete")
@@ -135,35 +144,6 @@ function action(option){
 	}	
 }
 
-
-function edit(id)
-{
-    save_method = 'update';
-    $('#form')[0].reset(); 
-    $('.form-group').removeClass('has-error'); 
-	$('.panel-body').removeClass('has-error'); 
-    $('.help-block').empty();
-
-    $.ajax({
-        url : "<?php echo site_url('/"+controller+"/ajax_edit')?>/" + id,
-        type: "GET",
-        dataType: "JSON",
-        success: function(data)
-        {
-            $('[name="id"]').val(data.id);
-            $('[name="first_name"]').val(data.first_name);
-            $('[name="last_name"]').val(data.last_name);
-            $('[name="email"]').val(data.email);            
-            $('#modal_form').modal('show');
-            $('.modal-title').text('Editar Usuarios');
-			$('.modal-backdrop').remove();
-        },
-        error: function (jqXHR, textStatus, errorThrown)
-        {
-            alert('Error get data from ajax');
-        }
-    });
-}
 
 function save()
 {

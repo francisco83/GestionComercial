@@ -5,9 +5,15 @@ class Empresas extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Empresas_model");
+		$this->load->library(['ion_auth', 'form_validation']);
 	}
 
 	public function index(){
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->load->view("Empresas/index");
 	}
 
@@ -81,12 +87,21 @@ class Empresas extends CI_Controller {
 
 	public function ajax_edit($id)
 	{
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$data = $this->Empresas_model->get_by_id($id);
 		echo json_encode($data);
 	}
 
 	public function ajax_update()
 	{
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
 		$this->_validate();
 		$data = array(
 				'nombre' => $this->input->post('nombre'),
@@ -103,12 +118,22 @@ class Empresas extends CI_Controller {
 
 	public function ajax_delete($id)
 	{	
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->Empresas_model->delete_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
 
 	public function ajax_enabled($id)
 	{		
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+
 		$this->Empresas_model->enabled_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
@@ -136,6 +161,11 @@ class Empresas extends CI_Controller {
 
 	public function createXLS() {
 
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+		
        $this->load->library('excel');
        $empInfo = $this->Empresas_model->get_all_export();
        $objPHPExcel = new PHPExcel();
