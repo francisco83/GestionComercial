@@ -25,19 +25,21 @@
 								</div>				
 							</div>			
 						</div>
-						<table id="tbl" class="table table-bordered table-hover">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Nombre</th>
-									<th>Descripción</th>
-									<th>Precio</th>
-									<th>Habilitado</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
+						<div style="overflow-x:auto; min-height:250px">
+							<table id="tbl" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Nombre</th>
+										<th>Descripción</th>
+										<th>Precio</th>
+										<th>Habilitado</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
 						<div class="text-center paginacion">							
 						</div>
 					</div>
@@ -54,6 +56,7 @@
 
 var valor, pag;
 var controller ='servicios';
+var Site="<?php echo site_url()?>"
 
 function reload_table(){
 	mostrarDatos(valor,pag,$("#cantidad").val());	
@@ -119,18 +122,7 @@ function add()
 }
 
 
-function action(option){
-	var id = $("#tbl tr.selected td:first").html();
 
-	if (id !=  undefined){
-		if (option=="edit")
-			edit(id);				
-		if (option =="enabled")
-			enabled(id);
-		if (option =="delete")
-			delete_(id);	
-	}	
-}
 
 
 function edit(id)
@@ -160,131 +152,6 @@ function edit(id)
             alert('Error get data from ajax');
         }
     });
-}
-
-function save()
-{
-    $('#btnSave').text('Guardando...'); 
-    $('#btnSave').attr('disabled',true); 
-    var url,men;
-
-    if(save_method == 'add') {
-		url = "<?php echo site_url('"+controller+"/ajax_add')?>";
-		men="Se creo el registro correctamente";
-    } else {
-		url = "<?php echo site_url('"+controller+"/ajax_update')?>";
-		men="Se actualizo el registro correctamente";
-    }
-
-	var formData = new FormData($('#form')[0]);
-    $.ajax({
-        url : url,
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        dataType: "JSON",
-        success: function(data)
-        {
-
-            if(data.status)
-            {
-                $('#modal_form').modal('hide');
-				reload_table();
-				$.notify({
-                   title: '<strong>Correcto!</strong>',
-                   message: men
-               },{
-                   type: 'success'
-               });
-
-            }
-            else
-            {
-                for (var i = 0; i < data.inputerror.length; i++) 
-                {
-                    $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
-                    $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
-                }
-            }
-            $('#btnSave').text('Guardar');
-            $('#btnSave').attr('disabled',false); 
-        },
-        error: function (jqXHR, textStatus, errorThrown)
-        {
-			$.notify({
-                   title: '<strong>Error!</strong>',
-                   message: 'Se produjo un error al guardar.'
-               },{
-                   type: 'danger'
-               });
-            $('#btnSave').text('Guardar'); 
-            $('#btnSave').attr('disabled',false); 
-
-        }
-    });
-}
-
-function delete_(id)
-{
-    if(confirm('¿Esta seguro que desea eliminar el registro?'))
-    {
-        $.ajax({
-            url : "<?php echo site_url('"+controller+"/ajax_delete')?>/"+id,
-            type: "POST",
-            dataType: "JSON",
-            success: function(data)
-            {
-                $('#modal_form').modal('hide');
-				reload_table();
-				$.notify({
-                   title: '<strong>Correcto!</strong>',
-                   message: 'El registro se elimino correctamente.'
-               },{
-                   type: 'success'
-               });
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-				$.notify({
-                   title: '<strong>Error!</strong>',
-                   message: 'Se produjo un error al eliminar el registro.'
-               },{
-                   type: 'danger'
-               });
-            }
-        });
-
-    }
-}
-
-
-function enabled(id)
-{
-        $.ajax({
-            url : "<?php echo site_url('"+controller+"/ajax_enabled')?>/"+id,
-            type: "POST",
-            dataType: "JSON",
-            success: function(data)
-            {
-				reload_table();
-				$.notify({
-                   title: '<strong>Correcto!</strong>',
-                   message: 'El registro se actualizo correctamente.'
-               },{
-                   type: 'success'
-               });
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-				$.notify({
-                   title: '<strong>Error!</strong>',
-                   message: 'Se produjo un error al actualizar el registro.'
-               },{
-                   type: 'danger'
-               });
-            }
-        });
 }
 </script>
 

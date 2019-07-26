@@ -24,17 +24,19 @@
 								</div>				
 							</div>			
 						</div>
-						<table id="tbl" class="table table-bordered table-hover">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Nombre</th>
-									<th>Descripción</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
+						<div style="overflow-x:auto; min-height:250px">
+							<table id="tbl" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Nombre</th>
+										<th>Descripción</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
 						<div class="text-center paginacion">							
 						</div>
 					</div>
