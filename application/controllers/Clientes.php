@@ -4,11 +4,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Clientes extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->library(['ion_auth', 'form_validation']);
 		$this->load->model("Clientes_model");
+		$this->load->library(['ion_auth', 'form_validation']);
 	}
 
 	public function index(){
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
 		$this->load->view("Clientes/index");
 	}
 

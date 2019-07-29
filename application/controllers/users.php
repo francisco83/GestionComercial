@@ -224,7 +224,7 @@ class Users extends CI_Controller {
            $rowCount++;
         }
         
-       $archivo = "Users.xls";
+       $archivo = "Usuarios.xls";
        header('Content-Type: application/vnd.ms-excel');
        header('Content-Disposition: attachment;filename="'.$archivo.'"');
        header('Cache-Control: max-age=0');

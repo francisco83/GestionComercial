@@ -10,8 +10,7 @@ class Cli_servicios_detalle_model extends CI_Model {
 	}
 
 	public function buscar($servicioId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
-	{
-		//$this->db->like("fecha",$buscar);
+	{		
 		$this->db->where("id_cli_servicios",$servicioId);
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
@@ -22,14 +21,16 @@ class Cli_servicios_detalle_model extends CI_Model {
 
 	public function buscarDetalleXcliente($servicioId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
+		$this->db->select('cli_servicios_detalle.id,tipos_servicios.nombre,cli_servicios_detalle.precio,cli_servicios_detalle.cantidad,cli_servicios_detalle.descripcion');
+		$this->db->from('cli_servicios_detalle');
+		$this->db->join('tipos_servicios','tipos_servicios.id=cli_servicios_detalle.id_servicio');
 		$this->db->where("id_cli_servicios",$servicioId);
-		//$this->db->where("dni",$clienteId);
-		//$this->db->like("fecha",$buscar);
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 		 	$this->db->limit($cantidadregistro,$inicio);
 		 }
-		$consulta = $this->db->get("cli_servicios_detalle");
-		return $consulta->result();
+
+		$consulta=$this->db->get();
+		return $consulta->result_array();
 	}
 
 }

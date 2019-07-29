@@ -13,21 +13,30 @@
 
 	    	<!-- Collect the nav links, forms, and other content for toggling -->
 	    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	      		<ul class="nav navbar-nav">
-	        		<li><a href="<?php echo base_url();?>usuarios">Usuarios <span class="sr-only">(current)</span></a></li>
-					<li><a href="<?php echo base_url();?>servicios">Servicios <span class="sr-only">(current)</span></a></li>
-					<li><a href="<?php echo base_url();?>users">Users <span class="sr-only">(current)</span></a></li>					
+	      		<ul class="nav navbar-nav">	        					
 					<li><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
 					<li><a href="<?php echo base_url();?>registrar/ver">Ver Servicios <span class="sr-only">(current)</span></a></li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Configuración
+						<i class="glyphicon glyphicon-list-alt"></i> Reportes
+						<span class="caret"></span>
+						</a>						
+						<ul class="dropdown-menu">					
+							<li><a href="<?php echo base_url();?>reportes\empresas" target="_blank">Empresas <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>reportes\sucursales" target="_blank">Sucursales <span class="sr-only">(current)</span></a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-cog"></i> Configuración
 						<span class="caret"></span>
 						</a>						
 						<ul class="dropdown-menu">					
 							<li><a href="<?php echo base_url();?>empresas">Empresas <span class="sr-only">(current)</span></a></li>
 							<li><a href="<?php echo base_url();?>sucursales">Sucursales <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>users">Usuarios <span class="sr-only">(current)</span></a></li>					
 							<li><a href="<?php echo base_url();?>groups">Grupos Usuarios <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>tipos_servicios">Tipos de Servicios <span class="sr-only">(current)</span></a></li>					
 						</ul>
 					</li>
 					<li class="dropdown active">					

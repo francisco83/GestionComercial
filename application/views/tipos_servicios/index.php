@@ -5,9 +5,9 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-                        <h4>Lista de servicios</h4>
+                        <h4>Lista de Tipos de servicios</h4>
                         <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/servicios" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
-						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/servicios/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
+						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/tipos_servicios/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -25,7 +25,7 @@
 								</div>				
 							</div>			
 						</div>
-						<div style="overflow-x:auto; min-height:250px">
+						<div class="tbl_grid">
 							<table id="tbl" class="table table-bordered table-hover">
 								<thead>
 									<tr>
@@ -55,7 +55,7 @@
 <script>
 
 var valor, pag;
-var controller ='servicios';
+var controller ='tipos_servicios';
 var Site="<?php echo site_url()?>"
 
 function reload_table(){
@@ -73,7 +73,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		dataType:"json",
 		success:function(response){			
 			filas = "";
-			$.each(response.servicios,function(key,item){
+			$.each(response.tipos_servicios,function(key,item){
 				if(item.habilitado=="1")
 					habilitado ='SI';		
 				else
@@ -117,7 +117,7 @@ function add()
 	$('.panel-body').removeClass('has-error'); 
     $('.help-block').empty();
     $('#modal_form').modal('show'); 
-    $('.modal-title').text('Agregar servicio');
+    $('.modal-title').text('Agregar Tipo de servicio');
 	$('.modal-backdrop').remove();
 }
 
@@ -161,7 +161,7 @@ function edit(id)
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Servicio</h3>
+                <h3 class="modal-title">Tipo de Servicio</h3>
             </div>
             <div class="modal-body form">
                 <form action="#" id="form" class="form-horizontal">

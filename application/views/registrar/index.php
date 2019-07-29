@@ -15,12 +15,6 @@
     margin: 0;
     padding: 5px 10px;
   }
-  /* .celda{	  
-
-		border: 1px solid black;
-		height: 36px;
-		font-size: small important!;
-  }  */
   .fila{
 	border: 1px solid lightgray;
 	margin-top: 20px;
@@ -178,15 +172,15 @@ function agregarFila() {
 								'</div>'+
 								'<div class="col-md-2">'+
 									'Precio:'+
-									'<input class="form-control" name="precio[]" required type="number" id="precio'+i+'" value="">'+
+									'<input class="form-control" name="precio[]" required  id="precio'+i+'" value="">'+
 								'</div>'+
 								'<div class="col-md-2">'+
 									'Cantidad:'+
-									'<input class="form-control" name="cantidad[]" required type="number" id="cantidad'+i+'" value="1">'+
+									'<input class="form-control" name="cantidad[]" required id="cantidad'+i+'" value="1">'+
 								'</div>'+
 								'<div class="col-md-2">'+
 									'Total:'+
-									'<input class="form-control tot'+i+'" name="total[]" required type="number" id="total'+i+'" value="0">'+
+									'<input class="form-control tot'+i+'" name="total[]" required id="total'+i+'" value="0">'+
 								'</div>'+
 							'</div>'+
 							'<div class="col-md-12">'+		

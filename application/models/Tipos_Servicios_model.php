@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Servicios_model extends CI_Model {
+class Tipos_Servicios_model extends CI_Model {
 
-	var $table = 'servicios';
+	var $table = 'tipos_servicios';
 
 	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
@@ -23,7 +23,7 @@ class Servicios_model extends CI_Model {
 
 	public function get_all_export() {
 		$this->db->select(array('e.id', 'e.nombre', 'e.descripcion', 'e.precio'));
-		$this->db->from('servicios as e');
+		$this->db->from('tipos_servicios as e');
 		$query = $this->db->get();
 		return $query->result_array();
 	 }

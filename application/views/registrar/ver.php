@@ -51,7 +51,7 @@
 				    <i class="glyphicon glyphicon-search form-control-feedback"></i>
 				</div>				
 			</div>			 -->
-		</div>
+
 
 			<div class="col-md-12">
 				<div class="panel panel-primary">
@@ -59,13 +59,13 @@
 						<h4>Registrar servicios</h4>
 					</div>
 					
-					<?php if(!empty($this->session->flashdata())): ?>
+					<!-- <?php if(!empty($this->session->flashdata())): ?>
 					<div class="alert alert-<?php echo $this->session->flashdata('clase')?>">
 						<?php echo $this->session->flashdata('mensaje') ?>
 					</div>
 					<?php endif; ?>
 
-					<div id="messages"></div>
+					<div id="messages"></div> -->
 
 					<div class="panel-body">
 
@@ -78,10 +78,10 @@
 									<input type ="text" id="clienteid" name="clienteid" hidden>
 									<div class="row">
 										<div class="col-md-8">
-											<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
-										</div>
+											<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">										
+										</div>									
 										<div class="col-md-4">
-											<input class="btn btn-primary" value="Buscar" onclick="Filtrar($('#clienteid').val())"  >	
+											<input class="btn btn-primary btn-block" value="Buscar" onclick="Filtrar($('#clienteid').val())"  >	
 										</div>
 									</div>							
 							</div>
@@ -100,18 +100,20 @@
 								<option value="10">10</option>
 							</select>
 						</p>
-						<table id="tblusuarios" class="table table-bordered table-hover">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Codigo</th>
-									<th>Fecha</th>
-									<th>Opciones</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
+						<div class="tbl_grid">
+							<table id="tblusuarios" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Codigo</th>
+										<th>Fecha</th>
+										<th>Opciones</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
 						<div class="text-center paginacion">							
 						</div>
 
@@ -123,19 +125,21 @@
 								<option value="10">10</option>
 							</select>
 						</p>
-						<table id="tbldetalle" class="table table-bordered table-hover">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Servicio</th>
-									<th>Precio</th>
-									<th>Cantidad</th>
-									<th>Descripcion</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
+						<div class="tbl_grid">
+							<table id="tbldetalle" class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Servicio</th>
+										<th>Precio</th>
+										<th>Cantidad</th>
+										<th>Descripcion</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
 						<div class="text-center paginacionDetalle">							
 						</div>
 
@@ -145,6 +149,7 @@
 					</div>
 				</div>
 			</div>
+	</div>
 </div>
 
 	<script src="<?php echo base_url();?>assets/js/combos.js"></script>
@@ -219,7 +224,7 @@ function verDetalle(servicioId,valorBuscar,pagina,cantidad){
 			$.each(response.cli_servicios_detalle,function(key,item){
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
-				"<td>"+item.servicio+"</td>"+
+				"<td>"+item.nombre+"</td>"+
 				"<td>"+item.precio+"</td>"+
 				"<td>"+item.cantidad+"</td>"+
 				"<td>"+item.descripcion+"</td>"+			

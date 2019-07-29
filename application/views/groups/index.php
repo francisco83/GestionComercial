@@ -6,7 +6,8 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h4>Lista de grupos</h4>
-						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/auth/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
+						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/groups" target="_blank"><i class="glyphicon glyphicon-print"></i></a>	
+						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/groups/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -24,7 +25,7 @@
 								</div>				
 							</div>			
 						</div>
-						<div style="overflow-x:auto; min-height:250px">
+						<div class="tbl_grid">
 							<table id="tbl" class="table table-bordered table-hover">
 								<thead>
 									<tr>

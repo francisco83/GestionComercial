@@ -47,3 +47,8 @@ body {
   #infoMessage{
 	color:#a94442 !important;
   }
+
+  .tbl_grid{
+  	overflow-x:auto; 
+  	min-height:250px
+  }

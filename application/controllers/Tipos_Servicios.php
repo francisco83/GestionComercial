@@ -1,19 +1,23 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Servicios extends CI_Controller {
+class Tipos_Servicios extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("Servicios_model");
+		$this->load->model("Tipos_Servicios_model");
 		$this->load->library(['ion_auth', 'form_validation']);
 	}
 
 	public function index(){
-		$this->load->view("servicios/index");
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+		$this->load->view("tipos_servicios/index");
 	}
 
 	public function get_all(){
-		$resultado = $this->Servicios_model->get_all();
+		$resultado = $this->Tipos_Servicios_model->get_all();
 		echo $resultado;
 	}
 
@@ -25,8 +29,8 @@ class Servicios extends CI_Controller {
 		
 		$inicio = ($numeropagina -1)*$cantidad;
 		$data = array(
-			"servicios" => $this->Servicios_model->buscar($buscar,$inicio,$cantidad),
-			"totalregistros" => count($this->Servicios_model->buscar($buscar)),
+			"tipos_servicios" => $this->Tipos_Servicios_model->buscar($buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Tipos_Servicios_model->buscar($buscar)),
 			"cantidad" =>$cantidad
 			
 		);
@@ -42,7 +46,7 @@ class Servicios extends CI_Controller {
 		}
 			$query = $this->db->select('id,nombre as text')
 						->limit(10)
-						->get("servicios");
+						->get("tipos_servicios");
 			$json = $query->result();		
 		
 		echo json_encode($json);
@@ -50,7 +54,7 @@ class Servicios extends CI_Controller {
 
 	function get_autocomplete(){
         if (isset($_GET['term'])) {
-            $result = $this->Servicios_model->search_autocomplete($_GET['term']);
+            $result = $this->Tipos_Servicios_model->search_autocomplete($_GET['term']);
             if (count($result) > 0) {
 			foreach ($result as $row)	
 			{
@@ -74,13 +78,13 @@ class Servicios extends CI_Controller {
 				'precio' => $this->input->post('precio'),
 			);
 
-		$insert = $this->Servicios_model->save($data);
+		$insert = $this->Tipos_Servicios_model->save($data);
 		echo json_encode(array("status" => TRUE));
 	}
 
 	public function ajax_edit($id)
 	{
-		$data = $this->Servicios_model->get_by_id($id);
+		$data = $this->Tipos_Servicios_model->get_by_id($id);
 		echo json_encode($data);
 	}
 
@@ -92,20 +96,20 @@ class Servicios extends CI_Controller {
 				'descripcion' => $this->input->post('descripcion'),
 				'precio' => $this->input->post('precio'),
 			);
-		$this->Servicios_model->update(array('id' => $this->input->post('id')), $data);
+		$this->Tipos_Servicios_model->update(array('id' => $this->input->post('id')), $data);
 		echo json_encode(array("status" => TRUE));
 	}
 
 
 	public function ajax_delete($id)
 	{	
-		$this->Servicios_model->delete_by_id($id);
+		$this->Tipos_Servicios_model->delete_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
 
 	public function ajax_enabled($id)
 	{		
-		$this->Servicios_model->enabled_by_id($id);
+		$this->Tipos_Servicios_model->enabled_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
 
@@ -140,7 +144,7 @@ class Servicios extends CI_Controller {
 	public function createXLS() {
 
        $this->load->library('excel');
-       $empInfo = $this->Servicios_model->get_all_export();
+       $empInfo = $this->Tipos_Servicios_model->get_all_export();
        $objPHPExcel = new PHPExcel();
        $objPHPExcel->setActiveSheetIndex(0);
        // set Header
@@ -156,7 +160,7 @@ class Servicios extends CI_Controller {
            $rowCount++;
         }
         
-       $archivo = "Servicios.xls";
+       $archivo = "Tipos_Servicios.xls";
        header('Content-Type: application/vnd.ms-excel');
        header('Content-Disposition: attachment;filename="'.$archivo.'"');
        header('Cache-Control: max-age=0');

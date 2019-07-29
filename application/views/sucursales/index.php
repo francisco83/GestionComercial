@@ -25,7 +25,7 @@
 								</div>				
 							</div>			
 						</div>
-						<div style="overflow-x:auto; min-height:250px">
+						<div class="tbl_grid">
 							<table id="tbl" class="table table-bordered table-hover">
 								<thead>
 									<tr>

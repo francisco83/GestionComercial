@@ -7,13 +7,19 @@ class Registrar extends CI_Controller {
 	public function __construct(){		
 		parent::__construct();
 		$this->load->model("Clientes_model");		
-		$this->load->model("Servicios_model");	
+		$this->load->model("Tipos_Servicios_model");	
 		//$this->load->model("Cliente_servicios_model");
 		$this->load->model("Cli_servicios_detalle_model");
-		$this->load->model("Cli_servicios_model");		
+		$this->load->model("Cli_servicios_model");	
+		$this->load->library(['ion_auth', 'form_validation']);
+
 	}
 
 	public function index($id){	
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
 		$this->load->view("registrar/index");
 	}
 
@@ -23,7 +29,7 @@ class Registrar extends CI_Controller {
 
 	function get_autocomplete(){
         if (isset($_GET['term'])) {
-            $result = $this->Servicios_model->search_blog($_GET['term']);
+            $result = $this->Tipos_Servicios_model->search_blog($_GET['term']);
             if (count($result) > 0) {
 			foreach ($result as $row)	
 			{
@@ -38,7 +44,7 @@ class Registrar extends CI_Controller {
 	}
 
 	public function get_all(){
-		$resultado = $this->Servicios_model->get_all();
+		$resultado = $this->Tipos_Servicios_model->get_all();
 		echo json_encode($resultado);
 	}
 
@@ -84,7 +90,7 @@ class Registrar extends CI_Controller {
             "clase" => $clase,
 		));
 		
-		//$resultado = $this->Servicios_model->listar();
+		//$resultado = $this->Tipos_Servicios_model->listar();
 		echo json_encode($this);
 		
 		//redirect('registrar');
