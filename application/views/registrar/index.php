@@ -33,11 +33,11 @@
 						<h4>Registrar servicios</h4>
 					</div>
 					
-					<?php if(!empty($this->session->flashdata())): ?>
+					<!-- <?php if(!empty($this->session->flashdata())): ?>
 					<div class="alert alert-<?php echo $this->session->flashdata('clase')?>">
 						<?php echo $this->session->flashdata('mensaje') ?>
 					</div>
-					<?php endif; ?>
+					<?php endif; ?> -->
 
 					<div id="messages"></div>
 

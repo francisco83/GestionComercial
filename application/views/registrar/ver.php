@@ -13,7 +13,6 @@
 	<script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
 	<script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
 	<script src="<?php echo base_url().'assets/js/jquery-ui.min.js'?>"></script>
-	<!-- <script src="<?php echo base_url();?>assets/js/main.js"></script> -->
 </head>
 <body>
 <?php  $this->load->view("partial/menu"); ?>
@@ -45,42 +44,24 @@
 
 <div class="container">
 <div class="row">
-			<!-- <div class="col-md-4 col-md-offset-2 pull-right">
-				<div class="form-group has-feedback has-feedback-left">				  
-				    <input type="text" class="form-control" name="busqueda" placeholder="Buscar" />
-				    <i class="glyphicon glyphicon-search form-control-feedback"></i>
-				</div>				
-			</div>			 -->
-
-
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h4>Registrar servicios</h4>
+						<h4>Ver Servicios</h4>
 					</div>
 					
-					<!-- <?php if(!empty($this->session->flashdata())): ?>
-					<div class="alert alert-<?php echo $this->session->flashdata('clase')?>">
-						<?php echo $this->session->flashdata('mensaje') ?>
-					</div>
-					<?php endif; ?>
-
-					<div id="messages"></div> -->
-
 					<div class="panel-body">
-
-
 					<form action="" id="form_insert">
 						<div class="col-md-12">
 						<div class="col-md-9">
 							<div class="form-group">
-									<label>Cliente:</label>
+									<!-- <label>Cliente:</label> -->
 									<input type ="text" id="clienteid" name="clienteid" hidden>
 									<div class="row">
-										<div class="col-md-8">
+										<div class="col-md-8 col-xs-8">
 											<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">										
 										</div>									
-										<div class="col-md-4">
+										<div class="col-md-2 col-xs-4">
 											<input class="btn btn-primary btn-block" value="Buscar" onclick="Filtrar($('#clienteid').val())"  >	
 										</div>
 									</div>							
@@ -194,7 +175,10 @@
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.fecha+"</td>"+
-				"<td>"+"<a class='btn btn-sm btn-primary' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+"</td>"+
+				"<td>"+
+				"<a class='btn btn-sm btn-info' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+
+				" <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_registrar/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-print'></i></a>"+
+				"</td>"+
 				"</tr>";
 			});
 
@@ -422,7 +406,7 @@ function cargarPaginado(response,valorBuscar,pagina,cantidad){
 	
 	}
 
-	function NoSelect()
+function NoSelect()
 {
     Message("Por favor, seleccione un registro.")
 }

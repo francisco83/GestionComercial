@@ -6,11 +6,11 @@ class Reportes extends CI_Controller {
 		parent::__construct();					
 	}
 
-	public function servicios(){
-		$this->load->model("Servicios_model");
+	public function tipos_servicios(){
+		$this->load->model("Tipos_Servicios_model");
 		$this->load->view("partial/cabecera_reporte");		
-		$data['servicios'] = $this->Servicios_model->get_all();		
-		$this->load->view("Reportes/servicios",$data);
+		$data['tipos_servicios'] = $this->Tipos_Servicios_model->get_all();		
+		$this->load->view("Reportes/tipos_servicios",$data);
 	}
 
 	public function empresas(){
@@ -46,5 +46,12 @@ class Reportes extends CI_Controller {
 		$this->load->view("partial/cabecera_reporte");		
 		$data['filas'] = $this->Users_model->get_all();		
 		$this->load->view("Reportes/users",$data);
+	}
+
+	public function ver_registrar($id){
+		$this->load->model("Cli_servicios_detalle_model");
+		$this->load->view("partial/cabecera_reporte");		
+		$data['filas'] = $this->Cli_servicios_detalle_model->buscarDetalleImprimir($id);		
+		$this->load->view("Reportes/ver_detalle_registrar",$data);
 	}
 }

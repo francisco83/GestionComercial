@@ -6,7 +6,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">
                         <h4>Lista de Tipos de servicios</h4>
-                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/servicios" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
+                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/tipos_servicios" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
 						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/tipos_servicios/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						

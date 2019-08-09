@@ -50,5 +50,11 @@ body {
 
   .tbl_grid{
   	overflow-x:auto; 
-  	min-height:250px
+	  min-height:250px;
+	  font-size: small;
+  }
+
+  .pagination{
+	font-size: smaller;
+	margin-top: -18px;
   }
