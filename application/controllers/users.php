@@ -7,13 +7,14 @@ class Users extends CI_Controller {
 		$this->load->model("Users_model");
 		$this->load->model("Users_groups_model");
 		$this->load->library(['ion_auth', 'form_validation']);
-	}
 
-	public function index(){
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
 		{
 			redirect('auth', 'refresh');
 		}
+	}
+
+	public function index(){
 		$this->load->view("users/index");
 	}
 

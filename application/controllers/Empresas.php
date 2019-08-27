@@ -6,14 +6,14 @@ class Empresas extends CI_Controller {
 		parent::__construct();
 		$this->load->model("Empresas_model");
 		$this->load->library(['ion_auth', 'form_validation']);
-	}
 
-	public function index(){
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
 		{
 			redirect('auth', 'refresh');
 		}
+	}
 
+	public function index(){
 		$this->load->view("Empresas/index");
 	}
 
