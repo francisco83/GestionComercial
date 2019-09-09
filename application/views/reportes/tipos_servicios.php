@@ -37,7 +37,7 @@
                                     </tr>                                                    
                                     <?php foreach ($tipos_servicios as $tipos_servicios): ?>
                                     <tr>
-                                        <td><?= $tipos_servicios->id ?></td>
+                                        <td class="r"><?= $tipos_servicios->id ?></td>
                                         <td><?= $tipos_servicios->nombre ?></td>
                                         <td><?= $tipos_servicios->descripcion ?></td>
                                     </tr>

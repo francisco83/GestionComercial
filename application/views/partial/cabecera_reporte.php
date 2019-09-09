@@ -5,11 +5,26 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <style type="text/css">
 
+/* 
+	.body-print
+	{
+		padding-right: 15px;
+		padding-left: 15px;
+	} */
+	.r{
+		text-align: right;
+	}
+	.c{
+		text-align: center;
+	}
+
     /*reset begin*/
     body
     {
         margin: 0;
-        counter-reset: page;
+		counter-reset: page;
+		padding-right: 15px;
+		padding-left: 15px;
     }
     /*reset end*/
     .col-print-1, .col-print-2,.col-print-3,.col-print-4,.col-print-5,.col-print-6,.col-print-7,.col-print-8,.col-print-9,.col-print-10,.col-print-11,.col-print-12

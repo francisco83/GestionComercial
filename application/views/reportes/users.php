@@ -39,11 +39,11 @@
                                     </tr>                                                    
                                     <?php foreach ($filas as $fila): ?>
                                     <tr>
-                                        <td><?= $fila->id ?></td>
+                                        <td class="r"><?= $fila->id ?></td>
                                         <td><?= $fila->first_name ?></td>
                                         <td><?= $fila->last_name ?></td>
                                         <td><?= $fila->email ?></td>                                        
-                                        <td><?= $fila->phone ?></td>
+                                        <td class="r"><?= $fila->phone ?></td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>

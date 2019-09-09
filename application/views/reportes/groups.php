@@ -37,7 +37,7 @@
                                     </tr>                                                    
                                     <?php foreach ($filas as $fila): ?>
                                     <tr>
-                                        <td><?= $fila->id ?></td>
+                                        <td class="r"><?= $fila->id ?></td>
                                         <td><?= $fila->name ?></td>
                                         <td><?= $fila->description ?></td>
                                     </tr>

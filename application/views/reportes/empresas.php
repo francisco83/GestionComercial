@@ -41,12 +41,12 @@
                                     </tr>                                                    
                                     <?php foreach ($filas as $fila): ?>
                                     <tr>
-                                        <td><?= $fila->id ?></td>
+                                        <td class="r"><?= $fila->id ?></td>
                                         <td><?= $fila->nombre ?></td>
-                                        <td><?= $fila->cuit ?></td>
-                                        <td><?= $fila->ingresosbrutos ?></td>
+                                        <td class="r"><?= $fila->cuit ?></td>
+                                        <td class="r"><?= $fila->ingresosbrutos ?></td>
                                         <td><?= $fila->direccion ?></td>
-                                        <td><?= $fila->telefono ?></td>
+                                        <td class="r"><?= $fila->telefono ?></td>
                                         <td><?= $fila->email ?></td>
                                     </tr>
                                     <?php endforeach; ?>
