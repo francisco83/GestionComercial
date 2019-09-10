@@ -1,30 +1,6 @@
         <body cz-shortcut-listen="true">
         <table border="0" width="100%"> 
-            <thead> 
-                <tr> 
-                <th style="width:100%">
-						<div class="row">                                                    <div class="col-print-2 pull-right">
-									<strong>Folio Nº 197</strong>
-								</div>
-						</div>
-						<div>
-							<div class="row">
-								<div class="col-print-4">
-									<img src="https://image.freepik.com/psd-gratis/logo-corporativo-plantilla-vector_63-2549.jpg" class="img-responsive" />
-								</div>
-								<div class="col-print-6">
-									<strong>Decreto 859/07-PEN</strong><br />
-									<strong>Autorizada provisoriamente según lo previsto en ley Nº 24521, mediante el decreto</strong><br />
-									<strong>PEN Nº 859/07 de fecha 4 de Julio de 2007</strong>
-								</div>
-							</div>    
-						</div>  
-                </th> 
-            </tr> 
-            <tr> 
-                <th><hr style="color:#000080"/></th> 
-            </tr> 
-            </thead> 
+			<?php $this->load->view("partial/encabezado_reporte");?>
             <tbody> 
                     <tr> 
                         <td width="100%"> 

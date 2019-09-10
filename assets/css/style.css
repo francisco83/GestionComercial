@@ -49,7 +49,7 @@ body {
   }
 
   .tbl_grid{
-  	overflow-x:auto; 
+  	  overflow-x:auto; 
 	  min-height:250px;
 	  font-size: small;
   }
