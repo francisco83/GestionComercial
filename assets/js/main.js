@@ -114,6 +114,16 @@ function hoyFecha(){
 }
 /*fin fecha actual*/
 
+/*Devuelve la fecha en el formato correcto*/
+function StrToFecha(fecha){
+	var hoy = fecha;
+	var dd = fecha.substr(8,2);
+	var mm = fecha.substr(5,2);
+	var yyyy = fecha.substr(0,4);
+
+	return dd+'/'+mm+'/'+yyyy;
+}
+
 /*Codigo para los ABM*/
 
 function action(option){
@@ -127,6 +137,14 @@ function action(option){
 		if (option =="delete")
 			delete_(id);	
 	}	
+	else{
+		$.notify({
+			title: '<strong>Atención!</strong>',
+			message: 'Seleccione una fila.'
+		},{
+			type: 'warning'
+		});
+	}
 }
 
 function reload_table(){

@@ -7,7 +7,7 @@
 
 						<div class="col-md-12" style="border:1px solid #ddd; margin-bottom: 10px;">
 							Código: <?= $filas[0]->codigo_servicio  ?></br>
-							Fecha: <?= $filas[0]->fecha_servicio  ?></br>
+							Fecha: <?= date("d/m/Y", strtotime($filas[0]->fecha_servicio )); ?></br>
 							Cliente: <?= $filas[0]->nombrecliente ?></br>
 						</div>
 

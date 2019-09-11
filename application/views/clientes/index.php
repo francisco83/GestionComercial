@@ -151,7 +151,12 @@ function edit(id)
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
-            alert('Error get data from ajax');
+			$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'Se produjo un error.'
+               },{
+                   type: 'danger'
+               });
         }
     });
 }
@@ -161,7 +166,15 @@ function RegistrarServicio(){
 	var id = $("#tbl tr.selected td:first").html();
 	if (id !=  undefined){
 		location.href ="<?php echo base_url().'index.php/registrar/index/'?>"+id;
-	}		
+	}	
+	else{
+		$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'Seleccione una fila.'
+               },{
+                   type: 'info'
+               });
+	}	
 }
 
 </script>

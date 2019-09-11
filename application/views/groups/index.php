@@ -124,6 +124,14 @@ function action(option){
 		if (option =="delete")
 			delete_(id);	
 	}	
+	else{
+		$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'Seleccione una fila.'
+               },{
+                   type: 'warning'
+               });
+	}
 }
 
 

@@ -151,6 +151,13 @@ class Registrar extends CI_Controller {
 		);
 		echo json_encode($data);
 	}
+
+	public function ajax_delete($id)
+	{	
+		$this->Cli_servicios_detalle_model->delete_by_masterid($id);
+		$this->Cli_servicios_model->delete_by_id($id);
+		echo json_encode(array("status" => TRUE));
+	}
 	
 	
 }

@@ -13,6 +13,7 @@
 	<script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
 	<script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
 	<script src="<?php echo base_url().'assets/js/jquery-ui.min.js'?>"></script>
+	<script src="<?php echo base_url().'assets/js/main.js'?>"></script>
 </head>
 <body>
 <?php  $this->load->view("partial/menu"); ?>
@@ -82,7 +83,7 @@
 							</select>
 						</p>
 						<div class="tbl_grid">
-							<table id="tblusuarios" class="table table-bordered table-hover">
+							<table id="tbl" class="table table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>#</th>
@@ -98,7 +99,7 @@
 						<div class="text-center paginacion">							
 						</div>
 
-  						<h3>Detalle ventas</h3>
+  						<h3>Detalle</h3>
 						  <p>
 							<strong>Mostrar por : </strong>
 							<select name="cantidadDetalle" id="cantidadDetalle">
@@ -139,23 +140,16 @@
 	var i = 1;
 	
 	$(function() {
-
-		//main(); 
-		//$("#fechahoy").val(hoyFecha());
-
-		//Buscar Cliente
-		$( "#combocliente" ).autocomplete({
-		source: "<?php echo site_url('Clientes/get_autocomplete/?');?>",
-		autoFill:true,
-		select: function(event, ui){
-			console.log(ui);
-			$('#clienteid').val(ui.item.id);
-			$("#combocliente").val(ui.item.value);
-		},
-		});
-		
-	
-
+			//Buscar Cliente
+			$( "#combocliente" ).autocomplete({
+			source: "<?php echo site_url('Clientes/get_autocomplete/?');?>",
+			autoFill:true,
+			select: function(event, ui){
+				console.log(ui);
+				$('#clienteid').val(ui.item.id);
+				$("#combocliente").val(ui.item.value);
+			},
+			});	
 		});
 
 
@@ -174,18 +168,20 @@
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.id+"</td>"+
-				"<td>"+item.fecha+"</td>"+
+				"<td>"+StrToFecha(item.fecha)+"</td>"+
 				"<td>"+
-				"<a class='btn btn-sm btn-info' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+
+				"<a class='btn btn-sm btn-info' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+				
+				" <a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>reportes/ver_registrar/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-edit'></i></a>"+
+				" <a class='btn btn-sm btn-danger' onclick='<?php echo 'action(delete)' ?>'><i class='glyphicon glyphicon-trash'></i></a>"+
 				" <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_registrar/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-print'></i></a>"+
 				"</td>"+
 				"</tr>";
 			});
 
-			$("#tblusuarios tbody").html(filas);
+			$("#tbl tbody").html(filas);
 			cargarPaginado(response, valorBuscar,pagina,cantidad);
 
-			$("#tblusuarios tbody tr").click(function(){
+			$("#tbl tbody tr").click(function(){
 				$(this).addClass('selected').siblings().removeClass('selected');    
 				var value=$(this).find('td:first').html(); 				
 			});
@@ -323,7 +319,7 @@ function cargarPaginado(response,valorBuscar,pagina,cantidad){
 		else
 			paginador +="<li><a href='"+i+"'>"+i+"</a></li>";
 	}
-	//condicion para mostrar el boton sigueinte y ultimo
+	//condicion para mostrar el boton siguiente y ultimo
 	if(linkseleccionado<numerolinks)
 	{
 		paginador+="<li><a href='"+(linkseleccionado+1)+"' >&rsaquo;</a></li>";
@@ -410,10 +406,5 @@ function NoSelect()
 {
     Message("Por favor, seleccione un registro.")
 }
-
-
-
-
-
 
 </script>
