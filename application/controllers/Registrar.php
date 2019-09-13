@@ -20,7 +20,8 @@ class Registrar extends CI_Controller {
 	}
 
 	public function index($id){	
-		$this->load->view("registrar/index");
+		$cliente = $this->Clientes_model->get_by_id($id);
+		$this->load->view("registrar/index",$cliente);
 	}
 
 	public function ver(){	
@@ -35,7 +36,7 @@ class Registrar extends CI_Controller {
 			{
 				$data[] = array(
 					'id' => $row->id,
-					'value'=> $row->nombre
+					'value'=> $row->apellido.' '.$row->nombre
 				);
 			}				
                 echo json_encode($data);
@@ -77,7 +78,7 @@ class Registrar extends CI_Controller {
             $mensaje = "Registro cargado correctamente";
 			$clase = "success";
 			
-			$json['success'] = 'You have upload your selected files!';
+			//$json['success'] = 'You have upload your selected files!';
 
 
         }else{

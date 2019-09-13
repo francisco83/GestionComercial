@@ -31,14 +31,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h4>Registrar servicios</h4>
-					</div>
-					
-					<!-- <?php if(!empty($this->session->flashdata())): ?>
-					<div class="alert alert-<?php echo $this->session->flashdata('clase')?>">
-						<?php echo $this->session->flashdata('mensaje') ?>
-					</div>
-					<?php endif; ?> -->
-
+					</div>					
 					<div id="messages"></div>
 
 					<div class="panel-body">
@@ -55,7 +48,7 @@
 							<div class="col-md-9">
 								<div class="form-group">
 										<label>Cliente:</label>
-										<input type ="text" id="clienteid" name="clienteid" hidden>
+										<input type ="text" id="clienteid" name="clienteid" hidden value="<?php echo ($id)?>">
 										<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
 								</div>
 							</div>
@@ -82,8 +75,9 @@
 	var i = 1;
 	
 	$(function() {
-
+		//var cliente = "<?php echo ($apellido." ".$nombre)?>";
 		$("#fechahoy").val(hoyFecha());
+		$("#combocliente").val("<?php echo ($apellido." ".$nombre)?>");
 
 		//Buscar Cliente
 		$( "#combocliente" ).autocomplete({
@@ -107,13 +101,10 @@
 					filas+="<option value='"+item.id+"' precio='"+item.precio+"'>"+item.nombre+"</option>";
 					//filas+="<option value='"+item.id+"'>"+item.nombre+"</option>";
 
-				});
-				//$("#comboservicio").html(filas);		
-				//$("#comboservicio").combobox();				
+				});			
 			}
 		});
 	
-
 		jQuery(document).on('submit','#form_insert',function(event)
 		{
 			event.preventDefault();
@@ -121,36 +112,26 @@
 				url:"<?php echo site_url('Registrar/insertar');?>",
 				type: 'POST',
 				datetype: 'json',
-				data: $(this).serialize(),
-				// success: function(json) {
-				// 	console.log("funciono",json);
-                //     if (json['error']) {
-                //         $('#messages').append('<div class="alert alert-danger">' + json['error'] + '</div>');
-                //     }
+				data: $(this).serialize()
+			})
+			.done(function(respuesta)
+			{
+				$("#detalle").html('');
 
-                //     if (json['success']) {
-				// 		console.log("Correcto");
-                //         $('#messages').append('<div class="alert alert-success">' + json['success'] + '</div>');
-                //         $('.refresh').trigger('click');
-                //         $(this).tooltip('hide');
-                //     }
-                // },
- 
+				$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'Se registro el servicio.'
+               },{
+                   type: 'success'
+               });
 
 			})
-			// .done(function(respuesta)
-			// {
-			// 	console.log("Respuesta",respuesta);
-			// 	$('#messages').append('<div class="alert alert-success">' + '<?php echo $this->session->flashdata('mensaje') ?>'+ '</div>');
-			// 	$("#detalle").html("");
-			// })
-			// .fail(function(resp)
-			// {
-			// 	console.log("Error");
-			// })
+			.fail(function(resp)
+			{
+			 	console.log("Error");
+			 });
 
-		}
-		)
+		})
 
 });
 

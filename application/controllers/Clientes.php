@@ -43,7 +43,8 @@ class Clientes extends CI_Controller {
 		$json = [];
 		$this->load->database();		
 		if(!empty($this->input->get("q"))){
-			$this->db->like('nombre', $this->input->get("q"));
+			$this->db->like('apellido', $this->input->get("q"));
+			$this->db->or_like('nombre', $this->input->get("q"));
 		}
 			$query = $this->db->select('id,nombre as text')
 						->limit(10)
@@ -61,7 +62,7 @@ class Clientes extends CI_Controller {
 			{
 				$data[] = array(
 					'id' => $row->id,
-					'value'=> $row->nombre
+					'value'=> $row->apellido.' '.$row->nombre
 				);
 			}				
                 echo json_encode($data);

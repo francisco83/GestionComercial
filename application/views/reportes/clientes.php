@@ -8,8 +8,8 @@
                                 <tbody>
                                     <tr>
                                         <td class="padding0"><strong>#</strong></td>
-                                        <td class="padding0"><strong>Nombre</strong></td>
-                                        <td class="padding0"><strong>Apellido</strong></td>
+										<td class="padding0"><strong>Apellido</strong></td>
+                                        <td class="padding0"><strong>Nombre</strong></td>    
                                         <td class="padding0"><strong>DNI</strong></td>                                        
                                         <td class="padding0"><strong>Teléfono</strong></td>
                                         <td class="padding0"><strong>Email</strong></td>
@@ -17,8 +17,8 @@
                                     <?php foreach ($filas as $fila): ?>
                                     <tr>
                                         <td class="r"><?= $fila->id ?></td>
+										<td><?= $fila->apellido ?></td>
                                         <td><?= $fila->nombre ?></td>
-                                        <td><?= $fila->apellido ?></td>
                                         <td class="r"><?= $fila->dni ?></td>                                        
                                         <td class="r"><?= $fila->telefono ?></td>
                                         <td><?= $fila->email ?></td>

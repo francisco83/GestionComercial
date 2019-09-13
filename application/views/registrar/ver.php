@@ -148,6 +148,9 @@
 				console.log(ui);
 				$('#clienteid').val(ui.item.id);
 				$("#combocliente").val(ui.item.value);
+
+				Filtrar(ui.item.id);
+				$("#tbldetalle tbody").html('');				
 			},
 			});	
 		});
@@ -178,6 +181,7 @@
 				"</tr>";
 			});
 
+			$("#tbldetalle tbody").html('');
 			$("#tbl tbody").html(filas);
 			cargarPaginado(response, valorBuscar,pagina,cantidad);
 

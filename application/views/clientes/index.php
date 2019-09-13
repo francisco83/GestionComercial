@@ -30,8 +30,8 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Nombre</th>
 										<th>Apellido</th>
+										<th>Nombre</th>
 										<th>DNI</th>
 										<th>Email</th>
 										<th>Telefono</th>
@@ -81,12 +81,12 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 					habilitado ='NO';
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
-				"<td>"+item.nombre+"</td>"+
 				"<td>"+item.apellido+"</td>"+
-				"<td>"+item.dni+"</td>"+
+				"<td>"+item.nombre+"</td>"+
+				"<td class='r'>"+item.dni+"</td>"+
 				"<td>"+item.email+"</td>"+
-				"<td>"+item.telefono+"</td>"+
-				"<td>"+habilitado+"</td>"+
+				"<td class='r'>"+item.telefono+"</td>"+
+				"<td class='c'>"+habilitado+"</td>"+
 				"</tr>";
 			});
 			$("#tbl tbody").html(filas);
@@ -140,8 +140,8 @@ function edit(id)
         success: function(data)
         {
             $('[name="id"]').val(data.id);
+			$('[name="apellido"]').val(data.apellido);
             $('[name="nombre"]').val(data.nombre);
-            $('[name="apellido"]').val(data.apellido);
 			$('[name="dni"]').val(data.dni);
 			$('[name="email"]').val(data.email);
 			$('[name="telefono"]').val(data.telefono);			
@@ -165,7 +165,7 @@ function edit(id)
 function RegistrarServicio(){
 	var id = $("#tbl tr.selected td:first").html();
 	if (id !=  undefined){
-		location.href ="<?php echo base_url().'index.php/registrar/index/'?>"+id;
+		location.href ="<?php echo base_url().'registrar/index/'?>"+id;
 	}	
 	else{
 		$.notify({

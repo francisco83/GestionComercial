@@ -58,3 +58,10 @@ body {
 	font-size: smaller;
 	margin-top: -18px;
   }
+
+	.r{
+		text-align: right;
+	}
+	.c{
+		text-align: center;
+	}

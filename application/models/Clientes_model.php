@@ -7,7 +7,8 @@ class Clientes_model extends CI_Model {
 
 	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
-		$this->db->like("nombre",$buscar);
+		$this->db->like('apellido', $buscar);
+        $this->db->or_like('nombre', $buscar);
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
@@ -29,9 +30,10 @@ class Clientes_model extends CI_Model {
 	 }
  
 
-	function search_autocomplete($title){
-        $this->db->like('nombre', $title);
-        $this->db->order_by('nombre', 'ASC');
+	function search_autocomplete($title){		
+		$this->db->like('apellido', $title);
+        $this->db->or_like('nombre', $title);
+        $this->db->order_by('apellido', 'ASC');
         $this->db->limit(10);
         return $this->db->get($this->table)->result();
 	}
