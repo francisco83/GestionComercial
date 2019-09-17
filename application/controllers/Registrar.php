@@ -24,6 +24,13 @@ class Registrar extends CI_Controller {
 		$this->load->view("registrar/index",$cliente);
 	}
 
+	public function editar($serviceId){	
+		//$data['filas'] = 
+		$detalle['filas']  = $this->Cli_servicios_detalle_model->get_by_serviceId($serviceId);
+		$this->load->view("registrar/editar",$detalle);
+		//echo json_encode($detalle);
+	}
+
 	public function ver(){	
 		$this->load->view("registrar/ver");
 	}
@@ -155,8 +162,7 @@ class Registrar extends CI_Controller {
 
 	public function ajax_delete($id)
 	{	
-		$this->Cli_servicios_detalle_model->delete_by_masterid($id);
-		$this->Cli_servicios_model->delete_by_id($id);
+		$this->Cli_servicios_detalle_model->delete_by_masterid($id);		
 		echo json_encode(array("status" => TRUE));
 	}
 	

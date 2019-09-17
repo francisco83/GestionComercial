@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ES">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,6 +14,7 @@
 	<script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
 	<script src="<?php echo base_url().'assets/js/jquery-ui.min.js'?>"></script>
 	<script src="<?php echo base_url().'assets/js/main.js'?>"></script>
+	<script src="<?php echo base_url();?>assets/js/bootstrap-notify.min.js"></script>
 </head>
 <body>
 <?php  $this->load->view("partial/menu"); ?>
@@ -138,6 +139,8 @@
 	<script>
 	
 	var i = 1;
+	var controller ='registrar';
+	var Site="<?php echo site_url()?>"
 	
 	$(function() {
 			//Buscar Cliente
@@ -155,7 +158,7 @@
 			});	
 		});
 
-
+		
 	function mostrarDatosCliente(clienteId,valorBuscar,pagina,cantidad){
 		console.log("Ingreso a mostrar datos",clienteId, valorBuscar,pagina,cantidad);
 	$.ajax({
@@ -173,9 +176,9 @@
 				"<td>"+item.id+"</td>"+
 				"<td>"+StrToFecha(item.fecha)+"</td>"+
 				"<td>"+
-				"<a class='btn btn-sm btn-info' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+				
-				" <a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>reportes/ver_registrar/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-edit'></i></a>"+
-				" <a class='btn btn-sm btn-danger' onclick='<?php echo 'action(delete)' ?>'><i class='glyphicon glyphicon-trash'></i></a>"+
+				//"<a class='btn btn-sm btn-info' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+				
+				" <a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>"+
+				" <a class='btn btn-sm btn-danger' onclick='javascript:borrar_Servicio("+item.id+")'><i class='glyphicon glyphicon-trash'></i></a>"+				
 				" <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_registrar/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-print'></i></a>"+
 				"</td>"+
 				"</tr>";
@@ -187,12 +190,49 @@
 
 			$("#tbl tbody tr").click(function(){
 				$(this).addClass('selected').siblings().removeClass('selected');    
-				var value=$(this).find('td:first').html(); 				
+				var value=$(this).find('td:first').html(); 	
+				FiltrarDetalle(value);			
 			});
 
 		}
 	});
 }
+
+
+function borrar_Servicio(id)
+{
+    if(confirm('¿Esta seguro que desea eliminar el registro?'))
+    {
+        $.ajax({
+            url : Site+controller+"/ajax_delete/"+id,
+            type: "POST",
+            dataType: "JSON",
+            success: function(data)
+            {
+				Filtrar($('#clienteid').val());
+				$.notify({
+                   title: '<strong>Correcto!</strong>',
+                   message: 'El registro se elimino correctamente.'
+               },{
+                   type: 'success'
+               });
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+				$.notify({
+                   title: '<strong>Error!</strong>',
+                   message: 'Se produjo un error al eliminar el registro.'
+               },{
+                   type: 'danger'
+               });
+            }
+        });
+
+    }
+}
+
+
+
 
 function verDetalle(servicioId,valorBuscar,pagina,cantidad){
 		console.log("Servicio a ver",servicioId);
@@ -201,9 +241,7 @@ function verDetalle(servicioId,valorBuscar,pagina,cantidad){
 		type: "POST",
 		data: {servicioId:servicioId,buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
-		success:function(response){
-			console.log("response",response);
-			
+		success:function(response){			
 			filas = "";
 			$.each(response.cli_servicios_detalle,function(key,item){
 				filas+="<tr>"+

@@ -46,4 +46,23 @@ class Cli_servicios_detalle_model extends CI_Model {
 		return $consulta->result();
 	}
 
+	public function delete_by_masterid($id)
+	{
+	 $this->db->delete("cli_servicios_detalle", array("id_cli_servicios" => $id));
+	 $this->db->delete("cli_servicios", array("id" => $id));
+	}
+
+	public function get_by_serviceId($servicioId){
+
+		$this->db->select('cli_servicios.id as codigo_servicio,cli_servicios.fecha as fecha_servicio,cli_servicios_detalle.precio,cli_servicios_detalle.cantidad,cli_servicios_detalle.descripcion,tipos_servicios.nombre,clientes.Id as clienteId,clientes.apellido,clientes.nombre as nombrecliente');
+		$this->db->from('cli_servicios_detalle');
+		$this->db->join('tipos_servicios','tipos_servicios.id=cli_servicios_detalle.id_servicio');
+		$this->db->join('cli_servicios','cli_servicios.id=cli_servicios_detalle.id_cli_servicios');
+		$this->db->join('clientes','clientes.id=cli_servicios.id_cliente');
+		$this->db->where("id_cli_servicios",$servicioId);
+
+		$consulta=$this->db->get();
+		return $consulta->result();
+	}
+
 }
