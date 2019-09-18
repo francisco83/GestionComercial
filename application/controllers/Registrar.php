@@ -24,11 +24,24 @@ class Registrar extends CI_Controller {
 		$this->load->view("registrar/index",$cliente);
 	}
 
+	// public function editar($serviceId){	
+	// 	//$data['filas'] = 
+	// 	$detalle['filas']  = $this->Cli_servicios_detalle_model->get_by_serviceId($serviceId);
+	// 	$this->load->view("registrar/editar",$detalle);
+	// 	//echo json_encode($detalle);
+	// }
+
 	public function editar($serviceId){	
 		//$data['filas'] = 
-		$detalle['filas']  = $this->Cli_servicios_detalle_model->get_by_serviceId($serviceId);
-		$this->load->view("registrar/editar",$detalle);
+		//$detalle['filas']  = $this->Cli_servicios_detalle_model->get_by_serviceId($serviceId);
+		$service['servicioId']=$serviceId;
+		$this->load->view("registrar/editar",$service);
 		//echo json_encode($detalle);
+	}
+
+	public function get_servicios($serviceId){
+		$detalle=  $this->Cli_servicios_detalle_model->get_by_serviceId($serviceId);
+		echo json_encode($detalle);
 	}
 
 	public function ver(){	

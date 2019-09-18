@@ -48,7 +48,7 @@
 							<div class="col-md-9">
 								<div class="form-group">
 										<label>Cliente:</label>
-										<input type ="text" id="clienteid" name="clienteid" hidden  value="">
+										<input type ="text" id="clienteid" name="clienteid" hidden  value="<?php echo $filas[0]->clienteId?>">
 										<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
 								</div>
 							</div>
@@ -57,8 +57,43 @@
 
 
 						<div class="col-md-12" id="detalle">
-
-
+						<input type="text" id="cantidad_filas">
+  						<?php $j=1; ?>	
+						<?php foreach ($filas as $fila): ?>
+							<div class="row fila" id="fila<?= $j?>">
+								<div class="id_" hidden><?= $j ?></div>
+								<div class="col-md-12">
+									<div class="col-md-6">
+										Tipo de Servicio:
+										</br>
+										<!-- <select class="form-control" name="servicio[]" required id ="comboservicio<?= $j?>"></select> -->
+										<input class="form-control" name="servicio[]" required  id="comboservicio<?= $j?>" value="<?= $fila->nombre ?>" >
+									</div>
+									<div class="col-md-2">
+										Precio:
+										<input class="form-control" name="precio[]" required  id="precio<?= $j?>" value="<?= $fila->precio ?>">
+									</div>
+									<div class="col-md-2">
+										Cantidad:
+										<input class="form-control" name="cantidad[]" required id="cantidad<?= $j?>" value="<?= $fila->cantidad ?>">
+									</div>
+									<div class="col-md-2">
+										Total:
+										<input class="form-control tot'+<?= $j ?>+'" name="total[]" required id="total<?= $fila->codigo_servicio ?>" value="<?= $fila->precio * $fila->cantidad ?>">
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="col-md-10">
+										Detalle:
+										<textarea  class="form-control" name="detalle[]" rows="2"><?= $fila->descripcion ?></textarea>
+									</div>
+									<div class="col-md-2">
+										</br>
+										<a class="btn btn-sm btn-danger" onclick="borrarFila(<?= $j ?>)"><i class="glyphicon glyphicon-trash"></i></a>
+									</div>
+								</div>
+							</div>				
+						<?php $j++; endforeach; ?>
 
 
 						</div>			
@@ -83,10 +118,15 @@
 
 var i=0;
 var cant_filas = 0;
-var filas;
 
 	
 	$(function() {
+
+		$("#fechahoy").val("<?php echo ($filas[0]->fecha_servicio)?>");
+		$("#combocliente").val("<?php echo ($filas[0]->apellido." ".$filas[0]->nombrecliente)?>");
+		$("#cantidad_filas").val("<?php echo(count($filas))?>");
+		cant_filas = parseInt($("#cantidad_filas").val());
+		i= cant_filas+1;
 
 		//Buscar Cliente
 		$( "#combocliente" ).autocomplete({
@@ -112,67 +152,57 @@ var filas;
 		});
 
 
-
-		console.log("<?php echo ($servicioId)?>");
-		var i=1;
-		$.ajax({
-			url : "<?php echo site_url('Registrar/get_servicios/'.$servicioId);?>",
-			type: "POST",
-			dataType:"json",
-			success:function(response){
-				console.log("ingreso");
-				$("#fechahoy").val(response[0].fecha_servicio);
-				$("#combocliente").val(response[0].apellido+" "+response[0].nombrecliente);
-				$("#clienteid").val(response[0].clienteId);
-
-				fil = "";
-				$.each(response,function(key,item){
+		asyncCall();
 
 
-				fil+='<div class="row fila" id="fila'+i+'">'+
-				'<div class="id_" hidden>'+i+'</div>'+
-  							'<div class="col-md-12">'+
-								'<div class="col-md-6">'+
-									'Tipo de Servicio:'+
-									'</br>'+
-									'<select class="form-control" name="servicio[]" required id ="comboservicio'+i+'"></select>'+
-								'</div>'+
-								'<div class="col-md-2">'+
-									'Precio:'+
-									'<input class="form-control" name="precio[]" required  id="precio'+i+'" value="'+item.precio+'">'+
-								'</div>'+
-								'<div class="col-md-2">'+
-									'Cantidad:'+
-									'<input class="form-control" name="cantidad[]" required id="cantidad'+i+'" value="'+item.cantidad+'">'+
-								'</div>'+
-								'<div class="col-md-2">'+
-									'Total:'+
-									'<input class="form-control tot'+i+'" name="total[]" required id="total'+i+'" value="'+item.precio * item.cantidad+'">'+
-								'</div>'+
-							'</div>'+
-							'<div class="col-md-12">'+		
-								'<div class="col-md-10">'+					
-									'Detalle:'+
-									'<textarea  class="form-control" name="detalle[]" rows="2">'+item.descripcion+'</textarea>'+
-								'</div>'+
-								'<div class="col-md-2">'+	
-									'</br>'+
-									'<a class="btn btn-sm btn-danger" onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+
-								'</div>'+	
-							'</div>'+
-						'</div>';
 
-						
-						i++;
 
-			});
-			$("#detalle").html(fil);	
-			for(m=1;m<i;m++){
-				cargar(m);
-			}		
-			}
-		});
 	});
+
+
+	async function asyncCall() {
+  console.log('calling');
+  var result = await resolveAfter2Seconds();
+  console.log(result);
+  // expected output: 'resolved'
+}
+
+	function resolveAfter2Seconds() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      //resolve('resolved');
+
+	  for(m=1; m<=cant_filas; m++){
+		  console.log("entro");
+		cargar(m);
+
+		// $("#fila"+m).click(function(){
+		// 		$(this).addClass('selected').siblings().removeClass('selected');    
+		// 		var value=$(this).find('div:first').html(); 
+		// 		console.log(value);				
+		// 	});
+
+		// $("#cantidad"+m).on('change',function(){
+		// 	  var a = $('.selected').find('div:first').html();
+		// 	  console.log("cambios",a);
+		// 	  Resultado = $("#precio"+a).val() * $("#cantidad"+a).val();
+		// 	  $("#total"+a).val(Resultado);  
+		// });
+		
+		 }
+
+		 resolve('resolved');
+
+    }, 1000);
+  });
+}
+
+
+	function borrarFila(index){
+		console.log("ingreso");
+		$("#fila"+index).remove();
+	}
+
 
 
 	function agregarFila() {   
@@ -276,8 +306,50 @@ function cargar(n){
         	} 
     	});
 }
-	function borrarFila(index){
-		$("#fila"+index).remove();
-	}
 
-</script>		
+</script>
+
+<!-- 
+	<script src="<?php echo base_url();?>assets/js/combos.js"></script>
+	<script>
+	
+	
+
+		
+
+	
+		jQuery(document).on('submit','#form_insert',function(event)
+		{
+			event.preventDefault();
+			jQuery.ajax({
+				url:"<?php echo site_url('Registrar/insertar');?>",
+				type: 'POST',
+				datetype: 'json',
+				data: $(this).serialize()
+			})
+			.done(function(respuesta)
+			{
+				$("#detalle").html('');
+
+				$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'Se registro el servicio.'
+               },{
+                   type: 'success'
+               });
+
+			})
+			.fail(function(resp)
+			{
+			 	console.log("Error");
+			 });
+
+		})
+
+});
+
+
+
+
+
+</script> -->
