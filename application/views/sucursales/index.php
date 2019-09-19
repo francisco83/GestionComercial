@@ -5,7 +5,7 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-                        <h4>Lista de sucursales</h4>
+                        <h4>Sucursales</h4>
                         <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/sucursales" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
 						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/sucursales/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
@@ -81,7 +81,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 				"<td>"+item.direccion+"</td>"+
 				"<td>"+item.telefono+"</td>"+
 				"<td>"+item.email+"</td>"+
-				"<td>"+habilitado+"</td>"+
+				"<td class='c'>"+habilitado+"</td>"+
 				"</tr>";
 			});
 			$("#tbl tbody").html(filas);

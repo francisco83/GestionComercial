@@ -5,9 +5,9 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-                        <h4>Tipos de servicios</h4>
-                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/tipos_servicios" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
-						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/tipos_servicios/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
+                        <h4>Productos</h4>
+                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/productos" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
+						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/productos/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -30,9 +30,12 @@
 								<thead>
 									<tr>
 										<th>#</th>
+										<th>Codigo</th>
 										<th>Nombre</th>
-										<th>Descripción</th>
-										<th>Precio</th>
+										<th>Descripcion</th>
+										<th>Precio Venta</th>
+										<th>Precio Compra</th>
+										<th>Existencia</th>
 										<th>Habilitado</th>
 									</tr>
 								</thead>
@@ -48,19 +51,17 @@
 		</div>
 		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
 		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
-		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>	
+		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>			
 		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
 <script>
 
 var valor, pag;
-var controller ='tipos_servicios';
+var controller ='productos';
 var Site="<?php echo site_url()?>"
 
-function reload_table(){
-	mostrarDatos(valor,pag,$("#cantidad").val());	
-};
+
 
 function mostrarDatos(valorBuscar,pagina,cantidad){
 	valor = valorBuscar;
@@ -71,18 +72,21 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		type: "POST",
 		data: {buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
-		success:function(response){			
+		success:function(response){		
 			filas = "";
-			$.each(response.tipos_servicios,function(key,item){
+			$.each(response.Productos,function(key,item){
 				if(item.habilitado=="1")
 					habilitado ='SI';		
 				else
 					habilitado ='NO';
 				filas+="<tr>"+
-				"<td class='r'>"+item.id+"</td>"+
+				"<td>"+item.id+"</td>"+
+				"<td>"+item.codigo+"</td>"+
 				"<td>"+item.nombre+"</td>"+
 				"<td>"+item.descripcion+"</td>"+
-				"<td class='r'>"+item.precio+"</td>"+
+				"<td class='r'>"+item.precioVenta+"</td>"+
+				"<td class='r'>"+item.precioCompra+"</td>"+				
+				"<td class='r'>"+item.existencia+"</td>"+	
 				"<td class='c'>"+habilitado+"</td>"+
 				"</tr>";
 			});
@@ -117,12 +121,9 @@ function add()
 	$('.panel-body').removeClass('has-error'); 
     $('.help-block').empty();
     $('#modal_form').modal('show'); 
-    $('.modal-title').text('Agregar Tipo de servicio');
+    $('.modal-title').text('Agregar Clientes');
 	$('.modal-backdrop').remove();
 }
-
-
-
 
 
 function edit(id)
@@ -140,19 +141,28 @@ function edit(id)
         success: function(data)
         {
             $('[name="id"]').val(data.id);
+			$('[name="codigo"]').val(data.codigo);
             $('[name="nombre"]').val(data.nombre);
             $('[name="descripcion"]').val(data.descripcion);
-            $('[name="precio"]').val(data.precio);
+			$('[name="precioVenta"]').val(data.precioVenta);
+			$('[name="precioCompra"]').val(data.precioCompra);
+			$('[name="existencia"]').val(data.existencia);			
             $('#modal_form').modal('show');
-            $('.modal-title').text('Editar Servicio');
+            $('.modal-title').text('Editar Productos');
 			$('.modal-backdrop').remove();
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
-            alert('Error get data from ajax');
+			$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'Se produjo un error.'
+               },{
+                   type: 'danger'
+               });
         }
     });
 }
+
 </script>
 
 <!-- Bootstrap modal -->
@@ -161,33 +171,54 @@ function edit(id)
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Tipo de Servicio</h3>
+                <h3 class="modal-title">Productos</h3>
             </div>
             <div class="modal-body form">
                 <form action="#" id="form" class="form-horizontal">
 					<input type="hidden" value="" name="id"/> 
 					<div class="panel-body">
 						<div class="form-group">
+                            <label for="nombre" class="col-sm-2">Codigo:</label>
+                            <div class="col-sm-10">
+							    <input class="form-control" name="codigo" required type="text" id="codigo" placeholder="Ingrese el codigo">
+                                <span class="help-block"></span>
+                            </div>   
+						</div>
+						<div class="form-group">
                             <label for="nombre" class="col-sm-2">Nombre:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="nombre" required type="text" id="nombre" placeholder="Ingrese el nombre">
                                 <span class="help-block"></span>
                             </div>   
-						</div> 		
+						</div> 
 						<div class="form-group">
-                            <label for="descripcion" class="col-sm-2">Descripción:</label>
+                            <label for="nombre" class="col-sm-2">Descripcion:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" id="descripcion" name="descripcion" placeholder="Ingrese la descripción" class="form-control">
+							    <input class="form-control" name="descripcion" required type="text" id="descripcion" placeholder="Ingrese la descripcion">
                                 <span class="help-block"></span>
                             </div>   
-						</div>
+						</div> 	 	
 						<div class="form-group">
-                            <label for="precio" class="col-sm-2">Precio:</label>
+                            <label for="nombre" class="col-sm-2">Precio Venta:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" id="precio" name="precio" placeholder="Ingrese el precio" class="form-control">
+							    <input class="form-control" name="precioVenta" required type="text" id="precioVenta" placeholder="Ingrese el precio de venta">
                                 <span class="help-block"></span>
-                            </div>    
-						</div>
+                            </div>   
+						</div> 
+						<div class="form-group">
+                            <label for="nombre" class="col-sm-2">Precio Compra:</label>
+                            <div class="col-sm-10">
+							    <input class="form-control" name="precioCompra" required type="text" id="precioCompra" placeholder="Ingrese el precio de compra">
+                                <span class="help-block"></span>
+                            </div>   
+						</div>   
+						<div class="form-group">
+                            <label for="nombre" class="col-sm-2">Existencia:</label>
+                            <div class="col-sm-10">
+							    <input class="form-control" name="existencia" required type="text" id="existencia" placeholder="Ingrese la existencia">
+                                <span class="help-block"></span>
+                            </div>   
+						</div> 	
 					</div>
                 </form>
             </div>

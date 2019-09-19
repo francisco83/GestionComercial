@@ -47,28 +47,5 @@
                         </td> 
                     </tr>
                 </tbody> 
-                <!-- <tfoot> 
-                    <tr> 
-                        <th style="width:100%">
-                            <div class="row">
-                                    <div class="col-xs-offset-9 col-print-2">
-                                        <strong>Folio Nº 197</strong>
-                                    </div>
-                            </div>
-                             <div>
-                                <div class="row">
-                                    <div class="col-print-6">
-                                        <img src="https://www.google.com.ar/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" class="img-responsive" />
-                                    </div>
-                                    <div class="col-print-6">
-                                        <strong>Decreto 859/07-PEN</strong><br />
-                                        <strong>Autorizada provisoriamente según lo previsto en ley Nº 24521, mediante el decreto</strong><br />
-                                        <strong>PEN Nº 859/07 de fecha 4 de Julio de 2007</strong>
-                                    </div>
-                                </div>    
-                            </div>   
-                        </th> 
-                    </tr> 
-                </tfoot>  -->
         </table>
     </body>

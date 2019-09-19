@@ -14,8 +14,9 @@
 	    	<!-- Collect the nav links, forms, and other content for toggling -->
 	    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      		<ul class="nav navbar-nav">	        					
-					<li><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
-					<li><a href="<?php echo base_url();?>registrar/ver">Ver Servicios <span class="sr-only">(current)</span></a></li>
+				  	<li><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
+					<li><a href="<?php echo base_url();?>productos">Productos</a></li>	
+					<li><a href="<?php echo base_url();?>registrar/ver">Ver servicios <span class="sr-only">(current)</span></a></li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="glyphicon glyphicon-list-alt"></i> Reportes

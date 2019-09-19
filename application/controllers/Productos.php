@@ -1,115 +1,189 @@
 <?php
-class Productos extends CI_Controller{
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-    public function __construct(){
-        parent::__construct();
-        $this->load->model("ProductoModel");
-		$this->load->library('session');
-		$this->load->library('pagination');
-    }
+class Productos extends CI_Controller {
+	public function __construct(){
+		parent::__construct();
+		$this->load->model("Productos_model");
+		$this->load->library(['ion_auth', 'form_validation']);
 
-    public function agregar(){
-        $this->load->view("partial/encabezado");
-		$this->load->view("productos/agregar");
-		// load pagination library
-		$this->load->library('pagination');
-        //$this->load->view("pie");
-    }
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			redirect('auth', 'refresh');
+		}
+	}
 
-    public function guardarCambios(){
-        $resultado = $this->ProductoModel->guardarCambios(
-            $this->input->post("id"),
-            $this->input->post("codigo"),
-            $this->input->post("descripcion"),
-            $this->input->post("precioVenta"),
-            $this->input->post("precioCompra"),
-            $this->input->post("existencia")
-        );
-        if($resultado){
-            $mensaje = "Producto actualizado correctamente";
-            $clase = "success";
-        }else{
-            $mensaje = "Error al actualizar el producto";
-            $clase = "danger";
-        }
-        $this->session->set_flashdata(array(
-            "mensaje" => $mensaje,
-            "clase" => $clase,
-        ));
-        redirect("productos/");
-    }
+	public function index(){
+		$this->load->view("productos/index");
+	}
 
-    public function editar($id){
-        $producto = $this->ProductoModel->uno($id);
-        if(null === $producto){
-            $this->session->set_flashdata(array(
-                "mensaje" => "El producto que quieres editar no existe",
-                "clase" => "danger",
-            ));
-            redirect("productos/");
-        }
-        $this->load->view("partial/encabezado");
-        $this->load->view("productos/editar", array("producto" => $producto));
-        //$this->load->view("pie");
-    }
+	public function get_all(){
+		$resultado = $this->Productos_model->get_all();
+		echo $resultado;
+	}
 
-    public function eliminar($id){
-        $resultado = $this->ProductoModel->eliminar($id);
-        if($resultado){
-            $mensaje = "Producto eliminado correctamente";
-            $clase = "success";
-        }else{
-            $mensaje = "Error al eliminar el producto";
-            $clase = "danger";
-        }
-        $this->session->set_flashdata(array(
-            "mensaje" => $mensaje,
-            "clase" => $clase,
-        ));
-        redirect("productos/");
-    }
-
-    public function index(){
-
-		$this->load->view("partial/encabezado");
+	public function mostrar()
+	{	
+		$buscar = $this->input->post("buscar");
+		$numeropagina = $this->input->post("nropagina");
+		$cantidad = $this->input->post("cantidad");
 		
-		$config = array();
-		$config['base_url'] = base_url() . 'index.php/productos';
-		$config['total_rows'] = $this->ProductoModel->getAllEmployeeCount();
-		$config['per_page'] = 10;
-		$config["uri_segment"] = 2;
+		$inicio = ($numeropagina -1)*$cantidad;
+		$data = array(
+			"Productos" => $this->Productos_model->buscar($buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Productos_model->buscar($buscar)),
+			"cantidad" =>$cantidad
+			
+		);
+		echo json_encode($data);
+	}
 
-		$this->pagination->initialize($config);
-	
-		$data["links"] = $this->pagination->create_links();
-		$page = ($this->uri->segment(2)) ? $this->uri->segment(2) : 0;
-		$data['datos'] = $this->ProductoModel->todosNew($config["per_page"], $page);
-        $this->load->view("productos/listar", $data);
-        //$this->load->view("pie");
-    }
+	public function buscar_Productos()
+	{
+		$json = [];
+		$this->load->database();		
+		if(!empty($this->input->get("q"))){
+			$this->db->like('codigo', $this->input->get("q"));
+			$this->db->or_like('nombre', $this->input->get("q"));
+		}
+			$query = $this->db->select('id,nombre as text')
+						->limit(10)
+						->get("productos");
+			$json = $query->result();		
+		
+		echo json_encode($json);
+	}
 
-
-	
-    public function guardar(){
-        $resultado = $this->ProductoModel->nuevo(
-                $this->input->post("codigo"),
-                $this->input->post("descripcion"),
-                $this->input->post("precioVenta"),
-                $this->input->post("precioCompra"),
-                $this->input->post("existencia")
-            );
-        if($resultado){
-            $mensaje = "Producto guardado correctamente";
-            $clase = "success";
-        }else{
-            $mensaje = "Error al guardar el producto";
-            $clase = "danger";
+	function get_autocomplete(){
+        if (isset($_GET['term'])) {
+            $result = $this->Productos_model->search_autocomplete($_GET['term']);
+            if (count($result) > 0) {
+			foreach ($result as $row)	
+			{
+				$data[] = array(
+					'id' => $row->id,
+					'value'=> $row->apellido.' '.$row->nombre
+				);
+			}				
+                echo json_encode($data);
+            }
         }
-        $this->session->set_flashdata(array(
-            "mensaje" => $mensaje,
-            "clase" => $clase,
-        ));
-        redirect("productos/agregar");
-    }
+	}
+
+	public function ajax_add()
+	{
+		$this->_validate();		
+		$data = array(
+				'codigo' => $this->input->post('codigo'),
+				'nombre' => $this->input->post('nombre'),
+				'descripcion' => $this->input->post('descripcion'),
+				'precioVenta' => $this->input->post('precioVenta'),
+				'precioCompra' => $this->input->post('precioCompra'),				
+				'existencia' => $this->input->post('existencia'),
+			);
+
+		$insert = $this->Productos_model->save($data);
+		echo json_encode(array("status" => TRUE));
+	}
+
+	public function ajax_edit($id)
+	{
+		$data = $this->Productos_model->get_by_id($id);
+		echo json_encode($data);
+	}
+
+	public function ajax_update()
+	{
+		$this->_validate();
+		$data = array(
+			'codigo' => $this->input->post('codigo'),
+			'nombre' => $this->input->post('nombre'),
+			'descripcion' => $this->input->post('descripcion'),
+			'precioVenta' => $this->input->post('precioVenta'),
+			'precioCompra' => $this->input->post('precioCompra'),				
+			'existencia' => $this->input->post('existencia'),
+			);
+		$this->Productos_model->update(array('id' => $this->input->post('id')), $data);
+		echo json_encode(array("status" => TRUE));
+	}
+
+
+	public function ajax_delete($id)
+	{	
+		$this->Productos_model->delete_by_id($id);
+		echo json_encode(array("status" => TRUE));
+	}
+
+	public function ajax_enabled($id)
+	{		
+		$this->Productos_model->enabled_by_id($id);
+		echo json_encode(array("status" => TRUE));
+	}
+
+	private function _validate()
+	{
+		$data = array();
+		$data['error_string'] = array();
+		$data['inputerror'] = array();
+		$data['status'] = TRUE;
+
+		if($this->input->post('codigo') == '')
+		{
+			$data['inputerror'][] = 'codigo';
+			$data['error_string'][] = 'Debe ingresar un código para el producto.';
+			$data['status'] = FALSE;
+        }
+        
+        
+		if($this->input->post('nombre') == '')
+		{
+			$data['inputerror'][] = 'nombre';
+			$data['error_string'][] = 'Debe ingresar un nombre para el producto.';
+			$data['status'] = FALSE;
+		}
+
+		if($data['status'] === FALSE)
+		{
+			echo json_encode($data);
+			exit();
+		}
+	}
+
+	public function createXLS() {
+
+       $this->load->library('excel');
+       $empInfo = $this->Productos_model->get_all_export();
+       $objPHPExcel = new PHPExcel();
+       $objPHPExcel->setActiveSheetIndex(0);
+       // set Header
+       $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Codigo');
+       $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Nombre');
+       $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Descripcion');
+       $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Precio Venta');  
+       $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Precio Compra');  
+       $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Existencia');  
+       // set Row
+       $rowCount = 2;
+       foreach ($empInfo as $element) {
+           $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $element['codigo']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['nombre']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['descripcion']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $element['precioVenta']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $element['precioCompra']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $element['existencia']);
+           $rowCount++;
+        }
+        
+       $archivo = "Productos.xls";
+       header('Content-Type: application/vnd.ms-excel');
+       header('Content-Disposition: attachment;filename="'.$archivo.'"');
+       header('Cache-Control: max-age=0');
+       $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+       //Hacemos una salida al navegador con el archivo Excel.
+       $objWriter->save('php://output');  
+   }
+
+
+
+
 }
-?>

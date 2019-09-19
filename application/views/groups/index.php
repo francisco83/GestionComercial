@@ -5,7 +5,7 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h4>Lista de grupos</h4>
+						<h4>Grupos</h4>
 						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/groups" target="_blank"><i class="glyphicon glyphicon-print"></i></a>	
 						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/groups/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
