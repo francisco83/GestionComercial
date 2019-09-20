@@ -16,6 +16,7 @@
 	      		<ul class="nav navbar-nav">	        					
 				  	<li><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
 					<li><a href="<?php echo base_url();?>productos">Productos</a></li>	
+					<li><a href="<?php echo base_url();?>proveedores">Proveedores</a></li>	
 					<li><a href="<?php echo base_url();?>registrar/ver">Ver servicios <span class="sr-only">(current)</span></a></li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

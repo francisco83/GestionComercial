@@ -67,4 +67,11 @@ class Reportes extends CI_Controller {
 		$data['filas'] = $this->Productos_model->get_all();		
 		$this->load->view("Reportes/productos",$data);
 	}
+
+	public function proveedores(){
+		$this->load->model("Proveedores_model");
+		$this->load->view("partial/cabecera_reporte");		
+		$data['filas'] = $this->Proveedores_model->get_all();		
+		$this->load->view("Reportes/proveedores",$data);
+	}
 }
