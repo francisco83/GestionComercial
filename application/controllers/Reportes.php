@@ -12,12 +12,6 @@ class Reportes extends CI_Controller {
 		}
 	}
 
-	public function tipos_servicios(){
-		$this->load->model("Tipos_Servicios_model");
-		$this->load->view("partial/cabecera_reporte");		
-		$data['tipos_servicios'] = $this->Tipos_Servicios_model->get_all();		
-		$this->load->view("Reportes/tipos_servicios",$data);
-	}
 
 	public function empresas(){
 		$this->load->model("Empresas_model");
@@ -73,5 +67,33 @@ class Reportes extends CI_Controller {
 		$this->load->view("partial/cabecera_reporte");		
 		$data['filas'] = $this->Proveedores_model->get_all();		
 		$this->load->view("Reportes/proveedores",$data);
+	}
+
+	public function tipos_servicios(){
+		$this->load->model("Tipos_Servicios_model");
+		$this->load->view("partial/cabecera_reporte");		
+		$data['tipos_servicios'] = $this->Tipos_Servicios_model->get_all();		
+		$this->load->view("Reportes/tipos_servicios",$data);
+	}
+
+	public function tipos_monedas(){
+		$this->load->model("Tipos_Monedas_model");
+		$this->load->view("partial/cabecera_reporte");		
+		$data['tipos_monedas'] = $this->Tipos_Monedas_model->get_all();		
+		$this->load->view("Reportes/tipos_monedas",$data);
+	}
+
+	public function tipos_pagos(){
+		$this->load->model("Tipos_Pagos_model");
+		$this->load->view("partial/cabecera_reporte");		
+		$data['tipos_pagos'] = $this->Tipos_Pagos_model->get_all();		
+		$this->load->view("Reportes/tipos_pagos",$data);
+	}
+
+	public function categorias_productos(){
+		$this->load->model("Categorias_Productos_model");
+		$this->load->view("partial/cabecera_reporte");		
+		$data['categorias_productos'] = $this->Categorias_Productos_model->get_all();		
+		$this->load->view("Reportes/categorias_productos",$data);
 	}
 }

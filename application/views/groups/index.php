@@ -274,7 +274,7 @@ function delete_(id)
 					<input type="hidden" value="" name="id"/> 
 					<div class="panel-body">
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Nombre:</label>
+                            <label class="col-sm-2">Nombre:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="name" required type="text" id="name" placeholder="Ingrese el nombre">
                                 <span class="help-block"></span>

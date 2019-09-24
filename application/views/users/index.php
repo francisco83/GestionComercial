@@ -294,14 +294,14 @@ function enabled(id)
 					<input type="hidden" value="" name="id"/> 
 					<div class="panel-body">
 						<div class="form-group">                            
-                            <label for="nombre" class="col-sm-2">Nombre:</label>                            
+                            <label class="col-sm-2">Nombre:</label>                            
                             <div class="col-sm-10">
                                 <input class="form-control" name="first_name" required type="text" id="first_name" placeholder="Ingrese el nombre">
                                 <span class="help-block"></span>
                             </div>							
                         </div> 	
                         <div class="form-group">                            
-                            <label for="nombre" class="col-sm-2">Apellido:</label>                             
+                            <label class="col-sm-2">Apellido:</label>                             
                             <div class="col-sm-10">
 							    <input class="form-control" name="last_name" required type="text" id="last_name" placeholder="Ingrese el apellido">
                                 <span class="help-block"></span>
@@ -315,21 +315,21 @@ function enabled(id)
                             </div>    							
 						</div>
 						<div class="form-group">                            
-                            <label for="nombre" class="col-sm-2">Teléfono:</label>                            
+                            <label class="col-sm-2">Teléfono:</label>                            
                             <div class="col-sm-10">
                                 <input class="form-control" name="phone" required type="number" id="phone" placeholder="Ingrese el teléfono">
                                 <span class="help-block"></span>
                             </div>							
 						</div> 	
 						<div class="form-group">                            
-                            <label for="nombre" class="col-sm-2">Password:</label>                            
+                            <label class="col-sm-2">Password:</label>                            
                             <div class="col-sm-10">
                                 <input class="form-control" name="password" required type="password" id="password" placeholder="Ingrese la contraseña">
                                 <span class="help-block"></span>
                             </div>							
 						</div> 
 						<div class="form-group" >                            
-                                <label for="nombre" class="col-sm-2">Confirmar password:</label>                            
+                                <label class="col-sm-2">Confirmar password:</label>                            
                             <div class="col-sm-10">
                                 <input class="form-control" name="password_confirm" required type="password" id="password_confirm" placeholder="Ingrese nuevamente la contraseña">
                                 <span class="help-block"></span> 

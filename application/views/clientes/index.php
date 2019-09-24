@@ -192,35 +192,35 @@ function RegistrarServicio(){
 					<input type="hidden" value="" name="id"/> 
 					<div class="panel-body">
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Nombre:</label>
+                            <label class="col-sm-2">Nombre:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="nombre" required type="text" id="nombre" placeholder="Ingrese el nombre">
                                 <span class="help-block"></span>
                             </div>   
 						</div>
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Apellido:</label>
+                            <label class="col-sm-2">Apellido:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="apellido" required type="text" id="apellido" placeholder="Ingrese el apellido">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 	 	
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">DNI:</label>
+                            <label class="col-sm-2">DNI:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="dni" required type="text" id="dni" placeholder="Ingrese el DNI">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Email:</label>
+                            <label class="col-sm-2">Email:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="email" required type="text" id="email" placeholder="Ingrese el email">
                                 <span class="help-block"></span>
                             </div>   
 						</div>  
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Teléfono:</label>
+                            <label class="col-sm-2">Teléfono:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="telefono" required type="text" id="telefono" placeholder="Ingrese el teléfono">
                                 <span class="help-block"></span>

@@ -5,9 +5,9 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-                        <h4>Sucursales</h4>
-                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/sucursales" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
-						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/sucursales/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
+                        <h4>Categorias de Productos</h4>
+                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/categorias_productos" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
+						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/categorias_productos/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -31,9 +31,7 @@
 									<tr>
 										<th>#</th>
 										<th>Nombre</th>
-										<th>Dirección</th>
-										<th>Telefono</th>
-										<th>Email</th>
+										<th>Descripción</th>										
 										<th>Habilitado</th>
 									</tr>
 								</thead>
@@ -56,8 +54,12 @@
 <script>
 
 var valor, pag;
-var controller ='sucursales';
-var Site="<?php echo site_url()?>";
+var controller ='categorias_productos';
+var Site="<?php echo site_url()?>"
+
+function reload_table(){
+	mostrarDatos(valor,pag,$("#cantidad").val());	
+};
 
 function mostrarDatos(valorBuscar,pagina,cantidad){
 	valor = valorBuscar;
@@ -68,9 +70,9 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		type: "POST",
 		data: {buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
-		success:function(response){		
+		success:function(response){			
 			filas = "";
-			$.each(response.Sucursales,function(key,item){
+			$.each(response.categorias_productos,function(key,item){
 				if(item.habilitado=="1")
 					habilitado ='SI';		
 				else
@@ -78,9 +80,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.nombre+"</td>"+
-				"<td>"+item.direccion+"</td>"+
-				"<td>"+item.telefono+"</td>"+
-				"<td>"+item.email+"</td>"+
+				"<td>"+item.descripcion+"</td>"+				
 				"<td class='c'>"+habilitado+"</td>"+
 				"</tr>";
 			});
@@ -115,9 +115,12 @@ function add()
 	$('.panel-body').removeClass('has-error'); 
     $('.help-block').empty();
     $('#modal_form').modal('show'); 
-    $('.modal-title').text('Agregar sucursales');
+    $('.modal-title').text('Agregar Categoria de Productos');
 	$('.modal-backdrop').remove();
 }
+
+
+
 
 
 function edit(id)
@@ -136,11 +139,9 @@ function edit(id)
         {
             $('[name="id"]').val(data.id);
             $('[name="nombre"]').val(data.nombre);
-            $('[name="direccion"]').val(data.direccion);
-			$('[name="telefono"]').val(data.telefono);
-            $('[name="email"]').val(data.email);			
+            $('[name="descripcion"]').val(data.descripcion);            
             $('#modal_form').modal('show');
-            $('.modal-title').text('Editar Sucursal');
+            $('.modal-title').text('Editar Categoria de Productos');
 			$('.modal-backdrop').remove();
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -149,8 +150,6 @@ function edit(id)
         }
     });
 }
-
-
 </script>
 
 <!-- Bootstrap modal -->
@@ -159,7 +158,7 @@ function edit(id)
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Servicio</h3>
+                <h3 class="modal-title">Categorias de Productos</h3>
             </div>
             <div class="modal-body form">
                 <form action="#" id="form" class="form-horizontal">
@@ -171,28 +170,14 @@ function edit(id)
 							    <input class="form-control" name="nombre" required type="text" id="nombre" placeholder="Ingrese el nombre">
                                 <span class="help-block"></span>
                             </div>   
+						</div> 		
+						<div class="form-group">
+                            <label for="descripcion" class="col-sm-2">Descripción:</label>
+                            <div class="col-sm-10">
+							    <input class="form-control" id="descripcion" name="descripcion" placeholder="Ingrese la descripción" class="form-control">
+                                <span class="help-block"></span>
+                            </div>   
 						</div>
-						<div class="form-group">
-                            <label class="col-sm-2">Dirección:</label>
-                            <div class="col-sm-10">
-							    <input class="form-control" name="direccion" required type="text" id="direccion" placeholder="Ingrese la dirección">
-                                <span class="help-block"></span>
-                            </div>   
-						</div> 	
-						<div class="form-group">
-                            <label class="col-sm-2">Teléfono:</label>
-                            <div class="col-sm-10">
-							    <input class="form-control" name="telefono" required type="text" id="telefono" placeholder="Ingrese el teléfono">
-                                <span class="help-block"></span>
-                            </div>   
-						</div> 	 	
-						<div class="form-group">
-                            <label class="col-sm-2">Email:</label>
-                            <div class="col-sm-10">
-							    <input class="form-control" name="email" required type="text" id="email" placeholder="Ingrese el email">
-                                <span class="help-block"></span>
-                            </div>   
-						</div>  	 	
 					</div>
                 </form>
             </div>

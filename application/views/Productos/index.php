@@ -33,6 +33,7 @@
 										<th>Codigo</th>
 										<th>Nombre</th>
 										<th>Descripcion</th>
+										<th>Categoria</th>
 										<th>Precio Venta</th>
 										<th>Precio Compra</th>
 										<th>Existencia</th>
@@ -59,7 +60,7 @@
 
 var valor, pag;
 var controller ='productos';
-var Site="<?php echo site_url()?>"
+var Site="<?php echo site_url()?>";
 
 
 
@@ -84,6 +85,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 				"<td>"+item.codigo+"</td>"+
 				"<td>"+item.nombre+"</td>"+
 				"<td>"+item.descripcion+"</td>"+
+				"<td>"+item.tipo_categoria_id+"</td>"+
 				"<td class='r'>"+item.precioVenta+"</td>"+
 				"<td class='r'>"+item.precioCompra+"</td>"+				
 				"<td class='r'>"+item.existencia+"</td>"+	
@@ -108,6 +110,8 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 	});
 }
 
+
+
 // En el onload
 $(function() {
 	main();  
@@ -121,10 +125,39 @@ function add()
 	$('.panel-body').removeClass('has-error'); 
     $('.help-block').empty();
     $('#modal_form').modal('show'); 
-    $('.modal-title').text('Agregar Clientes');
+    $('.modal-title').text('Agregar Productos');
 	$('.modal-backdrop').remove();
+	cargar_categorias();
 }
 
+
+function cargar_categorias(){
+
+	var combo_categorias='';
+
+	//Combo de categorias			 
+	$.ajax({		
+		url : "<?php echo site_url('Categorias_Productos/get_all_array');?>",
+		type: "POST",
+		dataType:"json",
+		success:function(response){
+			combo_categorias = "<option value='-1'></option>";	
+			$.each(response,function(key,item){
+				combo_categorias+="<option value='"+item.id+"'>"+item.nombre+"</option>";
+			});		
+			$("#tipo_categoria_id").html(combo_categorias);
+		},
+		error: function (jqXHR, textStatus, errorThrown)
+		{
+			$.notify({
+					title: '<strong>Atención!</strong>',
+					message: 'Se produjo un error al cargar las categorias'
+				},{
+					type: 'danger'
+				});
+		}
+	});
+}
 
 function edit(id)
 {
@@ -178,42 +211,50 @@ function edit(id)
 					<input type="hidden" value="" name="id"/> 
 					<div class="panel-body">
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Codigo:</label>
+                            <label class="col-sm-2">Codigo:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="codigo" required type="text" id="codigo" placeholder="Ingrese el codigo">
                                 <span class="help-block"></span>
                             </div>   
 						</div>
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Nombre:</label>
+                            <label class="col-sm-2">Nombre:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="nombre" required type="text" id="nombre" placeholder="Ingrese el nombre">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Descripcion:</label>
+                            <label class="col-sm-2">Descripcion:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="descripcion" required type="text" id="descripcion" placeholder="Ingrese la descripcion">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 	 	
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Precio Venta:</label>
+                            <label class="col-sm-2">Categoria:</label>
+                            <div class="col-sm-10">
+							<select  class="form-control" name="select" id="tipo_categoria_id">
+							</select>							    
+                                <span class="help-block"></span>
+                            </div>   
+						</div> 
+						<div class="form-group">
+                            <label class="col-sm-2">Precio Venta:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="precioVenta" required type="text" id="precioVenta" placeholder="Ingrese el precio de venta">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Precio Compra:</label>
+                            <label class="col-sm-2">Precio Compra:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="precioCompra" required type="text" id="precioCompra" placeholder="Ingrese el precio de compra">
                                 <span class="help-block"></span>
                             </div>   
 						</div>   
 						<div class="form-group">
-                            <label for="nombre" class="col-sm-2">Existencia:</label>
+                            <label  class="col-sm-2">Existencia:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="existencia" required type="text" id="existencia" placeholder="Ingrese la existencia">
                                 <span class="help-block"></span>

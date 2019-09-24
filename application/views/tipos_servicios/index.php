@@ -144,7 +144,7 @@ function edit(id)
             $('[name="descripcion"]').val(data.descripcion);
             $('[name="precio"]').val(data.precio);
             $('#modal_form').modal('show');
-            $('.modal-title').text('Editar Servicio');
+            $('.modal-title').text('Editar Tipo de Servicio');
 			$('.modal-backdrop').remove();
         },
         error: function (jqXHR, textStatus, errorThrown)
