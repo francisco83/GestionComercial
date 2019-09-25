@@ -232,8 +232,6 @@ function borrar_Servicio(id)
 }
 
 
-
-
 function verDetalle(servicioId,valorBuscar,pagina,cantidad){
 		console.log("Servicio a ver",servicioId);
 	$.ajax({

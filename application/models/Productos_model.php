@@ -7,24 +7,35 @@ class Productos_model extends CI_Model {
 
 	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
-		$this->db->like('codigo', $buscar);
-        $this->db->or_like('nombre', $buscar);
+
+		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
+		$this->db->from('productos as e');
+		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
+
+		$this->db->like('e.codigo', $buscar);
+        $this->db->or_like('e.nombre', $buscar);
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
-		$consulta = $this->db->get($this->table);
+
+		$consulta = $this->db->get();
+
 		return $consulta->result();
 	}
 
 	public function get_all()
 	{
-		$consulta = $this->db->get($this->table);
+		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
+		$this->db->from('productos as e');
+		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
+		$consulta = $this->db->get();
 		return $consulta->result();
 	}
 
 	public function get_all_export() {
-		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion', 'e.precioVenta','e.precioCompra','e.existencia'));
+		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
 		$this->db->from('productos as e');
+		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
 		$query = $this->db->get();
 		return $query->result_array();
 	 }

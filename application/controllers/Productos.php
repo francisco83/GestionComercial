@@ -77,6 +77,7 @@ class Productos extends CI_Controller {
 				'codigo' => $this->input->post('codigo'),
 				'nombre' => $this->input->post('nombre'),
 				'descripcion' => $this->input->post('descripcion'),
+				'tipo_categoria_id' => $this->input->post('tipo_categoria_id'),
 				'precioVenta' => $this->input->post('precioVenta'),
 				'precioCompra' => $this->input->post('precioCompra'),				
 				'existencia' => $this->input->post('existencia'),
@@ -99,6 +100,7 @@ class Productos extends CI_Controller {
 			'codigo' => $this->input->post('codigo'),
 			'nombre' => $this->input->post('nombre'),
 			'descripcion' => $this->input->post('descripcion'),
+			'tipo_categoria_id' => $this->input->post('tipo_categoria_id'),
 			'precioVenta' => $this->input->post('precioVenta'),
 			'precioCompra' => $this->input->post('precioCompra'),				
 			'existencia' => $this->input->post('existencia'),
@@ -158,19 +160,21 @@ class Productos extends CI_Controller {
        // set Header
        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Codigo');
        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Nombre');
-       $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Descripcion');
-       $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Precio Venta');  
-       $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Precio Compra');  
-       $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Existencia');  
+	   $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Descripcion');
+	   $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Categoria');
+       $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Precio Venta');  
+       $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Precio Compra');  
+       $objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Existencia');  
        // set Row
        $rowCount = 2;
        foreach ($empInfo as $element) {
            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $element['codigo']);
            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['nombre']);
            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['descripcion']);
-           $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $element['precioVenta']);
-           $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $element['precioCompra']);
-           $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $element['existencia']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $element['categoria']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $element['precioVenta']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $element['precioCompra']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $element['existencia']);
            $rowCount++;
         }
         

@@ -85,7 +85,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 				"<td>"+item.codigo+"</td>"+
 				"<td>"+item.nombre+"</td>"+
 				"<td>"+item.descripcion+"</td>"+
-				"<td>"+item.tipo_categoria_id+"</td>"+
+				"<td>"+item.categoria+"</td>"+
 				"<td class='r'>"+item.precioVenta+"</td>"+
 				"<td class='r'>"+item.precioCompra+"</td>"+				
 				"<td class='r'>"+item.existencia+"</td>"+	
@@ -127,12 +127,13 @@ function add()
     $('#modal_form').modal('show'); 
     $('.modal-title').text('Agregar Productos');
 	$('.modal-backdrop').remove();
-	cargar_categorias();
+	cargar_categorias(0);
 }
 
 
-function cargar_categorias(){
+function cargar_categorias(id){
 
+	console.log("valor",id);
 	var combo_categorias='';
 
 	//Combo de categorias			 
@@ -141,9 +142,14 @@ function cargar_categorias(){
 		type: "POST",
 		dataType:"json",
 		success:function(response){
-			combo_categorias = "<option value='-1'></option>";	
+			combo_categorias = "<option value='-1'>Seleccione una categoria...</option>";	
 			$.each(response,function(key,item){
-				combo_categorias+="<option value='"+item.id+"'>"+item.nombre+"</option>";
+				if(id != 0 && item.id == id){
+					combo_categorias+="<option value='"+item.id+"' selected>"+item.nombre+"</option>";					
+				}
+				else{
+					combo_categorias+="<option value='"+item.id+"'>"+item.nombre+"</option>";
+				}
 			});		
 			$("#tipo_categoria_id").html(combo_categorias);
 		},
@@ -177,12 +183,14 @@ function edit(id)
 			$('[name="codigo"]').val(data.codigo);
             $('[name="nombre"]').val(data.nombre);
             $('[name="descripcion"]').val(data.descripcion);
+            $('[name="tipo_categoria_id"]').val(data.tipo_categoria_id);
 			$('[name="precioVenta"]').val(data.precioVenta);
 			$('[name="precioCompra"]').val(data.precioCompra);
 			$('[name="existencia"]').val(data.existencia);			
             $('#modal_form').modal('show');
             $('.modal-title').text('Editar Productos');
 			$('.modal-backdrop').remove();
+			cargar_categorias(data.tipo_categoria_id);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
@@ -193,7 +201,9 @@ function edit(id)
                    type: 'danger'
                });
         }
-    });
+	});
+	
+	
 }
 
 </script>
@@ -234,7 +244,7 @@ function edit(id)
 						<div class="form-group">
                             <label class="col-sm-2">Categoria:</label>
                             <div class="col-sm-10">
-							<select  class="form-control" name="select" id="tipo_categoria_id">
+							<select  class="form-control" name="tipo_categoria_id" id="tipo_categoria_id">
 							</select>							    
                                 <span class="help-block"></span>
                             </div>   
@@ -242,21 +252,21 @@ function edit(id)
 						<div class="form-group">
                             <label class="col-sm-2">Precio Venta:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" name="precioVenta" required type="text" id="precioVenta" placeholder="Ingrese el precio de venta">
+							    <input class="form-control" name="precioVenta" required type="number" id="precioVenta" placeholder="Ingrese el precio de venta">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 
 						<div class="form-group">
                             <label class="col-sm-2">Precio Compra:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" name="precioCompra" required type="text" id="precioCompra" placeholder="Ingrese el precio de compra">
+							    <input class="form-control" name="precioCompra" required type="number" id="precioCompra" placeholder="Ingrese el precio de compra">
                                 <span class="help-block"></span>
                             </div>   
 						</div>   
 						<div class="form-group">
                             <label  class="col-sm-2">Existencia:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" name="existencia" required type="text" id="existencia" placeholder="Ingrese la existencia">
+							    <input class="form-control" name="existencia" required type="number" id="existencia" placeholder="Ingrese la existencia">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 	

@@ -11,6 +11,7 @@
 										<td class="padding0"><strong>Código</strong></td>
 										<td class="padding0"><strong>Nombre</strong></td>
                                         <td class="padding0"><strong>Descripcion</strong></td>    
+                                        <td class="padding0"><strong>Categoria</strong></td>    
                                         <td class="padding0"><strong>Precio Venta</strong></td>                                        
                                         <td class="padding0"><strong>Precio Compra</strong></td>
                                         <td class="padding0"><strong>Existencia</strong></td>
@@ -21,6 +22,7 @@
                                         <td><?= $fila->codigo ?></td>
                                         <td><?= $fila->nombre ?></td>
                                         <td><?= $fila->descripcion ?></td>
+                                        <td><?= $fila->categoria ?></td>
                                         <td class="r"><?= $fila->precioVenta ?></td>                                        
                                         <td class="r"><?= $fila->precioCompra ?></td>
                                         <td class="r"><?= $fila->existencia ?></td>
