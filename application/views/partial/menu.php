@@ -18,6 +18,7 @@
 					<li><a href="<?php echo base_url();?>productos">Productos</a></li>	
 					<li><a href="<?php echo base_url();?>proveedores">Proveedores</a></li>	
 					<li><a href="<?php echo base_url();?>registrar/ver">Ver servicios <span class="sr-only">(current)</span></a></li>
+					<li><a href="<?php echo base_url();?>ventas"> <i class="glyphicon glyphicon-shopping-cart"></i> Ventas <span class="sr-only">(current)</span></a></li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="glyphicon glyphicon-list-alt"></i> Reportes

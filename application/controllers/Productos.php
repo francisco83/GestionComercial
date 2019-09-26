@@ -62,7 +62,7 @@ class Productos extends CI_Controller {
 			{
 				$data[] = array(
 					'id' => $row->id,
-					'value'=> $row->apellido.' '.$row->nombre
+					'value'=> $row->nombre
 				);
 			}				
                 echo json_encode($data);

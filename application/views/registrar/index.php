@@ -25,48 +25,46 @@
   </style> 
 
 <div class="container">
+	<div class="row">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h4>Registrar servicios</h4>
+			</div>					
+			<div id="messages"></div>
 
+			<div class="panel-body">
 
-			<div class="col-md-12">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h4>Registrar servicios</h4>
-					</div>					
-					<div id="messages"></div>
+				<form action="" id="form_insert">
 
-					<div class="panel-body">
-
-						<form action="" id="form_insert">
-
-							<div class="col-md-12">
-							<div class="col-md-3">
-								<div class="form-group">
-										<label for="fecha">Fecha:</label>
-										<input class="form-control" id="fechahoy" name="fechahoy" required type="date" id="fechaHoy">
-								</div>  						
-							</div>
-							<div class="col-md-9">
-								<div class="form-group">
-										<label>Cliente:</label>
-										<input type ="text" id="clienteid" name="clienteid" hidden value="<?php echo ($id)?>">
-										<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
-								</div>
-							</div>
-							</div>
-							<a onclick="agregarFila()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>
-
-
-						<div class="col-md-12" id="detalle">
-						</div>			
-
-						<input class="btn btn-primary" type="submit" value="Guardar">		
-						</form>
-
-					</div><!-- fin pbody -->
-
+					<div class="row">
+					<div class="col-md-3 col-xs-4">
+						<div class="form-group">
+								<label for="fecha">Fecha:</label>
+								<input class="form-control" id="fechahoy" name="fechahoy" required type="date" id="fechaHoy">
+						</div>  						
 					</div>
-				</div>
+					<div class="col-md-6 col-xs-8">
+						<div class="form-group">
+								<label>Cliente:</label>
+								<input type ="text" id="clienteid" name="clienteid" hidden value="<?php echo ($id)?>">
+								<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
+						</div>
+					</div>
+					</div>
+					<a onclick="agregarFila()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>
+
+
+				<div class="col-md-12" id="detalle">
+				</div>			
+
+				<input class="btn btn-primary" type="submit" value="Guardar">		
+				</form>
+
+			</div><!-- fin pbody -->
+
 			</div>
+		</div>
+	</div>
 </div>
 
 	<script src="<?php echo base_url();?>assets/js/combos.js"></script>
