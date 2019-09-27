@@ -1,46 +1,22 @@
 <?php  $this->load->view("partial/encabezado"); ?>
-<style>
-  .custom-combobox {
-    position: relative;
-    display: inline-block;
-  }
-  .custom-combobox-toggle {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin-left: -1px;
-    padding: 0;
-  } 
-  .custom-combobox-input {
-    margin: 0;
-    padding: 5px 10px;
-  }
-  .fila{
-	border: 1px solid lightgray;
-	margin-top: 20px;
-	padding: 10px;
-
-
-  }
-  </style> 
 
 <div class="container">
 	<div class="row">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h4>Registrar servicios</h4>
+				<h4>Cuenta Corriente</h4>
 			</div>					
 			<div class="panel-body">
 
 				<form action="" id="form_insert">
 
 					<div class="row">
-					<div class="col-md-3 col-xs-4">
+					<!-- <div class="col-md-3 col-xs-4">
 						<div class="form-group">
 								<label for="fecha">Fecha:</label>
 								<input class="form-control" id="fechahoy" name="fechahoy" required type="date" id="fechaHoy">
 						</div>  						
-					</div>
+					</div> -->
 					<div class="col-md-6 col-xs-8">
 						<div class="form-group">
 								<label>Cliente:</label>
@@ -49,13 +25,39 @@
 						</div>
 					</div>
 					</div>
-					<a onclick="agregarFila()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>
+					<!-- <a onclick="agregarFila()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a> -->
 
 
-				<div class="col-md-12" id="detalle">
-				</div>			
+					<table id="tbl" class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>Fecha</th>
+							<th>Comprobante</th>
+							<th>Concepto</th>
+							<th>Debe</th>
+							<th>Haber</th>
+							<th>Saldo</th>
+							<th>Opciones</th>
+						</tr>
+					</thead>
+					<tbody id="detalle">
+					</tbody>
+						<tr>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+				</table>
+				
 
-				<input class="btn btn-primary" type="submit" value="Guardar">		
+				<!-- <div class="col-md-12" id="detalle">
+				</div>			 -->
+
+				<!-- <input class="btn btn-primary" type="submit" value="Guardar">		 -->
 				</form>
 
 			</div><!-- fin pbody -->

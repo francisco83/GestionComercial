@@ -17,6 +17,12 @@ class Clientes extends CI_Controller {
 		$this->load->view("Clientes/index");
 	}
 
+	public function ctacte($id){
+		//$this->load->view("Clientes/ctacte");
+		$cliente = $this->Clientes_model->get_by_id($id);
+		$this->load->view("Clientes/ctacte",$cliente);
+	}
+
 	public function get_all(){
 		$resultado = $this->Clientes_model->get_all();
 		echo $resultado;

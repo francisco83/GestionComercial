@@ -51,7 +51,8 @@
 		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
 		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
 		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>	
-		<button class="btn btn-info" onclick="RegistrarServicio()"><i class='glyphicon glyphicon-tasks'></i> Registrar Servicio</button>
+		<button class="btn btn-info" onclick="Accion('registrar')"><i class='glyphicon glyphicon-tasks'></i> Reg. Servicio</button>
+		<button class="btn btn-primary" onclick="Accion('ctacte')"><i class='glyphicon glyphicon-briefcase'></i> Cta. Cte.</button>
 		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
@@ -162,10 +163,19 @@ function edit(id)
 }
 
 
-function RegistrarServicio(){
+function Accion(tipo){
 	var id = $("#tbl tr.selected td:first").html();
 	if (id !=  undefined){
-		location.href ="<?php echo base_url().'registrar/index/'?>"+id;
+		switch(tipo){
+			case "registrar":
+				location.href ="<?php echo base_url().'registrar/index/'?>"+id;
+				break;
+			case "ctacte":
+				location.href ="<?php echo base_url().'Clientes/ctacte/'?>"+id;
+				break;
+			default:
+			 	break;
+		}
 	}	
 	else{
 		$.notify({
