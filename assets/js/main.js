@@ -21,6 +21,7 @@ function main(){
 		valorBuscar = $("input[name=busqueda]").val();
 		mostrarDatos(valorBuscar,1,valoroption);
 	});
+
 }
 
 
@@ -278,3 +279,5 @@ function enabled(id)
         });
 }
 /**/ 
+
+

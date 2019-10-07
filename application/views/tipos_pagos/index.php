@@ -20,7 +20,7 @@
 							</div>
 							<div class="col-md-4 col-md-offset-2 pull-right">
 								<div class="form-group has-feedback has-feedback-left">				  
-									<input type="text" class="form-control" name="busqueda" placeholder="Buscar" />
+									<input type="text" class="form-control" name="busqueda" id="busqueda" placeholder="Buscar" />
 									<i class="glyphicon glyphicon-search form-control-feedback"></i>
 								</div>				
 							</div>			
@@ -104,7 +104,8 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 
 // En el onload
 $(function() {
-	main();  
+	main(); 
+	$("#busqueda").focus();
 });
 
 function add()
