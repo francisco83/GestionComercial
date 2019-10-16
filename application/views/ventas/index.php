@@ -44,41 +44,102 @@
 								<input type ="number" class="form-control"  id="cantidadid" name="cantidadid" value='1'>									
 							</div>
 						</div>
-						<div class="col-xs-2">						
+						<div class="col-xs-3">						
 							<label></label>
 							<a onclick="agregarFila()" class="form-control btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i>Agregar</a>						
 						</div>						
 					</div>
-					
-				<table id="tbl" class="table table-bordered table-hover">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Codigo</th>
-							<th>Nombre</th>
-							<th>Precio</th>
-							<th>Cantidad</th>
-							<th>Total</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody id="detalle">
-					</tbody>
-						<tr>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th class='r'>Total</th>
-							<th class='r' id="totalVenta"></th>
-							<th></th>
-						</tr>
-				</table>
-		
+
+
+<!-- 					
+					<div class="row" style="background-color:black; color:white;">
+						<div class="col-xs-1">#</div>
+						<div class="col-xs-2">Codigo</div>
+						<div class="col-xs-2">Nombre</div>
+						<div class="col-xs-2">Precio</div>
+						<div class="col-xs-1">Cantidad</div>
+						<div class="col-xs-2">Total</div>
+						<div class="col-xs-2"></div>
+					</div>	
+					<div class="tablaVenta">	 -->
+						<!-- <div class="row">
+							<div class="col-xs-1">123</div>
+							<div class="col-xs-2">123456</div>
+							<div class="col-xs-2">Mermelada de durazno</div>
+							<div class="col-xs-2">1234</div>
+							<div class="col-xs-2">10</div>
+							<div class="col-xs-2">12340</div>
+							<div class="col-xs-2"></div>
+						</div>						
+						<div class="row">
+							<div class="col-xs-1">1234</div>
+							<div class="col-xs-2">1234565555</div>
+							<div class="col-xs-2">Mermelada de durazno</div>
+							<div class="col-xs-2">12344</div>
+							<div class="col-xs-2">10</div>
+							<div class="col-xs-2">123440</div>
+							<div class="col-xs-2"></div>
+						</div>	 -->
+						<!-- <div id="detalle"></div> -->
+					<!-- </div> -->
+
+				<div class="tableFixHead">
+					<table id="tbl" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Codigo</th>
+								<th>Nombre</th>
+								<th>Precio</th>
+								<th>Cantidad</th>
+								<th>Total</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody id="detalle">
+						</tbody>
+							<tr>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th class='r'>Total</th>
+								<th class='r' id="totalVenta"></th>
+								<th></th>
+							</tr>
+					</table>
+				</div> 
 
 				</form>
 
+				<div></div>
+
 			</div><!-- fin pbody -->
+
+			<div class="container" >
+				<div class="col-md-6" id="detalle_moneda" style="border: 1px solid #000000; border-radius:10px">				
+					<div class="row" id="mon0">										
+						<div class='col-xs-4'><select class="form-control" name="moneda[]" required id ="combomoneda"></select></div>
+						<div class="col-xs-3"><input type="text"  class="form-control" value="0"></div>						
+						<div class="col-xs-1"><a class="btn btn-sm btn-danger" onclick="borrarMoneda(0)"><i class="glyphicon glyphicon-trash"></i></a></div>			
+						<div class="col-xs-3"><a onclick="agregarMoneda()" class="form-control btn btn-success">Agregar</a></div>
+					</div>
+				</div>	
+			</div>	
+
+			<div class="container" >
+				<div class="col-md-6" id="detalle_moneda" style="border: 1px solid #000000; border-radius:10px">				
+				<div class="row" style="margin-top:30px;">				
+					<div class="col-xs-3">Total:</div>
+					<div class="col-xs-3">$100</div>				
+					<div class="col-xs-3">Diferencia:</div>
+					<div class="col-xs-3">$0</div>
+				</div>	
+				</div>	
+			</div>	
+
+			
+			</div>
 
 			</div>
 		</div>
@@ -95,6 +156,8 @@
 	var codigoProducto = 0;
 	var cantidad = 1;
 	var total = 0;
+	var mon = 1;
+	var registro_moneda;
 
 	$(function() {
 	
@@ -121,6 +184,20 @@
 				codigoProducto = ui.item.codigoProducto;
 			},
 		});		
+
+		//Combo de Monedas			 
+		$.ajax({
+			url : "<?php echo site_url('Tipos_Monedas/get_all');?>",
+			type: "POST",
+			dataType:"json",
+			success:function(response){
+				//registro_moneda = "<option value='-1'></option>";	
+				$.each(response,function(key,item){
+					registro_moneda+="<option value='"+item.id+"'>"+item.nombre+"</option>";
+				});											
+				$("#combomoneda").html(registro_moneda);
+			}
+		});
 });
 
 
@@ -154,10 +231,21 @@ function agregarFila() {
 					"<td class='r'>"+precioVenta+"</td>"+
 					"<td class='r'>"+cantidad+"</td>"+
 					"<td class='r tot total_fila"+i+"'>"+cantidad*precioVenta+"</td>"+
-					"<td class='r'>"+'<a class="btn btn-sm btn-danger" onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+"</td>"+				
+					"<td class='c'>"+'<a class="btn btn-sm btn-danger" onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+"</td>"+				
 					"</tr>";				
-		//total = total + (cantidad * precioVenta);
-		//$('#totalVenta').text(total);			
+	
+
+		// var filas=	
+		// 		"<div class='row' id='fila"+i+"'>"+
+		// 		"<div class='col-xs-1' id=id"+i+">"+i+"</div>"+
+		// 		"<div class='col-xs-2'>"+codigoProducto+"</div>"+
+		// 		"<div class='col-xs-2'>"+$("#comboproducto").val()+"</div>"+
+		// 		"<div class='col-xs-2'>"+precioVenta+"</div>"+
+		// 		"<div class='col-xs-1'>"+cantidad+"</div>"+
+		// 		"<div class='col-xs-2 total_fila"+i+"'>"+cantidad*precioVenta+"</div>"+
+		// 		"<div class='col-xs-2'>"+'<a class="btn btn-sm btn-danger" onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+"</div>"
+		// 		"</div>";	
+
 		$('#productoid').val('');
 		$("#comboproducto").val('');		
 		$("#comboproducto").focus();
@@ -190,6 +278,8 @@ function recorrer_tabla(){
 	var parcial = 0;
 	var n = 0;
 	$("td").each(function(){
+	//$("#detalle .row").each(function(){
+
  		 console.log("valor",i,$('.total_fila'+j).text());
 		 parcial = parseFloat($('.total_fila'+j).text());
 		 if (!isNaN(parcial)){
@@ -197,10 +287,51 @@ function recorrer_tabla(){
 		 	total_venta = total_venta + parcial;
 			 console.log("fila",j,n);
 			 $("#id"+j).text(n);
+			 
 		 }
 		 j++;
  	});	 
 	 $('#totalVenta').text(total_venta);			
 }
+
+
+
+
+
+function agregarMoneda() {  
+
+	var nueva_moneda = "<div class='row' id=mon"+mon+">"+						
+		"<div class='col-xs-4'><select class='form-control' name='moneda[]' required id ='combomoneda"+mon+"'></select></div>"+
+		"<div class='col-xs-3'><input type='text' class='form-control'  value='0'></div>"+
+		"<div class='col-xs-1'><a class='btn btn-sm btn-danger' onclick='borrarMoneda("+mon+")'><i class='glyphicon glyphicon-trash'></i></a></div>"+
+		"</div>";
+
+		//$('#detalle_moneda').append(nueva_moneda)
+
+		$.when($('#detalle_moneda').append(nueva_moneda)).then
+	{
+		$("#combomoneda"+mon).html(registro_moneda);
+		//$("#combomoneda"+i).combobox();
+
+		// $("#comboservicio"+i).combobox({ 
+        // select: function (event, ui) { 
+		// 	var a = $('.selected').find('div:first').html();
+		// 	$("#precio"+a).val($("#comboservicio"+a+ " option:selected").attr("precio"));
+		// 	$("#total"+a).val($("#precio"+a).val());
+
+        // 	} 
+    	// });
+
+		mon++;
+
+	}
+
+}
+
+function borrarMoneda(id) {  
+	$("#mon"+id).remove();
+}
+
+
 
 </script>

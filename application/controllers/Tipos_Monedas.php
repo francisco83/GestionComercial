@@ -19,7 +19,8 @@ class Tipos_Monedas extends CI_Controller {
 
 	public function get_all(){
 		$resultado = $this->Tipos_Monedas_model->get_all();
-		echo $resultado;
+		//echo $resultado;
+		echo json_encode($resultado);
 	}
 
 	public function mostrar()

@@ -65,3 +65,22 @@ body {
 	.c{
 		text-align: center;
 	}
+
+	.tablaVenta{
+		height: 100px;
+		overflow-y: scroll;
+		border: 2px solid lightgray;
+
+	}
+
+	.tablaVenta .row{
+		margin-bottom: 20px;
+	}
+	
+	.tableFixHead          { overflow-y: auto; height: 300px; border: 1px solid #eeeeee;}
+	.tableFixHead thead th { position: sticky; top: 0; }
+	
+	/* Just common table stuff. Really. */
+	table  { border-collapse: collapse; width: 100%; }
+	th, td { padding: 8px 16px; }
+	th     { background:#eee; }
