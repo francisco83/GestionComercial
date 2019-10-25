@@ -22,13 +22,7 @@
 									<!-- <input type ="text" id="clienteid" name="clienteid" hidden value="<?php echo ($id)?>"> -->
 									<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
 							</div>
-						</div>
-						<div class="col-md-2 col-xs-2">	
-						<div class="form-group">
-							<label></label>										
-							<a onclick="agregarFila()" class="forma-control btn btn-danger"><i class="glyphicon glyphicon-floppy-disk"></i>Finalizar</a>
-						</div>
-						</div>
+						</div>												
 					</div>	
 					<div class="row">
 						<div class="col-md-6 col-xs-6">
@@ -38,50 +32,17 @@
 									<input type="text" class="form-control" id="comboproducto" name="producto" placeholder="Buscar Producto">
 							</div>
 						</div>
-						<div class="col-xs-2">	
+						<div class="col-md-1 col-xs-2">	
 							<div class="form-group">					
 								<label>Cantidad:</label>
 								<input type ="number" class="form-control"  id="cantidadid" name="cantidadid" value='1'>									
 							</div>
 						</div>
-						<div class="col-xs-3">						
+						<div class="col-md-2 col-xs-3">						
 							<label></label>
-							<a onclick="agregarFila()" class="form-control btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i>Agregar</a>						
+							<a onclick="agregarFila()" class="form-control btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a>						
 						</div>						
 					</div>
-
-
-<!-- 					
-					<div class="row" style="background-color:black; color:white;">
-						<div class="col-xs-1">#</div>
-						<div class="col-xs-2">Codigo</div>
-						<div class="col-xs-2">Nombre</div>
-						<div class="col-xs-2">Precio</div>
-						<div class="col-xs-1">Cantidad</div>
-						<div class="col-xs-2">Total</div>
-						<div class="col-xs-2"></div>
-					</div>	
-					<div class="tablaVenta">	 -->
-						<!-- <div class="row">
-							<div class="col-xs-1">123</div>
-							<div class="col-xs-2">123456</div>
-							<div class="col-xs-2">Mermelada de durazno</div>
-							<div class="col-xs-2">1234</div>
-							<div class="col-xs-2">10</div>
-							<div class="col-xs-2">12340</div>
-							<div class="col-xs-2"></div>
-						</div>						
-						<div class="row">
-							<div class="col-xs-1">1234</div>
-							<div class="col-xs-2">1234565555</div>
-							<div class="col-xs-2">Mermelada de durazno</div>
-							<div class="col-xs-2">12344</div>
-							<div class="col-xs-2">10</div>
-							<div class="col-xs-2">123440</div>
-							<div class="col-xs-2"></div>
-						</div>	 -->
-						<!-- <div id="detalle"></div> -->
-					<!-- </div> -->
 
 				<div class="tableFixHead">
 					<table id="tbl" class="table table-bordered table-hover">
@@ -116,28 +77,37 @@
 
 			</div><!-- fin pbody -->
 
+
+
 			<div class="container" >
-				<div class="col-md-6" id="detalle_moneda" style="border: 1px solid #000000; border-radius:10px">				
+				<div class="col-md-6" id="detalle_moneda..." style="border: 1px solid #eeeeee; padding:10px">				
 					<div class="row" id="mon0">										
 						<div class='col-xs-4'><select class="form-control" name="moneda[]" required id ="combomoneda"></select></div>
-						<div class="col-xs-3"><input type="text"  class="form-control" value="0"></div>						
-						<div class="col-xs-1"><a class="btn btn-sm btn-danger" onclick="borrarMoneda(0)"><i class="glyphicon glyphicon-trash"></i></a></div>			
-						<div class="col-xs-3"><a onclick="agregarMoneda()" class="form-control btn btn-success">Agregar</a></div>
+						<div class="col-xs-3"><input type="text"  class="moneda" id="input_moneda0" value="0"></div>						
+						<div class="col-xs-1"></div>			
+						<div class="col-xs-1"><a class="btn btn-sm btn-success" onclick="agregarMoneda()" title="Agregar moneda"><i class="glyphicon glyphicon-plus"></i></a></div>			
+					</div>
+					<div id="detalle_moneda"></div>
+					<div class="row" style="margin-top:10px; font-weight:bold;">										
+						<div class='col-xs-4'>Total Pago:</div>
+						<div class="col-xs-3">0</div>						
 					</div>
 				</div>	
+				<div class="col-md-3" style="font-size: 25px;">
+					<div class="row">				
+						<div class="col-xs-4">Total:$</div><div class="col-xs-8" id="totalVentaFinal">0</div>
+					</div>	
+					<div class="row" style="margin-top:10px;">				
+						<div class="col-xs-4">Pago:$</div><div class="col-xs-8" id="totalPagoFinal">0</div>
+					</div>
+					<div class="row" style="margin-top:10px;">				
+					<div class="col-xs-4">Vuelto:$</div><div class="col-xs-8" id="totalVueltoFinal">0</div>
+					</div>
+				</div>
+				<div class="col-md-3">					
+					<a onclick="" class="form-control btn btn-primary"><i class="glyphicon glyphicon-shopping-cart"></i>Finalizar Venta</a>					
+				</div>
 			</div>	
-
-			<div class="container" >
-				<div class="col-md-6" id="detalle_moneda" style="border: 1px solid #000000; border-radius:10px">				
-				<div class="row" style="margin-top:30px;">				
-					<div class="col-xs-3">Total:</div>
-					<div class="col-xs-3">$100</div>				
-					<div class="col-xs-3">Diferencia:</div>
-					<div class="col-xs-3">$0</div>
-				</div>	
-				</div>	
-			</div>	
-
 			
 			</div>
 
@@ -232,19 +202,7 @@ function agregarFila() {
 					"<td class='r'>"+cantidad+"</td>"+
 					"<td class='r tot total_fila"+i+"'>"+cantidad*precioVenta+"</td>"+
 					"<td class='c'>"+'<a class="btn btn-sm btn-danger" onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+"</td>"+				
-					"</tr>";				
-	
-
-		// var filas=	
-		// 		"<div class='row' id='fila"+i+"'>"+
-		// 		"<div class='col-xs-1' id=id"+i+">"+i+"</div>"+
-		// 		"<div class='col-xs-2'>"+codigoProducto+"</div>"+
-		// 		"<div class='col-xs-2'>"+$("#comboproducto").val()+"</div>"+
-		// 		"<div class='col-xs-2'>"+precioVenta+"</div>"+
-		// 		"<div class='col-xs-1'>"+cantidad+"</div>"+
-		// 		"<div class='col-xs-2 total_fila"+i+"'>"+cantidad*precioVenta+"</div>"+
-		// 		"<div class='col-xs-2'>"+'<a class="btn btn-sm btn-danger" onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+"</div>"
-		// 		"</div>";	
+					"</tr>";			
 
 		$('#productoid').val('');
 		$("#comboproducto").val('');		
@@ -253,6 +211,7 @@ function agregarFila() {
 		
 		precioVenta = 0;
 		codigoProducto = 0;		
+		recorrer_monedas()
 
 		i++;
 
@@ -278,7 +237,6 @@ function recorrer_tabla(){
 	var parcial = 0;
 	var n = 0;
 	$("td").each(function(){
-	//$("#detalle .row").each(function(){
 
  		 console.log("valor",i,$('.total_fila'+j).text());
 		 parcial = parseFloat($('.total_fila'+j).text());
@@ -292,8 +250,26 @@ function recorrer_tabla(){
 		 j++;
  	});	 
 	 $('#totalVenta').text(total_venta);			
+	 $('#totalVentaFinal').text(total_venta);
 }
 
+
+
+function recorrer_monedas(){
+	var j=0;
+	var total_pago = 0;
+	var parcial = 0;
+	$(".moneda").each(function(){
+ 		 console.log("valor",j,$('#input_moneda'+j).val());
+		 parcial = parseFloat($('#input_moneda'+j).val());
+		 if (!isNaN(parcial)){			 
+		 	total_pago = total_pago + parcial;
+		 }
+		 j++;
+ 	});	 
+	 $('#totalPagoFinal').text(total_pago);		
+	 $('#totalVueltoFinal').text(total_pago - parseFloat($('#totalVentaFinal').text()));	
+}
 
 
 
@@ -302,35 +278,32 @@ function agregarMoneda() {
 
 	var nueva_moneda = "<div class='row' id=mon"+mon+">"+						
 		"<div class='col-xs-4'><select class='form-control' name='moneda[]' required id ='combomoneda"+mon+"'></select></div>"+
-		"<div class='col-xs-3'><input type='text' class='form-control'  value='0'></div>"+
+		"<div class='col-xs-3'><input type='text' class='moneda' id='input_moneda"+mon+"' value='0'></div>"+
 		"<div class='col-xs-1'><a class='btn btn-sm btn-danger' onclick='borrarMoneda("+mon+")'><i class='glyphicon glyphicon-trash'></i></a></div>"+
 		"</div>";
 
-		//$('#detalle_moneda').append(nueva_moneda)
-
-		$.when($('#detalle_moneda').append(nueva_moneda)).then
+	$.when($('#detalle_moneda').append(nueva_moneda)).then
 	{
 		$("#combomoneda"+mon).html(registro_moneda);
-		//$("#combomoneda"+i).combobox();
-
-		// $("#comboservicio"+i).combobox({ 
-        // select: function (event, ui) { 
-		// 	var a = $('.selected').find('div:first').html();
-		// 	$("#precio"+a).val($("#comboservicio"+a+ " option:selected").attr("precio"));
-		// 	$("#total"+a).val($("#precio"+a).val());
-
-        // 	} 
-    	// });
-
 		mon++;
 
+		$(".moneda").on('change',function(){
+			recorrer_monedas();
+		});
 	}
 
 }
 
 function borrarMoneda(id) {  
 	$("#mon"+id).remove();
+	mon--;
+	recorrer_monedas();
 }
+
+//para la primera moneda por defecto
+$(".moneda").on('change',function(){
+			recorrer_monedas();
+		});
 
 
 
