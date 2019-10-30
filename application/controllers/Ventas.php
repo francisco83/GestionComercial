@@ -16,6 +16,61 @@ class Ventas extends CI_Controller {
 	public function index(){
 		$this->load->view("Ventas/index");
 	}
+
+	public function insertar(){
+		$clienteid = $_POST['clienteid']; 
+		$fecha = $_POST['fechahoy'];
+		$CodigoProducto = $_POST['CodigoProducto'];
+		$PrecioVenta = $_POST['PrecioVenta'];
+		$Cantidad = $_POST['Cantidad'];
+		$moneda = $_POST['moneda'];
+		$monedaMonto = $_POST['monedaMonto'];
+		
+		//$servicio = $_POST['servicio'];
+		//$detalle = $_POST['detalle'];
+		//$precio = $_POST['precio'];
+
+
+		// $id = $this->Cli_servicios_model->guardarCambios($clienteid,$fecha);
+
+		// for ($i=0; $i < count($servicio); $i++) 
+		// {   
+		// 	//$data[$i]['id_cliente'] = $clienteid;
+		// 	$data[$i]['id_cli_servicios'] = $id;
+		// 	$data[$i]['id_servicio'] = $servicio[$i];
+		// 	//$data[$i]['fecha'] = $fecha;
+		// 	$data[$i]['precio'] = $precio[$i];
+		// 	$data[$i]['cantidad'] = $cantidad[$i];
+		// 	$data[$i]['descripcion'] = $detalle[$i];
+		// }
+
+
+		// $resultado = $this->Cli_servicios_detalle_model->guardarCambios($data);
+
+		// if($resultado){
+        //     $mensaje = "Registro cargado correctamente";
+		// 	$clase = "success";
+			
+		// 	//$json['success'] = 'You have upload your selected files!';
+
+
+        // }else{
+        //     $mensaje = "Error al registrar la carga de servicios";
+		// 	$clase = "danger";
+		// 	$json['error'] = $this->upload->display_errors();
+        // }
+        // $this->session->set_flashdata(array(
+        //     "mensaje" => $mensaje,
+        //     "clase" => $clase,
+		// ));
+		
+		//$resultado = $this->Tipos_Servicios_model->listar();
+		//echo json_encode($this);
+		
+		//redirect('registrar');
+		//redirect("registrar/"+$clienteid);
+		
+	}
 /*
 	public function get_all(){
 		$resultado = $this->Ventas_model->get_all();

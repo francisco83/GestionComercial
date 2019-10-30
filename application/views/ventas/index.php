@@ -19,7 +19,7 @@
 						<div class="col-md-6 col-xs-6">
 							<div class="form-group">
 									<label>Cliente:</label>
-									<!-- <input type ="text" id="clienteid" name="clienteid" hidden value="<?php echo ($id)?>"> -->
+									<input type ="text" id="clienteid" name="clienteid" hidden value="">
 									<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
 							</div>
 						</div>												
@@ -44,46 +44,39 @@
 						</div>						
 					</div>
 
-				<div class="tableFixHead">
-					<table id="tbl" class="table table-bordered table-hover">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Codigo</th>
-								<th>Nombre</th>
-								<th>Precio</th>
-								<th>Cantidad</th>
-								<th>Total</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody id="detalle">
-						</tbody>
-							<tr>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th class='r'>Total</th>
-								<th class='r' id="totalVenta"></th>
-								<th></th>
-							</tr>
-					</table>
-				</div> 
+					<div class="tableFixHead">
+						<table id="tbl" class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Codigo</th>
+									<th>Nombre</th>
+									<th>Precio</th>
+									<th>Cantidad</th>
+									<th>Total</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody id="detalle">
+							</tbody>
+								<tr>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th class='r'>Total</th>
+									<th class='r' id="totalVenta"></th>
+									<th></th>
+								</tr>
+						</table>
+					</div> 
 
-				</form>
-
-				<div></div>
-
-			</div><!-- fin pbody -->
-
-
-
+			
 			<div class="container" >
 				<div class="col-md-6" id="detalle_moneda..." style="border: 1px solid #eeeeee; padding:10px">				
 					<div class="row" id="mon0">										
 						<div class='col-xs-4'><select class="form-control" name="moneda[]" required id ="combomoneda"></select></div>
-						<div class="col-xs-3"><input type="text"  class="moneda" id="input_moneda0" value="0"></div>						
+						<div class="col-xs-3"><input type="text"  class="moneda" name="monedaMonto[]"  id="input_moneda0" value="0"></div>						
 						<div class="col-xs-1"></div>			
 						<div class="col-xs-1"><a class="btn btn-sm btn-success" onclick="agregarMoneda()" title="Agregar moneda"><i class="glyphicon glyphicon-plus"></i></a></div>			
 					</div>
@@ -105,10 +98,14 @@
 					</div>
 				</div>
 				<div class="col-md-3">					
-					<a onclick="" class="form-control btn btn-primary"><i class="glyphicon glyphicon-shopping-cart"></i>Finalizar Venta</a>					
+					<!-- <a onclick="" class="form-control btn btn-primary"><i class="glyphicon glyphicon-shopping-cart"></i>Finalizar Venta</a>					 -->
+					<input class="btn btn-primary" type="submit" value="Finalizar">
 				</div>
 			</div>	
+
+			</div><!-- fin pbody -->
 			
+			</form>
 			</div>
 
 			</div>
@@ -150,6 +147,7 @@
 			select: function(event, ui){			
 				$('#productoid').val(ui.item.id);
 				$("#comboproducto").val(ui.item.value);
+				productoId = ui.item.id;
 				precioVenta = ui.item.precioVenta;
 				codigoProducto = ui.item.codigoProducto;
 			},
@@ -167,6 +165,35 @@
 				});											
 				$("#combomoneda").html(registro_moneda);
 			}
+		});
+
+
+		jQuery(document).on('submit','#form_insert',function(event)
+		{
+			event.preventDefault();
+			jQuery.ajax({
+				url:"<?php echo site_url('ventas/insertar');?>",
+				type: 'POST',
+				datetype: 'json',
+				data: $(this).serialize()
+			})
+			.done(function(respuesta)
+			{
+				//$("#detalle").html('');
+
+				$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'Se registro la venta.'
+               },{
+                   type: 'success'
+               });
+
+			})
+			.fail(function(resp)
+			{
+			 	console.log("Error");
+			 });
+
 		});
 });
 
@@ -196,10 +223,11 @@ function agregarFila() {
 	{
 		var filas="<tr id='fila"+i+"'>"+
 					"<td id=id"+i+">"+i+"</td>"+
-					"<td>"+codigoProducto+"</td>"+
-					"<td>"+$("#comboproducto").val()+"</td>"+
-					"<td class='r'>"+precioVenta+"</td>"+
-					"<td class='r'>"+cantidad+"</td>"+
+					// <td><input type='text' hidden name='IdProducto[]' value='"+productoId+"'>
+					"<td><input type='text' hidden name='CodigoProducto[]' value='"+codigoProducto+"'>"+codigoProducto+"</td>"+
+					"<td><input type='text' hidden name='NombreProducto[]' value='"+$("#comboproducto").val()+"'></div>"+$("#comboproducto").val()+"</td>"+
+					"<td><input type='text' hidden name='PrecioVenta[]' value='"+precioVenta+"'>"+precioVenta+"</td>"+
+					"<td><input type='text' hidden name='Cantidad[]' value='"+cantidad+"'>"+cantidad+"</td>"+
 					"<td class='r tot total_fila"+i+"'>"+cantidad*precioVenta+"</td>"+
 					"<td class='c'>"+'<a class="btn btn-sm btn-danger" onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+"</td>"+				
 					"</tr>";			
@@ -211,8 +239,7 @@ function agregarFila() {
 		
 		precioVenta = 0;
 		codigoProducto = 0;		
-		recorrer_monedas()
-
+		
 		i++;
 
 	}else{
@@ -228,6 +255,7 @@ function agregarFila() {
 	$.when($('#detalle').append(filas)).then
 	{	
 		recorrer_tabla();
+		recorrer_monedas();
 	}
 }
 
@@ -278,7 +306,7 @@ function agregarMoneda() {
 
 	var nueva_moneda = "<div class='row' id=mon"+mon+">"+						
 		"<div class='col-xs-4'><select class='form-control' name='moneda[]' required id ='combomoneda"+mon+"'></select></div>"+
-		"<div class='col-xs-3'><input type='text' class='moneda' id='input_moneda"+mon+"' value='0'></div>"+
+		"<div class='col-xs-3'><input type='text' class='moneda' name='monedaMonto[]' id='input_moneda"+mon+"' value='0'></div>"+
 		"<div class='col-xs-1'><a class='btn btn-sm btn-danger' onclick='borrarMoneda("+mon+")'><i class='glyphicon glyphicon-trash'></i></a></div>"+
 		"</div>";
 
