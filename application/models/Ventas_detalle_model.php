@@ -6,14 +6,13 @@ class Ventas_model extends CI_Model {
 	var $table = 'ventas';
 
 
-	public function guardarCambios($fecha,$total,$clienteId,$empleadoId,$sucursalId){
-		$this->fecha = $fecha;
-		$this->total= $total;
-		$this->clienteId = $clienteId;
-		$this->empleadoId =$empleadoId;
-		$this->sucursalId =$sucursalId;
+	public function guardarCambios($productoId,$cantidad,$precioVenta,$ventaId){
+		$this->productoId = $productoId;
+		$this->cantidad= $cantidad;
+		$this->precioVenta = $precioVenta;
+		$this->ventaId =$ventaId;		
 
-		$this->db->insert($this->table, $this);		
+		$this->db->insert($table, $this);		
 		return $this->db->insert_id();		
 	}
 
