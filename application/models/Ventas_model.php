@@ -3,17 +3,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ventas_model extends CI_Model {
 
-	var $table = 'ventas';
+	//var $table = 'ventas';
 
 
-	public function guardarCambios($fecha,$total,$clienteId,$empleadoId,$sucursalId){
+	public function guardarCambios($fecha,$total,$vuelto,$clienteId,$empleadoId,$sucursalId){
 		$this->fecha = $fecha;
 		$this->total= $total;
+		$this->vuelto= $vuelto;
 		$this->clienteId = $clienteId;
 		$this->empleadoId =$empleadoId;
 		$this->sucursalId =$sucursalId;
 
-		$this->db->insert($this->table, $this);		
+		$this->db->insert('ventas', $this);		
+		//$this->db->insert_batch($this->table, $this);
 		return $this->db->insert_id();		
 	}
 
@@ -23,13 +25,13 @@ class Ventas_model extends CI_Model {
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
-		$consulta = $this->db->get($this->table);
+		$consulta = $this->db->get('ventas');
 		return $consulta->result();
 	}
 
 	public function get_all()
 	{
-		$consulta = $this->db->get($this->table);
+		$consulta = $this->db->get('ventas');
 		return $consulta->result();
 	}
 
@@ -51,24 +53,24 @@ class Ventas_model extends CI_Model {
 
 	public function save($data)
 	{
-		$this->db->insert($this->table, $data);
+		$this->db->insert('ventas', $data);
 		return $this->db->insert_id();
 	}
 
 	public function get_by_id($id)
 	{
-		return $this->db->get_where($this->table, array("id" => $id))->row();
+		return $this->db->get_where('ventas', array("id" => $id))->row();
 	}
 
 	public function update($where, $data)
 	{
-		$this->db->update($this->table, $data, $where);
+		$this->db->update('ventas', $data, $where);
 		return $this->db->affected_rows();
 	}
 
 	public function delete_by_id($id)
 	{
-	 $this->db->delete($this->table, array("id" => $id));
+	 $this->db->delete('ventas', array("id" => $id));
 	}
 
 

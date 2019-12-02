@@ -49,6 +49,7 @@
 							<thead>
 								<tr>
 									<th>#</th>
+									<th>Id Pro</th>
 									<th>Codigo</th>
 									<th>Nombre</th>
 									<th>Precio</th>
@@ -64,6 +65,7 @@
 									<th></th>
 									<th></th>
 									<th></th>
+									<th></th>
 									<th class='r'>Total</th>
 									<th class='r' id="totalVenta"></th>
 									<th></th>
@@ -73,10 +75,10 @@
 
 			
 			<div class="container" >
-				<div class="col-md-6" id="detalle_moneda..." style="border: 1px solid #eeeeee; padding:10px">				
+				<div class="col-md-6" id="detalle_moneda..." style="border: 1px solid #eeeeee; padding:10px; font-size: 25px;">				
 					<div class="row" id="mon0">										
 						<div class='col-xs-4'><select class="form-control" name="moneda[]" required id ="combomoneda"></select></div>
-						<div class="col-xs-3"><input type="text"  class="moneda" name="monedaMonto[]"  id="input_moneda0" value="0"></div>						
+						<div class="col-xs-3"><input type="text"  class="moneda" name="monedaMonto[]"  id="input_moneda0" value="0" size='7'></div>						
 						<div class="col-xs-1"></div>			
 						<div class="col-xs-1"><a class="btn btn-sm btn-success" onclick="agregarMoneda()" title="Agregar moneda"><i class="glyphicon glyphicon-plus"></i></a></div>			
 					</div>
@@ -88,13 +90,13 @@
 				</div>	
 				<div class="col-md-3" style="font-size: 25px;">
 					<div class="row">				
-						<div class="col-xs-4">Total:$</div><div class="col-xs-8" id="totalVentaFinal">0</div>
+						<div class="col-xs-4">Total:$</div><div class="col-xs-8"><input type="text" id="totalVentaFinal" name="totalVentaFinal" value="0" size="7" readonly></div> 
 					</div>	
 					<div class="row" style="margin-top:10px;">				
-						<div class="col-xs-4">Pago:$</div><div class="col-xs-8" id="totalPagoFinal">0</div>
+						<div class="col-xs-4">Pago:$</div><div class="col-xs-8"><input type="text" id="totalPagoFinal" name="totalPagoFinal" value="0" size="7" readonly></div>
 					</div>
 					<div class="row" style="margin-top:10px;">				
-					<div class="col-xs-4">Vuelto:$</div><div class="col-xs-8" id="totalVueltoFinal">0</div>
+					<div class="col-xs-4">Vuelto:$</div><div class="col-xs-8"><input type="text" id="totalVueltoFinal" name="totalVueltoFinal" value="0" size="7" readonly></div>
 					</div>
 				</div>
 				<div class="col-md-3">					
@@ -213,17 +215,19 @@ $("#cantidadid").keypress(function(e) {
 function borrarFila(index){
 	$("#fila"+index).remove();
 	recorrer_tabla();
+	recorrer_monedas();
 }
 
 function agregarFila() {   
 
+console.log("codigo ---->",productoId);
 	cantidad = $('#cantidadid').val();
 
 	if ($('#productoid').val()!="")
 	{
 		var filas="<tr id='fila"+i+"'>"+
 					"<td id=id"+i+">"+i+"</td>"+
-					// <td><input type='text' hidden name='IdProducto[]' value='"+productoId+"'>
+					"<td><input type='text' hidden name='IdProducto[]' value='"+productoId+"'>"+productoId+"</td>"+
 					"<td><input type='text' hidden name='CodigoProducto[]' value='"+codigoProducto+"'>"+codigoProducto+"</td>"+
 					"<td><input type='text' hidden name='NombreProducto[]' value='"+$("#comboproducto").val()+"'></div>"+$("#comboproducto").val()+"</td>"+
 					"<td><input type='text' hidden name='PrecioVenta[]' value='"+precioVenta+"'>"+precioVenta+"</td>"+
@@ -278,7 +282,7 @@ function recorrer_tabla(){
 		 j++;
  	});	 
 	 $('#totalVenta').text(total_venta);			
-	 $('#totalVentaFinal').text(total_venta);
+	 $('#totalVentaFinal').val(total_venta);
 }
 
 
@@ -287,6 +291,7 @@ function recorrer_monedas(){
 	var j=0;
 	var total_pago = 0;
 	var parcial = 0;
+	$('#totalVueltoFinal').val(0);
 	$(".moneda").each(function(){
  		 console.log("valor",j,$('#input_moneda'+j).val());
 		 parcial = parseFloat($('#input_moneda'+j).val());
@@ -295,8 +300,8 @@ function recorrer_monedas(){
 		 }
 		 j++;
  	});	 
-	 $('#totalPagoFinal').text(total_pago);		
-	 $('#totalVueltoFinal').text(total_pago - parseFloat($('#totalVentaFinal').text()));	
+	 $('#totalPagoFinal').val(total_pago);			
+	 $('#totalVueltoFinal').val(total_pago - parseFloat($('#totalVentaFinal').val()));	
 }
 
 
@@ -306,7 +311,7 @@ function agregarMoneda() {
 
 	var nueva_moneda = "<div class='row' id=mon"+mon+">"+						
 		"<div class='col-xs-4'><select class='form-control' name='moneda[]' required id ='combomoneda"+mon+"'></select></div>"+
-		"<div class='col-xs-3'><input type='text' class='moneda' name='monedaMonto[]' id='input_moneda"+mon+"' value='0'></div>"+
+		"<div class='col-xs-3'><input type='text' class='moneda' name='monedaMonto[]' id='input_moneda"+mon+"' value='0' size='7'></div>"+
 		"<div class='col-xs-1'><a class='btn btn-sm btn-danger' onclick='borrarMoneda("+mon+")'><i class='glyphicon glyphicon-trash'></i></a></div>"+
 		"</div>";
 

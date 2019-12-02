@@ -5,6 +5,8 @@ class Ventas extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Ventas_model");
+		$this->load->model("Ventas_detalle_model");
+		$this->load->model("Pagos_model");
 		$this->load->library(['ion_auth', 'form_validation']);
 
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
@@ -20,52 +22,75 @@ class Ventas extends CI_Controller {
 	public function insertar(){
 		$clienteId = $_POST['clienteid']; 
 		$fecha = $_POST['fechahoy'];
+		$IdProducto = $_POST['IdProducto'];
 		$CodigoProducto = $_POST['CodigoProducto'];
 		$PrecioVenta = $_POST['PrecioVenta'];
 		$Cantidad = $_POST['Cantidad'];
 		$moneda = $_POST['moneda'];
 		$monedaMonto = $_POST['monedaMonto'];
+		$total=$_POST['totalVentaFinal'];
+		$vuelto=$_POST['totalVueltoFinal'];
 
-		$total=100;
+		//$user = $this->ion_auth->logged_in();
+
+		
 		$empleadoId =1;
 		$sucursalId=0;
 		
 
-		$id = $this->Ventas_model->guardarCambios($fecha,$total,$clienteId,$empleadoId,$sucursalId);
+		$id = $this->Ventas_model->guardarCambios($fecha,$total,$vuelto,$clienteId,$empleadoId,$sucursalId);
 
 		$id = $id;
 		
-		for ($i=0; $i < count($CodigoProducto); $i++) 
-		{   			
-			$data[$i]['ventaId'] = $id;
-			$data[$i]['productoId'] = $CodigoProducto[$i];			
-			$data[$i]['PrecioVenta'] = $PrecioVenta[$i];
-			$data[$i]['Cantidad'] = $Cantidad[$i];
-			//$data[$i]['descripcion'] = $detalle[$i];
+		if($id > 0)
+		{
+			for ($i=0; $i < count($IdProducto); $i++) 
+			{   			
+				$data[$i]['ventaId'] = $id;
+				$data[$i]['productoId'] = $IdProducto[$i];			
+				$data[$i]['Precio'] = $PrecioVenta[$i];
+				$data[$i]['Cantidad'] = $Cantidad[$i];
+			}
+
+
+			$resultado = $this->Ventas_detalle_model->guardarCambios($data);
+
+			if($resultado){
+
+				for ($i=0; $i < count($moneda); $i++) 
+				{   			
+					$dataPago[$i]['ventaId'] = $id;
+					$dataPago[$i]['tipo_monedaId'] = $moneda[$i];			
+					$dataPago[$i]['monto'] = $monedaMonto[$i];
+				}
+
+				$resultado = $this->Pagos_model->guardarCambios($dataPago);
+
+				if($resultado){
+					$mensaje = "Registro cargado correctamente";
+					$clase = "success";			
+				}else{
+					$mensaje = "Error al registrar la venta";
+					$clase = "danger";
+					$json['error'] = $this->upload->display_errors();
+				}
+				$this->session->set_flashdata(array(
+					"mensaje" => $mensaje,
+					"clase" => $clase,
+				));
+
+			}
 		}
+		else{
 
-
-		$resultado = $this->Ventas_detalle_model->guardarCambios($data);
-
-		if($resultado){
-            $mensaje = "Registro cargado correctamente";
-			$clase = "success";			
-        }else{
-            $mensaje = "Error al registrar la carga de servicios";
-			$clase = "danger";
-			$json['error'] = $this->upload->display_errors();
-        }
-        $this->session->set_flashdata(array(
-            "mensaje" => $mensaje,
-            "clase" => $clase,
-		));
-		
-		//$resultado = $this->Tipos_Servicios_model->listar();
-		//echo json_encode($this);
-		
-		//redirect('registrar');
-		//redirect("registrar/"+$clienteid);
-		
+			$mensaje = "Error al registrar la venta";
+					$clase = "danger";
+					$json['error'] = $this->upload->display_errors();
+		}
+				$this->session->set_flashdata(array(
+					"mensaje" => $mensaje,
+					"clase" => $clase,
+				));
 	}
 /*
 	public function get_all(){
