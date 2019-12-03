@@ -73,6 +73,18 @@ class Ventas_model extends CI_Model {
 	 $this->db->delete('ventas', array("id" => $id));
 	}
 
+	public function buscarXcliente($clienteId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
+	{
+		$this->db->where("clienteId",$clienteId);
+		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
+		 	$this->db->limit($cantidadregistro,$inicio);
+		 }
+		$this->db->order_by("fecha", "desc");
+		$this->db->order_by("Id", "desc");
+		$consulta = $this->db->get("ventas");
+		 
+		return $consulta->result();
+	}
 
 	// public function enabled_by_id($id)
 	// {

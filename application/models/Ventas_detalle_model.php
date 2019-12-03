@@ -56,5 +56,19 @@ class Ventas_detalle_model extends CI_Model {
 	 $this->db->delete($this->table, array("id" => $id));
 	}
 
+	public function buscarDetalleXcliente($ventaId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
+	{
+		$this->db->select('ventas_detalle.id,ventas_detalle.productoId,ventas_detalle.precio,ventas_detalle.cantidad');
+		$this->db->from('ventas_detalle');
+		$this->db->join('ventas','ventas.id=ventas_detalle.ventaId');
+		$this->db->where("ventas_detalle.ventaId",$ventaId);
+		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
+		 	$this->db->limit($cantidadregistro,$inicio);
+		 }
+
+		$consulta=$this->db->get();
+		return $consulta->result_array();
+	}
+
 
 }
