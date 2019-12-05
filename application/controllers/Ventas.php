@@ -108,7 +108,7 @@ class Ventas extends CI_Controller {
 		$inicio = ($numeropagina -1)*$cantidad;
 		$data = array(
 			"cli_ventas" => $this->Ventas_model->buscarXcliente($clienteId,$buscar,$inicio,$cantidad),
-			"totalregistros" => count($this->Ventas_model->buscar($clienteId,$buscar)),
+			"totalregistros" => count($this->Ventas_model->buscarXcliente($clienteId,$buscar)),
 			"cantidad" =>$cantidad
 			
 		);

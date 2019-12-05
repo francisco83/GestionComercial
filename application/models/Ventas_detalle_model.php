@@ -58,9 +58,10 @@ class Ventas_detalle_model extends CI_Model {
 
 	public function buscarDetalleXcliente($ventaId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
-		$this->db->select('ventas_detalle.id,ventas_detalle.productoId,ventas_detalle.precio,ventas_detalle.cantidad');
+		$this->db->select('ventas_detalle.id,ventas_detalle.productoId,productos.nombre,ventas_detalle.precio,ventas_detalle.cantidad');
 		$this->db->from('ventas_detalle');
 		$this->db->join('ventas','ventas.id=ventas_detalle.ventaId');
+		$this->db->join('productos','productos.id=ventas_detalle.productoId');
 		$this->db->where("ventas_detalle.ventaId",$ventaId);
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 		 	$this->db->limit($cantidadregistro,$inicio);
@@ -68,6 +69,19 @@ class Ventas_detalle_model extends CI_Model {
 
 		$consulta=$this->db->get();
 		return $consulta->result_array();
+	}
+
+	public function buscarDetalleImprimir($ventaId)
+	{		
+		$this->db->select('ventas.id as codigo_venta,ventas.fecha as fecha_venta,ventas.total,ventas.vuelto,clientes.apellido as apellido_cliente, clientes.nombre as nombre_cliente,ventas_detalle.cantidad,ventas_detalle.precio,productos.nombre as nombre_producto');
+		$this->db->from('ventas_detalle');
+		$this->db->join('ventas','ventas.id=ventas_detalle.ventaId');
+		$this->db->join('productos','productos.id=ventas_detalle.productoId');
+		$this->db->join('clientes','clientes.id=ventas.clienteId');
+		$this->db->where("ventas_detalle.ventaId",$ventaId);
+
+		$consulta=$this->db->get();
+		return $consulta->result();
 	}
 
 

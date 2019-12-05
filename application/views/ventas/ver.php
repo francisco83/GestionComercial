@@ -49,7 +49,7 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h4>Ver Ventas por Clientes</h4>
+						<h4>Ventas por Clientes</h4>
 					</div>
 					
 					<div class="panel-body">
@@ -115,8 +115,8 @@
 									<tr>
 										<th>#</th>
 										<th>Producto</th>
-										<th>Cantidad</th>
 										<th>Precio</th>
+										<th>Cantidad</th>				
 										<th>Total</th>
 									</tr>
 								</thead>
@@ -180,8 +180,8 @@
 				"<td>"+
 				//"<a class='btn btn-sm btn-info' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+				
 				" <a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>"+
-				" <a class='btn btn-sm btn-danger' onclick='javascript:borrar_Servicio("+item.id+")'><i class='glyphicon glyphicon-trash'></i></a>"+				
-				" <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_registrar/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-print'></i></a>"+
+				" <a class='btn btn-sm btn-danger' onclick='javascript:borrar_Venta("+item.id+")'><i class='glyphicon glyphicon-trash'></i></a>"+				
+				" <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-print'></i></a>"+
 				"</td>"+
 				"</tr>";
 			});
@@ -201,37 +201,37 @@
 }
 
 
-function borrar_Servicio(id)
-{
-    if(confirm('¿Esta seguro que desea eliminar el registro?'))
-    {
-        $.ajax({
-            url : Site+controller+"/ajax_delete/"+id,
-            type: "POST",
-            dataType: "JSON",
-            success: function(data)
-            {
-				Filtrar($('#clienteid').val());
-				$.notify({
-                   title: '<strong>Correcto!</strong>',
-                   message: 'El registro se elimino correctamente.'
-               },{
-                   type: 'success'
-               });
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-				$.notify({
-                   title: '<strong>Error!</strong>',
-                   message: 'Se produjo un error al eliminar el registro.'
-               },{
-                   type: 'danger'
-               });
-            }
-        });
+// function borrar_Servicio(id)
+// {
+//     if(confirm('¿Esta seguro que desea eliminar el registro?'))
+//     {
+//         $.ajax({
+//             url : Site+controller+"/ajax_delete/"+id,
+//             type: "POST",
+//             dataType: "JSON",
+//             success: function(data)
+//             {
+// 				Filtrar($('#clienteid').val());
+// 				$.notify({
+//                    title: '<strong>Correcto!</strong>',
+//                    message: 'El registro se elimino correctamente.'
+//                },{
+//                    type: 'success'
+//                });
+//             },
+//             error: function (jqXHR, textStatus, errorThrown)
+//             {
+// 				$.notify({
+//                    title: '<strong>Error!</strong>',
+//                    message: 'Se produjo un error al eliminar el registro.'
+//                },{
+//                    type: 'danger'
+//                });
+//             }
+//         });
 
-    }
-}
+//     }
+// }
 
 
 function verDetalle(ventaId,valorBuscar,pagina,cantidad){
@@ -246,7 +246,7 @@ function verDetalle(ventaId,valorBuscar,pagina,cantidad){
 			$.each(response.ventas_detalle,function(key,item){
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
-				"<td>"+item.productoId+"</td>"+
+				"<td>"+item.nombre+"</td>"+
 				"<td>"+item.precio+"</td>"+
 				"<td>"+item.cantidad+"</td>"+
 				"<td>"+item.precio*item.cantidad+"</td>"+			
@@ -291,14 +291,14 @@ function Filtrar($cliente_id){
 }
 
 
-function FiltrarDetalle($servicioId){
-	verDetalle($servicioId,"",1,5);
+function FiltrarDetalle($ventaId){
+	verDetalle($ventaId,"",1,5);
 
 	
 	$("input[name=busqueda]").keyup(function(){
 		textobuscar = $(this).val();
 		valoroption = $("#cantidadDetalle").val();
-		verDetalle($servicioId,textobuscar,1,valoroption);
+		verDetalle($ventaId,textobuscar,1,valoroption);
 	});
 
 	$("body").on("click",".paginacionDetalle li a",function(e){
@@ -306,14 +306,14 @@ function FiltrarDetalle($servicioId){
 		valorhref = $(this).attr("href");
 		valorBuscar = $("input[name=busqueda]").val();
 		valoroption = $("#cantidadDetalle").val();
-		console.log($servicioId,valorBuscar,valorhref,valoroption);
-		verDetalle($servicioId,valorBuscar,valorhref,valoroption);
+		console.log($ventaId,valorBuscar,valorhref,valoroption);
+		verDetalle($ventaId,valorBuscar,valorhref,valoroption);
 	});
 
 	$("#cantidadDetalle").change(function(){
 		valoroption = $(this).val();
 		valorBuscar = $("input[name=busqueda]").val();
-		verDetalle($servicioId,valorBuscar,1,valoroption);
+		verDetalle($ventaId,valorBuscar,1,valoroption);
 	});
 }
 	

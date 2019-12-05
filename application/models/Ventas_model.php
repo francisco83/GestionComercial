@@ -104,4 +104,8 @@ class Ventas_model extends CI_Model {
 
 	// }
 
+	//buscarDetalleImprimir
+
+
+
 }
