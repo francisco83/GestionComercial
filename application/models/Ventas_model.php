@@ -86,6 +86,32 @@ class Ventas_model extends CI_Model {
 		return $consulta->result();
 	}
 
+	// public function detalleCtaCteVentaxCliente($clienteId)
+	// {	
+	// 	$this->db->select('ventas.id as codigo_venta,ventas.fecha as fecha_venta,ventas.total,ventas.vuelto,pagos.monto,clientes.Id as clienteId,clientes.nombre,clientes.apellido');
+	// 	$this->db->from('ventas');
+	// 	$this->db->join('pagos','ventas.id=pagos.ventaId');
+	// 	$this->db->join('clientes','clientes.id=ventas.clienteId');
+	// 	$this->db->where("ventas.clienteId",$clienteId);
+
+	// 	$consulta=$this->db->get();
+	// 	return $consulta->result();
+	// }
+
+
+	public function detalleCtaCteVentaxCliente($clienteId)
+	{	
+		$this->db->select('ventas.id as codigo_venta,ventas.fecha as fecha_venta,sum(ventas.total) as total,sum(ventas.vuelto) as vuelto,sum(pagos.monto) as monto,clientes.Id as clienteId,clientes.nombre,clientes.apellido');
+		$this->db->from('ventas');
+		$this->db->join('pagos','ventas.id=pagos.ventaId');
+		$this->db->join('clientes','clientes.id=ventas.clienteId');
+		$this->db->where("ventas.clienteId",$clienteId);
+		$this->db->group_by(array("ventas.id", "ventas.fecha")); 
+
+		$consulta=$this->db->get();
+		return $consulta->result();
+	}
+
 	// public function enabled_by_id($id)
 	// {
 	// 	$reg = $this->db->get_where($this->table, array("id" => $id))->row();

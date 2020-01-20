@@ -5,6 +5,7 @@ class Clientes extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Clientes_model");
+		$this->load->model("Ventas_model");
 		$this->load->library(['ion_auth', 'form_validation']);
 
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
@@ -17,10 +18,17 @@ class Clientes extends CI_Controller {
 		$this->load->view("Clientes/index");
 	}
 
-	public function ctacte($id){
-		//$this->load->view("Clientes/ctacte");
-		$cliente = $this->Clientes_model->get_by_id($id);
-		$this->load->view("Clientes/ctacte",$cliente);
+	public function ctacte($id){		
+		// $data = array(
+		// 	"Cliente" => $this->Clientes_model->get_by_id($id),
+		// 	"detalleCtaCte" => $this->Ventas_model->detalleCtaCteVentaxCliente($id)						
+		// );
+
+		//$cliente = $this->Clientes_model->get_by_id($id);
+		$data['filas'] = $this->Ventas_model->detalleCtaCteVentaxCliente($id);
+		
+		//$this->load->view("Clientes/ctacte",json_encode($data));
+		$this->load->view("Clientes/ctacte",$data);
 	}
 
 	public function get_all(){

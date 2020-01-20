@@ -1,5 +1,5 @@
 <body cz-shortcut-listen="true">
-        <table border="0" width="100%"> 
+        <table width="100%"> 
 			<?php $this->load->view("partial/encabezado_reporte");?>
             <tbody> 
                     <tr> 

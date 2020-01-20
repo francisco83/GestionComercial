@@ -188,13 +188,15 @@
 			.done(function(respuesta)
 			{
 				//$("#detalle").html('');
-
+				
 				$.notify({
                    title: '<strong>Atención!</strong>',
                    message: 'Se registro la venta.'
                },{
                    type: 'success'
                });
+
+			   nuevaVenta();
 
 			})
 			.fail(function(resp)
@@ -345,7 +347,7 @@ $(".moneda").on('change',function(){
 			recorrer_monedas();
 		});
 
-function nuevaVenta(){
+function nuevaVenta(){	
 	$('#totalPagoFinal').val(0);			
 	$('#totalVueltoFinal').val(0);	
 	$('#total_moneda').text(0);

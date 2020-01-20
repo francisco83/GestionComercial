@@ -73,7 +73,7 @@ class Ventas_detalle_model extends CI_Model {
 
 	public function buscarDetalleImprimir($ventaId)
 	{		
-		$this->db->select('ventas.id as codigo_venta,ventas.fecha as fecha_venta,ventas.total,ventas.vuelto,clientes.apellido as apellido_cliente, clientes.nombre as nombre_cliente,ventas_detalle.cantidad,ventas_detalle.precio,productos.nombre as nombre_producto');
+		$this->db->select('ventas.id as codigo_venta,ventas.fecha as fecha_venta,ventas.total,ventas.vuelto,clientes.apellido as apellido_cliente, clientes.nombre as nombre_cliente,ventas_detalle.cantidad,ventas_detalle.precio,productos.nombre as nombre_producto, productos.descripcion as producto_descripcion');
 		$this->db->from('ventas_detalle');
 		$this->db->join('ventas','ventas.id=ventas_detalle.ventaId');
 		$this->db->join('productos','productos.id=ventas_detalle.productoId');

@@ -20,7 +20,7 @@
 					<div class="col-md-6 col-xs-8">
 						<div class="form-group">
 								<label>Cliente:</label>
-								<input type ="text" id="clienteid" name="clienteid" hidden value="<?php echo ($id)?>">
+								<input type ="text" id="clienteid" name="clienteid" hidden value="<?php echo ($filas[0]->clienteId)?>">
 								<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
 						</div>
 					</div>
@@ -42,15 +42,20 @@
 					</thead>
 					<tbody id="detalle">
 					</tbody>
-						<tr>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th></th>
+					<?php foreach ($filas as $fila): ?>
+						<tr>			
+							<td class="c"><?= date("d/m/Y", strtotime($fila->fecha_venta ));?></td>				
+							<td><?= $fila->codigo_venta ?></td>
+							<td>venta</td>							
+							<td class="r"><?= $fila->total ?></td>                                        
+							<td class="r"><?= $fila->monto - $fila->vuelto ?></td>
+							<td class="r"><?= $fila->monto - $fila->total - $fila->vuelto ?></td>
+							<td>
+								<a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>								
+								<a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta/<?php echo $fila->codigo_venta ?>'target="_blank"><i class='glyphicon glyphicon-print'></i></a>
+							</td>
 						</tr>
+                    <?php endforeach; ?>
 				</table>
 				
 
@@ -73,9 +78,9 @@
 	var i = 1;
 	
 	$(function() {
-		//var cliente = "<?php echo ($apellido." ".$nombre)?>";
+		//var cliente = "<?php echo ($filas[0]->apellido." ".$filas[0]->nombre)?>";
 		$("#fechahoy").val(hoyFecha());
-		$("#combocliente").val("<?php echo ($apellido." ".$nombre)?>");
+		$("#combocliente").val("<?php echo ($filas[0]->apellido." ".$filas[0]->nombre)?>");	
 
 		//Buscar Cliente
 		$( "#combocliente" ).autocomplete({
