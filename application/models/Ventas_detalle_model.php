@@ -82,7 +82,20 @@ class Ventas_detalle_model extends CI_Model {
 
 		$consulta=$this->db->get();
 		return $consulta->result();
+	
 	}
+		
+
+		public function buscarDetallePagoImprimir($ventaId)
+		{		
+			$this->db->select('pagos.ventaId as codigo_venta,pagos.fecha_pago,pagos.monto,tipos_monedas.nombre');
+			$this->db->from('pagos');
+			$this->db->join('tipos_monedas','pagos.tipo_monedaid=tipos_monedas.Id');
+			$this->db->where("pagos.ventaId",$ventaId);
+	
+			$consulta=$this->db->get();
+			return $consulta->result();
+		}
 
 
 }

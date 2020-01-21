@@ -27,7 +27,7 @@
 					</div>
 					<!-- <a onclick="agregarFila()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a> -->
 
-
+					<div class="tableFixHead">
 					<table id="tbl" class="table table-bordered table-hover">
 					<thead>
 						<tr>
@@ -41,7 +41,7 @@
 						</tr>
 					</thead>
 					<tbody id="detalle">
-					</tbody>
+
 					<?php foreach ($filas as $fila): ?>
 						<tr>			
 							<td class="c"><?= date("d/m/Y", strtotime($fila->fecha_venta ));?></td>				
@@ -51,13 +51,16 @@
 							<td class="r"><?= $fila->monto - $fila->vuelto ?></td>
 							<td class="r"><?= $fila->monto - $fila->total - $fila->vuelto ?></td>
 							<td>
-								<a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>								
-								<a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta/<?php echo $fila->codigo_venta ?>'target="_blank"><i class='glyphicon glyphicon-print'></i></a>
+								<a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-eye-open'></i></a>								
+								<a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta_ctacte/<?php echo $fila->codigo_venta ?>'target="_blank"><i class='glyphicon glyphicon-print'></i></a>
 							</td>
 						</tr>
                     <?php endforeach; ?>
+
+					</tbody>
+
 				</table>
-				
+				</div>
 
 				<!-- <div class="col-md-12" id="detalle">
 				</div>			 -->

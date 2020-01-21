@@ -61,6 +61,14 @@ class Reportes extends CI_Controller {
 		$data['filas'] = $this->Ventas_detalle_model->buscarDetalleImprimir($id);		
 		$this->load->view("Reportes/ver_detalle_venta",$data);
 	}
+
+	public function ver_venta_ctacte($id){
+		$this->load->model("Ventas_detalle_model");
+		$this->load->view("partial/cabecera_reporte");		
+		$data['filas'] = $this->Ventas_detalle_model->buscarDetalleImprimir($id);		
+		$data['pagos'] = $this->Ventas_detalle_model->buscarDetallePagoImprimir($id);		
+		$this->load->view("Reportes/ver_detalle_venta_ctacte",$data);
+	}
 	public function productos(){
 		$this->load->model("Productos_model");
 		$this->load->view("partial/cabecera_reporte");		

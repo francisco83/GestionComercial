@@ -66,6 +66,7 @@ class Ventas extends CI_Controller {
 					$dataPago[$i]['ventaId'] = $id;
 					$dataPago[$i]['tipo_monedaId'] = $moneda[$i];			
 					$dataPago[$i]['monto'] = $monedaMonto[$i];
+					$dataPago[$i]['fecha_pago'] = $fecha;
 				}
 
 				$resultado = $this->Pagos_model->guardarCambios($dataPago);
