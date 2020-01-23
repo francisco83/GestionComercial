@@ -133,6 +133,13 @@ class Ventas extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	public function verDetallePagos()
+	{
+		$IdVenta = $this->input->post("IdVenta");
+		$this->load->model("Ventas_detalle_model");		
+		$data = $this->Ventas_detalle_model->buscarDetallePagoImprimir($IdVenta);		
+		echo json_encode($data);
+	}
 
 
 }

@@ -11,12 +11,6 @@
 				<form action="" id="form_insert">
 
 					<div class="row">
-					<!-- <div class="col-md-3 col-xs-4">
-						<div class="form-group">
-								<label for="fecha">Fecha:</label>
-								<input class="form-control" id="fechahoy" name="fechahoy" required type="date" id="fechaHoy">
-						</div>  						
-					</div> -->
 					<div class="col-md-6 col-xs-8">
 						<div class="form-group">
 								<label>Cliente:</label>
@@ -42,7 +36,11 @@
 					</thead>
 					<tbody id="detalle">
 
-					<?php foreach ($filas as $fila): ?>
+					<?php 
+					$debe=0;
+					$haber=0;
+					$saldo=0;
+					foreach ($filas as $fila): ?>
 						<tr>			
 							<td class="c"><?= date("d/m/Y", strtotime($fila->fecha_venta ));?></td>				
 							<td><?= $fila->codigo_venta ?></td>
@@ -51,21 +49,37 @@
 							<td class="r"><?= $fila->monto - $fila->vuelto ?></td>
 							<td class="r"><?= $fila->monto - $fila->total - $fila->vuelto ?></td>
 							<td>
-								<a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-eye-open'></i></a>								
+								<a class='btn btn-sm btn-warning'  href='javascript:verDetallePagos(<?php echo $fila->codigo_venta ?>)'><i class='glyphicon glyphicon-eye-open'></i></a>								
 								<a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta_ctacte/<?php echo $fila->codigo_venta ?>'target="_blank"><i class='glyphicon glyphicon-print'></i></a>
 							</td>
 						</tr>
+						<?php $debe = $debe +  $fila->total; 
+							  $haber = $haber + ($fila->monto - $fila->vuelto);
+							  $saldo = $saldo + ($fila->monto - $fila->total - $fila->vuelto);
+						?>
                     <?php endforeach; ?>
+
 
 					</tbody>
 
 				</table>
 				</div>
-
-				<!-- <div class="col-md-12" id="detalle">
-				</div>			 -->
-
-				<!-- <input class="btn btn-primary" type="submit" value="Guardar">		 -->
+				<div style="background-color: lightgray;font-weight: bold;">
+					<table>
+						<tbody>
+							<tr>			
+								<td></td>				
+								<td></td>
+								<td></td>							
+								<td class="c">Debe:<?php echo $debe?></td>                                        
+								<td class="c">Haber:<?php echo $haber?></td>
+								<td class="c">Saldo:<?php echo $saldo?></td>
+								<td>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 				</form>
 
 			</div><!-- fin pbody -->
@@ -78,6 +92,7 @@
 	<script src="<?php echo base_url();?>assets/js/combos.js"></script>
 	<script>
 	
+
 	var i = 1;
 	
 	$(function() {
@@ -214,4 +229,78 @@ function agregarFila() {
    i++;
 }
 
+
+
+function verDetallePagos(IdVenta)
+{
+
+	var i=1;
+	var detallepagos="";
+	var sumaPagos = 0;
+	detallepagos+="<tr>";
+	detallepagos+="<th class='r padding0'><strong>#</strong></th>";
+	detallepagos+="<th class='padding0'><strong>Fecha de pago</strong></th>";
+	detallepagos+="<th class='padding0'><strong>Moneda</strong></th>";
+	detallepagos+="<th class='padding0'><strong>Monto</strong></th>";
+	detallepagos+="</tr>"; 
+	
+	//Recupero los pagos			 
+	$.ajax({
+		url : "<?php echo site_url('Ventas/verDetallePagos')?>",
+		type: "POST",
+		dataType:"json",
+		data: {IdVenta: IdVenta},
+		success:function(response){						
+			$.each(response,function(key,item){
+				detallepagos+="<tr>";					
+				detallepagos+="<td class='r'>"+i+"</td>"; 
+				detallepagos+="<td>"+StrToFecha(item.fecha_pago)+"</td>";
+				detallepagos+="<td>"+item.nombre+"</td>";
+				detallepagos+="<td class='r'>"+item.monto+"</td>";									
+				detallepagos+="</tr>"
+				i++;
+				sumaPagos = sumaPagos + parseFloat(item.monto);
+			});				
+			detallepagos+="<tr>";
+			detallepagos+="<td></td>"; 
+			detallepagos+="<td></td>";
+			detallepagos+="<td class='r'><strong>TOTAL:</strong></td>";
+			detallepagos+="<td class='r'>"+sumaPagos+"</td>";									
+			detallepagos+="</tr>";
+									
+			$('#tbodypagos').html(detallepagos);
+		}
+	});
+
+	
+	$('.help-block').empty();
+    $('#modal_form').modal('show'); 
+    $('.modal-title').text('Detalle de pagos');
+	$('.modal-backdrop').remove();
+}
+
 </script>
+
+
+<!-- Bootstrap modal -->
+<div class="modal" id="modal_form" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">Detalle de Pagos</h3>
+            </div>
+            <div class="modal-body form">
+			<table class="table table-bordered" style="font-size: smaller">
+				<tbody id="tbodypagos">  									
+				</tbody>
+			</table>
+
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- End Bootstrap modal -->
