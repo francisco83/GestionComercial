@@ -14,13 +14,11 @@
 					<div class="col-md-6 col-xs-8">
 						<div class="form-group">
 								<label>Cliente:</label>
-								<input type ="text" id="clienteid" name="clienteid" hidden value="<?php echo ($filas[0]->clienteId)?>">
+								<input type ="text" id="clienteid" name="clienteid" hidden value="<?php echo count($filas)>0 ? ($filas[0]->clienteId) : 0?>">
 								<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
 						</div>
 					</div>
 					</div>
-					<!-- <a onclick="agregarFila()" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Agregar</a> -->
-
 					<div class="tableFixHead">
 					<table id="tbl" class="table table-bordered table-hover">
 					<thead>
@@ -37,6 +35,7 @@
 					<tbody id="detalle">
 
 					<?php 
+					if (count($filas)>0){
 					$debe=0;
 					$haber=0;
 					$saldo=0;
@@ -45,19 +44,19 @@
 							<td class="c"><?= date("d/m/Y", strtotime($fila->fecha_venta ));?></td>				
 							<td><?= $fila->codigo_venta ?></td>
 							<td>venta</td>							
-							<td class="r"><?= $fila->total ?></td>                                        
-							<td class="r"><?= $fila->monto - $fila->vuelto ?></td>
-							<td class="r"><?= $fila->monto - $fila->total - $fila->vuelto ?></td>
+							<td class="r"><?= round($fila->total,2) ?></td>                                        
+							<td class="r"><?= round(floatval($fila->monto) - floatval($fila->vuelto),2) ?></td>
+							<td class="r"><?= round($fila->monto - $fila->total - $fila->vuelto,2) ?></td>
 							<td>
 								<a class='btn btn-sm btn-warning'  href='javascript:verDetallePagos(<?php echo $fila->codigo_venta ?>)'><i class='glyphicon glyphicon-eye-open'></i></a>								
 								<a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta_ctacte/<?php echo $fila->codigo_venta ?>'target="_blank"><i class='glyphicon glyphicon-print'></i></a>
 							</td>
 						</tr>
-						<?php $debe = $debe +  $fila->total; 
-							  $haber = $haber + ($fila->monto - $fila->vuelto);
-							  $saldo = $saldo + ($fila->monto - $fila->total - $fila->vuelto);
+						<?php $debe = round(floatval($debe +  $fila->total),2); 
+							  $haber = round(floatval($haber + ($fila->monto - $fila->vuelto)),2);
+							  $saldo = round(floatval($saldo + ($fila->monto - $fila->total - $fila->vuelto)),2);
 						?>
-                    <?php endforeach; ?>
+                    <?php endforeach; }?>
 
 
 					</tbody>
@@ -70,10 +69,15 @@
 							<tr>			
 								<td></td>				
 								<td></td>
-								<td></td>							
-								<td class="c">Debe:<?php echo $debe?></td>                                        
-								<td class="c">Haber:<?php echo $haber?></td>
-								<td class="c">Saldo:<?php echo $saldo?></td>
+								<td></td>	
+								<?php if (count($filas)>0) { ?>					
+								<td class="c">Debe:<?php echo round(floatval($debe),2)?></td>                                        
+								<td class="c">Haber:<?php echo round(floatval($haber),2)?></td>
+								<td class="c">Saldo:<?php echo round(floatval($saldo),2)?></td>
+								<?php }
+									else{
+										echo"<td></td><td></td><td></td>";
+									 } ?>
 								<td>
 								</td>
 							</tr>
@@ -96,9 +100,9 @@
 	var i = 1;
 	
 	$(function() {
-		//var cliente = "<?php echo ($filas[0]->apellido." ".$filas[0]->nombre)?>";
+
 		$("#fechahoy").val(hoyFecha());
-		$("#combocliente").val("<?php echo ($filas[0]->apellido." ".$filas[0]->nombre)?>");	
+		$("#combocliente").val("<?php echo count($filas)>0?($filas[0]->apellido." ".$filas[0]->nombre):''?>");	
 
 		//Buscar Cliente
 		$( "#combocliente" ).autocomplete({
@@ -237,11 +241,14 @@ function verDetallePagos(IdVenta)
 	var i=1;
 	var detallepagos="";
 	var sumaPagos = 0;
+	var sumaVueltos = 0;
 	detallepagos+="<tr>";
 	detallepagos+="<th class='r padding0'><strong>#</strong></th>";
 	detallepagos+="<th class='padding0'><strong>Fecha de pago</strong></th>";
 	detallepagos+="<th class='padding0'><strong>Moneda</strong></th>";
 	detallepagos+="<th class='padding0'><strong>Monto</strong></th>";
+	detallepagos+="<th class='padding0'><strong>Vuelto</strong></th>";
+	detallepagos+="<th class='padding0'><strong>Total</strong></th>";
 	detallepagos+="</tr>"; 
 	
 	//Recupero los pagos			 
@@ -256,16 +263,21 @@ function verDetallePagos(IdVenta)
 				detallepagos+="<td class='r'>"+i+"</td>"; 
 				detallepagos+="<td>"+StrToFecha(item.fecha_pago)+"</td>";
 				detallepagos+="<td>"+item.nombre+"</td>";
-				detallepagos+="<td class='r'>"+item.monto+"</td>";									
+				detallepagos+="<td class='r'>"+parseFloat(item.monto)+"</td>";									
+				detallepagos+="<td class='r'>"+parseFloat(item.vuelto)+"</td>";									
+				detallepagos+="<td class='r'>"+parseFloat(item.monto-item.vuelto)+"</td>";									
 				detallepagos+="</tr>"
 				i++;
 				sumaPagos = sumaPagos + parseFloat(item.monto);
+				sumaVueltos = sumaVueltos + parseFloat(item.vuelto);
 			});				
 			detallepagos+="<tr>";
 			detallepagos+="<td></td>"; 
 			detallepagos+="<td></td>";
 			detallepagos+="<td class='r'><strong>TOTAL:</strong></td>";
-			detallepagos+="<td class='r'>"+sumaPagos+"</td>";									
+			detallepagos+="<td class='r'>"+sumaPagos+"</td>";	
+			detallepagos+="<td class='r'>"+sumaVueltos+"</td>";	
+			detallepagos+="<td class='r' style='font-weight: bold;'>"+(parseFloat(sumaPagos)-parseFloat(sumaVueltos))+"</td>";									
 			detallepagos+="</tr>";
 									
 			$('#tbodypagos').html(detallepagos);

@@ -42,7 +42,7 @@ class Ventas extends CI_Controller {
 		$sucursalId=0;
 		
 
-		$id = $this->Ventas_model->guardarCambios($fecha,$total,$vuelto,$clienteId,$empleadoId,$sucursalId);
+		$id = $this->Ventas_model->guardarCambios($fecha,$total,$clienteId,$empleadoId,$sucursalId);
 
 		$id = $id;
 		
@@ -67,6 +67,13 @@ class Ventas extends CI_Controller {
 					$dataPago[$i]['tipo_monedaId'] = $moneda[$i];			
 					$dataPago[$i]['monto'] = $monedaMonto[$i];
 					$dataPago[$i]['fecha_pago'] = $fecha;
+					if($moneda[$i]==1){//si es efectivo solo puede dar vuelto
+						$dataPago[$i]['vuelto']=$vuelto;
+					}
+					else{
+						$dataPago[$i]['vuelto']=0;
+					}
+					
 				}
 
 				$resultado = $this->Pagos_model->guardarCambios($dataPago);

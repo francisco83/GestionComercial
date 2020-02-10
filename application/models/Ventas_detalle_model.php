@@ -73,7 +73,7 @@ class Ventas_detalle_model extends CI_Model {
 
 	public function buscarDetalleImprimir($ventaId)
 	{		
-		$this->db->select('ventas.id as codigo_venta,ventas.fecha as fecha_venta,ventas.total,ventas.vuelto,clientes.apellido as apellido_cliente, clientes.nombre as nombre_cliente,ventas_detalle.cantidad,ventas_detalle.precio,productos.nombre as nombre_producto, productos.descripcion as producto_descripcion');
+		$this->db->select('ventas.id as codigo_venta,ventas.fecha as fecha_venta,ventas.total,clientes.apellido as apellido_cliente, clientes.nombre as nombre_cliente,ventas_detalle.cantidad,ventas_detalle.precio,productos.nombre as nombre_producto, productos.descripcion as producto_descripcion');
 		$this->db->from('ventas_detalle');
 		$this->db->join('ventas','ventas.id=ventas_detalle.ventaId');
 		$this->db->join('productos','productos.id=ventas_detalle.productoId');
@@ -88,7 +88,7 @@ class Ventas_detalle_model extends CI_Model {
 
 		public function buscarDetallePagoImprimir($ventaId)
 		{		
-			$this->db->select('pagos.ventaId as codigo_venta,pagos.fecha_pago,pagos.monto,tipos_monedas.nombre');
+			$this->db->select('pagos.ventaId as codigo_venta,pagos.fecha_pago,pagos.monto,tipos_monedas.nombre,pagos.vuelto');
 			$this->db->from('pagos');
 			$this->db->join('tipos_monedas','pagos.tipo_monedaid=tipos_monedas.Id');
 			$this->db->where("pagos.ventaId",$ventaId);
