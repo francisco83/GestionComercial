@@ -34,8 +34,8 @@
 						<span class="caret"></span>
 						</a>						
 						<ul class="dropdown-menu">					
-							<li><a href="<?php echo base_url();?>reportes\empresas" target="_blank">Empresas <span class="sr-only">(current)</span></a></li>
-							<li><a href="<?php echo base_url();?>reportes\sucursales" target="_blank">Sucursales <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>reportes\ventas" target="_blank">Ventas <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>reportes\ventas" target="_blank">Productos <span class="sr-only">(current)</span></a></li>
 						</ul>
 					</li>
 					<li class="dropdown">

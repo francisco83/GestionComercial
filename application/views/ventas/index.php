@@ -13,7 +13,7 @@
 						<div class="col-md-2 col-xs-4">
 							<div class="form-group">
 									<label for="fecha">Fecha:</label>
-									<input class="form-control" id="fechahoy" name="fechahoy" required type="date" id="fechaHoy">
+									<input class="form-control" id="fechahoy" name="fechahoy" required type="date">
 							</div>  						
 						</div>
 						<div class="col-md-6 col-xs-6">

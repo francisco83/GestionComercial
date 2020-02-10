@@ -174,7 +174,7 @@
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+StrToFecha(item.fecha)+"</td>"+
-				"<td>"+parseFloat(item.total)+"</td>"+				
+				"<td class='r'>"+parseFloat(item.total)+"</td>"+				
 				"<td>"+
 				//"<a class='btn btn-sm btn-info' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+				
 				" <a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>"+
@@ -245,9 +245,9 @@ function verDetalle(ventaId,valorBuscar,pagina,cantidad){
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.nombre+"</td>"+
-				"<td>"+parseFloat(item.precio)+"</td>"+
-				"<td>"+item.cantidad+"</td>"+
-				"<td>"+parseFloat(item.precio*item.cantidad)+"</td>"+			
+				"<td class='r'>"+parseFloat(item.precio)+"</td>"+
+				"<td class='r'>"+item.cantidad+"</td>"+
+				"<td class='r'>"+parseFloat(item.precio*item.cantidad)+"</td>"+			
 				"</tr>";
 			});
 

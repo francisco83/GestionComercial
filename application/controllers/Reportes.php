@@ -110,4 +110,8 @@ class Reportes extends CI_Controller {
 		$data['categorias_productos'] = $this->Categorias_Productos_model->get_all();		
 		$this->load->view("Reportes/categorias_productos",$data);
 	}
+
+	public function ventas(){			
+		$this->load->view("Reportes/ventas");
+	}
 }
