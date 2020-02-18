@@ -114,4 +114,14 @@ class Reportes extends CI_Controller {
 	public function ventas(){			
 		$this->load->view("Reportes/ventas");
 	}
+
+	public function ventasXFechas()
+	{		
+		$fecha_desde = $_GET['fecha_desde']; 
+		$fecha_hasta = $_GET['fecha_hasta'];
+		$this->load->view("partial/cabecera_reporte");	
+		$this->load->model("Ventas_model");		
+		$data['filas'] = $this->Ventas_model->ventasXFechasResult($fecha_desde,$fecha_hasta);
+		$this->load->view("Reportes/ventas_print",$data);
+	}
 }

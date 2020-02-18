@@ -148,5 +148,47 @@ class Ventas extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	public function ventasXFechas()
+	{		
+		$fecha_desde = $_POST['fecha_desde']; 
+		$fecha_hasta = $_POST['fecha_hasta'];
+		$this->load->model("Ventas_model");		
+		$data = $this->Ventas_model->ventasXFechas($fecha_desde,$fecha_hasta);		
+		echo json_encode($data);
+	}
+
+	public function createXLS() {
+
+		$this->load->library('excel');
+		$fecha_desde = $_GET['fecha_desde']; 
+		$fecha_hasta = $_GET['fecha_hasta'];
+
+		$empInfo = $this->Ventas_model->get_all_export_by_date($fecha_desde,$fecha_hasta);
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->setActiveSheetIndex(0);
+		// set Header
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Fecha');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Apellido');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Nombre');
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Total');  
+		// set Row
+		$rowCount = 2;
+		foreach ($empInfo as $element) {
+			$objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $element['fecha']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['apellido']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['nombre']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $element['total']);
+			$rowCount++;
+		 }
+		 
+		$archivo = "Ventas.xls";
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="'.$archivo.'"');
+		header('Cache-Control: max-age=0');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		//Hacemos una salida al navegador con el archivo Excel.
+		$objWriter->save('php://output');  
+	}
+ 
 
 }

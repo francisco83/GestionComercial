@@ -19,15 +19,7 @@ class Clientes extends CI_Controller {
 	}
 
 	public function ctacte($id){		
-		// $data = array(
-		// 	"Cliente" => $this->Clientes_model->get_by_id($id),
-		// 	"detalleCtaCte" => $this->Ventas_model->detalleCtaCteVentaxCliente($id)						
-		// );
-
-		//$cliente = $this->Clientes_model->get_by_id($id);
-		$data['filas'] = $this->Ventas_model->detalleCtaCteVentaxCliente($id);
-		
-		//$this->load->view("Clientes/ctacte",json_encode($data));
+		$data['filas'] = $this->Ventas_model->detalleCtaCteVentaxCliente($id);		
 		$this->load->view("Clientes/ctacte",$data);
 	}
 

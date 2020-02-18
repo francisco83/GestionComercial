@@ -112,6 +112,40 @@ class Ventas_model extends CI_Model {
 		return $consulta->result();
 	}
 
+	public function ventasXFechas($fecha_desde,$fecha_hasta)
+	{
+		$this->db->select(array('e.id', 'e.fecha', 'e.total','clientes.Id as clienteId','clientes.nombre','clientes.apellido'));
+		$this->db->from('ventas as e');
+		$this->db->join('clientes','clientes.id=e.clienteId');
+		$this->db->where("e.fecha >=",$fecha_desde);
+		$this->db->where("e.fecha <=",$fecha_hasta);
+		$query = $this->db->get();
+		return $query->result_array();
+
+	}
+
+	public function ventasXFechasResult($fecha_desde,$fecha_hasta)
+	{
+		$this->db->select(array('e.id', 'e.fecha', 'e.total','clientes.Id as clienteId','clientes.nombre','clientes.apellido'));
+		$this->db->from('ventas as e');
+		$this->db->join('clientes','clientes.id=e.clienteId');
+		$this->db->where("e.fecha >=",$fecha_desde);
+		$this->db->where("e.fecha <=",$fecha_hasta);
+		$query = $this->db->get();
+		return $query->result();
+
+	}
+
+	public function get_all_export_by_date($fecha_desde,$fecha_hasta) {
+		$this->db->select(array('e.id', 'e.fecha', 'e.total','clientes.Id as clienteId','clientes.nombre','clientes.apellido'));
+		$this->db->from('ventas as e');
+		$this->db->join('clientes','clientes.id=e.clienteId');
+		$this->db->where("e.fecha >=",$fecha_desde);
+		$this->db->where("e.fecha <=",$fecha_hasta);
+		$query = $this->db->get();
+		return $query->result_array();
+	 }
+
 	// public function enabled_by_id($id)
 	// {
 	// 	$reg = $this->db->get_where($this->table, array("id" => $id))->row();
