@@ -36,8 +36,7 @@ class Ventas extends CI_Controller {
 		$vuelto=$_POST['totalVueltoFinal'];
 
 		//$user = $this->ion_auth->logged_in();
-
-		
+				
 		$empleadoId =1;
 		$sucursalId=0;
 		

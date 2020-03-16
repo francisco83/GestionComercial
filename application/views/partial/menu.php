@@ -35,6 +35,7 @@
 						</a>						
 						<ul class="dropdown-menu">					
 							<li><a href="<?php echo base_url();?>reportes\ventas"> Ventas <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>reportes\productos_filtros"> Productos <span class="sr-only">(current)</span></a></li>
 						</ul>
 					</li>
 					<li class="dropdown">

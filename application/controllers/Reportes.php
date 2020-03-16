@@ -124,4 +124,18 @@ class Reportes extends CI_Controller {
 		$data['filas'] = $this->Ventas_model->ventasXFechasResult($fecha_desde,$fecha_hasta);
 		$this->load->view("Reportes/ventas_print",$data);
 	}
+
+	public function productos_filtros(){			
+		$this->load->view("Reportes/productos_filtros");
+	}
+
+	public function productosXCategoria()
+	{		
+		$categoria = $_GET['categoria']; 	   
+		$this->load->view("partial/cabecera_reporte");
+		$this->load->model("Productos_model");		
+		$data['filas'] =   $this->Productos_model->productosXCategoriaResult($categoria);				
+		$this->load->view("Reportes/productos_print",$data);
+	}
+	
 }

@@ -92,4 +92,32 @@ class Productos_model extends CI_Model {
 
 	}
 
+	public function get_all_by_categoria($categoria)
+	{
+		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
+		$this->db->from('productos as e');
+		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
+		$this->db->where("e.tipo_categoria_id =",$categoria);
+		$this->db->or_where('"-1" =', $categoria); 
+		$this->db->order_by('e.nombre', 'ASC');
+		$query = $this->db->get();
+		return $query->result_array();
+
+	}
+
+
+	public function productosXCategoriaResult($categoria)
+	{
+		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
+		$this->db->from('productos as e');
+		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
+		$this->db->where("e.tipo_categoria_id =",$categoria);
+		$this->db->or_where('"-1" =', $categoria); 
+		$this->db->order_by('e.nombre', 'ASC');
+		$query = $this->db->get();
+		return $query->result();
+
+	}
+
+
 }

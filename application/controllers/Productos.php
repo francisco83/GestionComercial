@@ -153,10 +153,20 @@ class Productos extends CI_Controller {
 		}
 	}
 
+	public function productosXCategorias()
+	{		
+		$categoria = $_POST['categoria']; 
+		$this->load->model("Productos_model");		
+		$data = $this->Productos_model->get_all_by_categoria($categoria);		
+		echo json_encode($data);
+	}
+
 	public function createXLS() {
 
-       $this->load->library('excel');
+	   $this->load->library('excel');
+
        $empInfo = $this->Productos_model->get_all_export();
+	          
        $objPHPExcel = new PHPExcel();
        $objPHPExcel->setActiveSheetIndex(0);
        // set Header
@@ -189,7 +199,45 @@ class Productos extends CI_Controller {
        $objWriter->save('php://output');  
    }
 
+   public function createXLSxCategoria() {
 
+	$this->load->library('excel');
+	
+	$categoria = $_GET['categoria'];   
+	
+	$empInfo = $this->Productos_model->get_all_by_categoria($categoria);	
+	
+	$objPHPExcel = new PHPExcel();
+	$objPHPExcel->setActiveSheetIndex(0);
+	// set Header
+	$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Codigo');
+	$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Nombre');
+	$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Descripcion');
+	$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Categoria');
+	$objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Precio Venta');  
+	$objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Precio Compra');  
+	$objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Existencia');  
+	// set Row
+	$rowCount = 2;
+	foreach ($empInfo as $element) {
+		$objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $element['codigo']);
+		$objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['nombre']);
+		$objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['descripcion']);
+		$objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $element['categoria']);
+		$objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $element['precioVenta']);
+		$objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $element['precioCompra']);
+		$objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $element['existencia']);
+		$rowCount++;
+	 }
+	 
+	$archivo = "Productos.xls";
+	header('Content-Type: application/vnd.ms-excel');
+	header('Content-Disposition: attachment;filename="'.$archivo.'"');
+	header('Cache-Control: max-age=0');
+	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+	//Hacemos una salida al navegador con el archivo Excel.
+	$objWriter->save('php://output');  
+}
 
 
 }

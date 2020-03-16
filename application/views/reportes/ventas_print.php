@@ -1,6 +1,3 @@
-
-
-
 <body cz-shortcut-listen="true">
         <table width="100%"> 
 			<?php $this->load->view("partial/encabezado_reporte");?>
