@@ -238,9 +238,11 @@ function delete_(id)
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
+				console.log(jqXHR, textStatus, errorThrown);
 				$.notify({
                    title: '<strong>Error!</strong>',
-                   message: 'Se produjo un error al eliminar el registro.'
+				   message: 'Se produjo un error al eliminar el registro. '
+				   
                },{
                    type: 'danger'
                });
