@@ -104,6 +104,13 @@ class Reportes extends CI_Controller {
 		$this->load->view("Reportes/tipos_pagos",$data);
 	}
 
+	public function tipos_cocheras(){
+		$this->load->model("Tipos_Cocheras_model");
+		$this->load->view("partial/cabecera_reporte");		
+		$data['tipos_cocheras'] = $this->Tipos_Cocheras_model->get_all();		
+		$this->load->view("Reportes/tipos_cocheras",$data);
+	}
+
 	public function categorias_productos(){
 		$this->load->model("Categorias_Productos_model");
 		$this->load->view("partial/cabecera_reporte");		

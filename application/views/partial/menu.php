@@ -30,6 +30,16 @@
 					</li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon"></i> Cocheras
+						<span class="caret"></span>
+						</a>						
+						<ul class="dropdown-menu">					
+							<li><a href="<?php echo base_url();?>cocheras"> Adm. Cocheras <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>tipos_cocheras"> Tipos Cocheras <span class="sr-only">(current)</span></a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="glyphicon glyphicon-list-alt"></i> Reportes
 						<span class="caret"></span>
 						</a>						

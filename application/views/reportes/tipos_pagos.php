@@ -10,12 +10,14 @@
                                         <td class="padding0"><strong>#</strong></td>
                                         <td class="padding0"><strong>Nombre</strong></td>
                                         <td class="padding0"><strong>Descripción</strong></td>
+										<td class="padding0"><strong>Habilitado</strong></td>
                                     </tr>                                                    
                                     <?php foreach ($tipos_pagos as $tipos_pagos): ?>
                                     <tr>
                                         <td class="r"><?= $tipos_pagos->id ?></td>
                                         <td><?= $tipos_pagos->nombre ?></td>
                                         <td><?= $tipos_pagos->descripcion ?></td>
+                                        <td class="c"><?= $tipos_pagos->habilitado==1?"SI":"NO" ?></td>										
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>
