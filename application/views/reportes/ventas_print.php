@@ -4,6 +4,7 @@
             <tbody> 
                     <tr> 
                         <td width="100%"> 
+						<div class="titulo_reporte">Reporte de Ventas (<?php echo date('d/m/Y', strtotime($_GET['fecha_desde']))." - ".date('d/m/Y', strtotime($_GET['fecha_hasta'])).")"; ?></div>
                             <table class="table table-bordered" style="font-size: smaller">
                                 <tbody>
                                     <tr>

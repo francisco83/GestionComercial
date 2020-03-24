@@ -76,7 +76,8 @@ class Cocheras extends CI_Controller {
 				'nombre' => $this->input->post('nombre'),
 				'comentario' => $this->input->post('comentario'),
 				'tipo_cochera_id' => $this->input->post('tipo_cochera_id'),
-				'disponible' => $this->input->post('disponible'),
+				'disponible' => $this->input->post('disponible')==null? 0 : 1,
+				'habilitado' =>1,
 			);
 
 		$insert = $this->Cocheras_model->save($data);
@@ -96,7 +97,7 @@ class Cocheras extends CI_Controller {
 			'nombre' => $this->input->post('nombre'),
 			'comentario' => $this->input->post('comentario'),
 			'tipo_cochera_id' => $this->input->post('tipo_cochera_id'),
-			'disponible' => $this->input->post('disponible'),
+			'disponible' => $this->input->post('disponible')==null? 0 : 1,
 			);
 		$this->Cocheras_model->update(array('id' => $this->input->post('id')), $data);
 		echo json_encode(array("status" => TRUE));

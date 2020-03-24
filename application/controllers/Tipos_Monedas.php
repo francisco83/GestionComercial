@@ -75,7 +75,8 @@ class Tipos_Monedas extends CI_Controller {
 		$this->_validate();		
 		$data = array(
 				'nombre' => $this->input->post('nombre'),
-				'descripcion' => $this->input->post('descripcion')
+				'descripcion' => $this->input->post('descripcion'),
+				'habilitado' =>1,
 			);
 
 		$insert = $this->Tipos_Monedas_model->save($data);

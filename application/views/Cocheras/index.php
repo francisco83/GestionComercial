@@ -103,9 +103,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 					$("#btn_enabled").text("Deshabilitar");		
 				else
 					$("#btn_enabled").text("Habilitar");		
-
 			});
-
 		}
 	});
 }
@@ -116,6 +114,19 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 $(function() {
 	main();  
 	$("#busqueda").focus();
+
+	
+	$("#disponible").click(function() {  
+        if($("#disponible").is(':checked')) {  			
+			$("#disponible").attr( 'checked',true );
+						
+        } else {  			
+			$("#disponible").removeAttr('checked');
+        }  
+    });  
+
+
+
 });
 
 function add()
@@ -184,11 +195,18 @@ function edit(id)
 			
             $('[name="nombre"]').val(data.nombre);
             $('[name="comentario"]').val(data.comentario);
-            $('[name="tipo_cochera_id"]').val(data.tipo_cochera_id);
+			$('[name="tipo_cochera_id"]').val(data.tipo_cochera_id);
+			
 			$('[name="disponible"]').val(data.disponible);			
             $('#modal_form').modal('show');
             $('.modal-title').text('Editar Cocheras');
 			$('.modal-backdrop').remove();
+
+			if(data.disponible == 0)
+				$("#disponible").removeAttr('checked');
+			else
+				$("#disponible").attr( 'checked',true );
+
 			cargar_categorias(data.tipo_cochera_id);
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -204,6 +222,8 @@ function edit(id)
 	
 	
 }
+
+
 
 </script>
 
@@ -244,7 +264,8 @@ function edit(id)
 						<div class="form-group">
                             <label  class="col-sm-2">Disponible:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" name="disponible" required type="number" id="disponible" placeholder="Ingrese si esta disponible">
+							    <!-- <input class="form-control" name="disponible" required type="number" id="disponible" placeholder="Ingrese si esta disponible"> -->
+								<input type="checkbox" id="disponible" name="disponible" value='1'>
                                 <span class="help-block"></span>
                             </div>   
 						</div> 	

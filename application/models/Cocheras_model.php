@@ -24,7 +24,7 @@ class Cocheras_model extends CI_Model {
 
 	public function get_all()
 	{
-		$this->db->select(array('e.id', 'e.nombre', 'e.comentarios','c.nombre as tipo_cochera', 'e.disponible','e.habilitado'));
+		$this->db->select(array('e.id', 'e.nombre', 'e.comentario','c.nombre as tipo_cochera', 'e.disponible','e.habilitado'));
 		$this->db->from('cocheras as e');
 		$this->db->join('tipos_cocheras as c','c.id=e.tipo_cochera_id', 'left outer');
 		$this->db->order_by('e.nombre', 'ASC');

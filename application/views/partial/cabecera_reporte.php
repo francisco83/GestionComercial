@@ -88,6 +88,12 @@
     .col-print-12
     {
         width:100%;
-    }  
+	}  
+	
+	.titulo_reporte{
+		text-align: center;
+    	font-size: 25px;
+    	margin-bottom: 20px;
+	}
     </style>
     </head>

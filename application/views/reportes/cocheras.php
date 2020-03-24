@@ -10,14 +10,16 @@
 									<td class="padding0"><strong>#</strong></td>
 									<td class="padding0"><strong>Nombre</strong></td>
 									<td class="padding0"><strong>Comentario</strong></td>
+									<td class="padding0"><strong>Disponible</strong></td>
 									<td class="padding0"><strong>Habilitado</strong></td>
 								</tr>                                                    
-								<?php foreach ($tipos_cocheras as $tipos_cocheras): ?>
+								<?php foreach ($cocheras as $cocheras): ?>
 								<tr>
-									<td class="r"><?= $tipos_cocheras->id ?></td>
-									<td><?= $tipos_cocheras->nombre ?></td>
-									<td><?= $tipos_cocheras->comentario ?></td>
-									<td class="c"><?= $tipos_cocheras->habilitado==1?"SI":"NO" ?></td>
+									<td class="r"><?= $cocheras->id ?></td>
+									<td><?= $cocheras->nombre ?></td>
+									<td><?= $cocheras->comentario ?></td>
+									<td class="c"><?= $cocheras->disponible==1?"SI":"NO" ?></td>
+									<td class="c"><?= $cocheras->habilitado==1?"SI":"NO" ?></td>
 								</tr>
 								<?php endforeach; ?>
 							</tbody>

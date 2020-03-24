@@ -4,6 +4,7 @@
             <tbody> 
                     <tr> 
                         <td width="100%"> 
+						<div class="titulo_reporte">Reporte Tipo de Monedas</div>
                             <table class="table table-bordered" style="font-size: smaller">
                                 <tbody>
                                     <tr>

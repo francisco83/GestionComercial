@@ -77,6 +77,7 @@ class Tipos_Servicios extends CI_Controller {
 				'nombre' => $this->input->post('nombre'),
 				'descripcion' => $this->input->post('descripcion'),
 				'precio' => $this->input->post('precio'),
+				'habilitado' =>1,
 			);
 
 		$insert = $this->Tipos_Servicios_model->save($data);

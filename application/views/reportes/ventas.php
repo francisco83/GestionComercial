@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h4>Reporte de Ventas</h4>
+				<div class="titulo_reporte">Reporte de Clientes</div>
 			</div>					
 			<div class="panel-body">
 

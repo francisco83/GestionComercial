@@ -78,7 +78,8 @@ class Tipos_Cocheras extends CI_Controller {
 		$this->_validate();		
 		$data = array(
 				'nombre' => $this->input->post('nombre'),
-				'comentario' => $this->input->post('comentario')
+				'comentario' => $this->input->post('comentario'),
+				'habilitado' =>1,
 			);
 
 		$insert = $this->Tipos_Cocheras_model->save($data);

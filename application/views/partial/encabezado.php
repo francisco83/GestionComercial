@@ -18,3 +18,70 @@
 </head>
 <body>
 <?php  $this->load->view("partial/menu"); ?>
+
+<script>
+
+
+////jQuery(document).ready(function($) {
+
+// if (window.history && window.history.pushState) {
+
+//   window.history.pushState('forward', null, './#forward');
+
+//   $(window).on('popstate', function() {
+// 	alert('Back button was pressed.');
+//   });
+
+// }
+//});
+
+// $(function() {
+// console.log("-->");
+
+
+// if (window.history && window.history.pushState) {
+// 	console.log("Toma el evento",window);
+
+// //Agrega entradas al historial
+// //window.history.pushState('forward', null, './#forward');
+
+// //history.pushState({}, '', '/newpage');
+// $(window).on('popstate', function() {
+//   alert('Back button was pressed.');
+// });
+
+// }
+
+
+
+// window.addEventListener('popstate', function(event)
+// {
+// 	console.log("ingreso");
+// alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+// });
+
+// window.onpopstate = function(event)
+// {
+//     alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+// };
+
+// window.onpopstate = function(event) {
+//   alert("location:,,,, " + document.location + ", state: " + JSON.stringify(event.state));
+// };
+
+// window.onhashchange = function(e) {
+//   var oldURL = e.oldURL.split('#')[1];
+//   var newURL = e.newURL.split('#')[1]
+
+//   console.log("mensaje",oldURL,newURL);
+
+// //   if (oldURL == 'share') {
+// //     $('.share').fadeOut();
+// //     e.preventDefault();
+// //     return false;
+//   }
+
+
+
+//});
+</script>

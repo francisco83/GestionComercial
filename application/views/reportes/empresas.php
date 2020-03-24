@@ -1,9 +1,11 @@
-        <body cz-shortcut-listen="true">
+    <body cz-shortcut-listen="true">
+		
         <table width="100%"> 
 			<?php $this->load->view("partial/encabezado_reporte");?>
-            <tbody> 
-                    <tr> 
+            <tbody> 					
+                    <tr> 				
                         <td width="100%"> 
+						<div class="titulo_reporte">Reporte de Empresas</div>
                             <table class="table table-bordered" style="font-size: smaller">
                                 <tbody>
                                     <tr>
