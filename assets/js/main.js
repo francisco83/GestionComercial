@@ -117,7 +117,7 @@ function hoyFecha(){
 
 /*Devuelve la fecha en el formato correcto*/
 function StrToFecha(fecha){
-	var hoy = fecha;
+	//var hoy = fecha;
 	var dd = fecha.substr(8,2);
 	var mm = fecha.substr(5,2);
 	var yyyy = fecha.substr(0,4);

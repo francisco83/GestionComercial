@@ -26,8 +26,8 @@
 							<th>Fecha</th>
 							<th>Comprobante</th>
 							<th>Concepto</th>
-							<th>Debe</th>
-							<th>Haber</th>
+							<th>Importe</th>
+							<th>Pago</th>
 							<th>Saldo</th>
 							<th>Opciones</th>
 						</tr>
@@ -45,8 +45,8 @@
 							<td><?= $fila->codigo_venta ?></td>
 							<td>venta</td>							
 							<td class="r"><?= round($fila->total,2) ?></td>                                        
-							<td class="r"><?= round(floatval($fila->monto) - floatval($fila->vuelto),2) ?></td>
-							<td class="r"><?= round($fila->monto - $fila->total - $fila->vuelto,2) ?></td>
+							<td class="r"><?= round(floatval($fila->monto),2) ?></td>
+							<td class="r"><?= round($fila->total - $fila->monto + $fila->vuelto,2) ?></td>
 							<td>
 								<a class='btn btn-sm btn-warning'  href='javascript:verDetallePagos(<?php echo $fila->codigo_venta ?>)'><i class='glyphicon glyphicon-eye-open'></i></a>								
 								<a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta_ctacte/<?php echo $fila->codigo_venta ?>'target="_blank"><i class='glyphicon glyphicon-print'></i></a>
@@ -54,7 +54,7 @@
 						</tr>
 						<?php $debe = round(floatval($debe +  $fila->total),2); 
 							  $haber = round(floatval($haber + ($fila->monto - $fila->vuelto)),2);
-							  $saldo = round(floatval($saldo + ($fila->monto - $fila->total - $fila->vuelto)),2);
+							  $saldo = round(floatval($saldo + ($fila->total - $fila->monto + $fila->vuelto)),2);
 						?>
                     <?php endforeach; }?>
 
@@ -71,9 +71,9 @@
 								<td></td>
 								<td></td>	
 								<?php if (count($filas)>0) { ?>					
-								<td class="c">Debe:<?php echo round(floatval($debe),2)?></td>                                        
-								<td class="c">Haber:<?php echo round(floatval($haber),2)?></td>
-								<td class="c">Saldo:<?php echo round(floatval($saldo),2)?></td>
+								<td class="c">Importe Total Ventas: $ <?php echo round(floatval($debe),2)?></td>                                        
+								<td class="c">Total de pagos: $ <?php echo round(floatval($haber),2)?></td>
+								<td class="c">Saldo: $ <?php echo round(floatval($saldo),2)?></td>
 								<?php }
 									else{
 										echo"<td></td><td></td><td></td>";

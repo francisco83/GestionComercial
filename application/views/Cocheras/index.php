@@ -1,4 +1,7 @@
 <?php  $this->load->view("partial/encabezado"); ?>
+<style>
+	.ui-autocomplete { z-index:2147483647; }
+</style>
 
 	<div class="container">
 		<div class="row">
@@ -50,6 +53,7 @@
 		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
 		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
 		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>			
+		<button class="btn btn-info" onclick="AsingarCliente()"><i class='glyphicon glyphicon-tasks'></i> Asignar Cliente</button>
 		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
@@ -85,7 +89,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+				
-				"<td>"+item.nombre+"</td>"+
+				"<td id='nombretdcochera'>"+item.nombre+"</td>"+
 				"<td>"+item.comentario+"</td>"+
 				"<td>"+item.tipo_cochera+"</td>"+			
 				"<td class='c'>"+disponible+"</td>"+	
@@ -225,6 +229,109 @@ function edit(id)
 
 
 
+function AsingarCliente(){
+	save_method = 'add';
+	var id = $("#tbl tr.selected td:first").html();
+	if (id !=  undefined){
+		
+		$('#modal_Asignar').modal('show');
+		$('#formAsignar')[0].reset(); 
+	    $('.form-group').removeClass('has-error'); 
+		$('.panel-body').removeClass('has-error'); 
+		$('.help-block').empty();		
+		$('.modal-backdrop').remove();
+		$('[name="idCochera"]').val($("#tbl tr.selected td").html());
+		$('[name="nombrecochera"]').val($("#tbl tr.selected #nombretdcochera").html());
+
+		$("#fechaasignacion").val(hoyFecha());
+		$("#combocliente").val('');
+
+		//Combo Cliente
+		$("#combocliente").autocomplete({
+			
+			source: "<?php echo site_url('Clientes/get_autocomplete/?');?>",
+			autoFill:true,
+			select: function(event, ui){			
+				$('#clienteid').val(ui.item.id);
+				$("#combocliente").val(ui.item.value);
+			},			
+		});		
+	}	
+	else{
+		$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'Seleccione una fila.'
+               },{
+                   type: 'info'
+               });
+	}	
+}
+
+function saveAsignar()
+{
+    $('#btnSave').text('Guardando...'); 
+    $('#btnSave').attr('disabled',true); 
+    var url,men;
+
+    if(save_method == 'add') {
+		url = Site+controller+"/add_asignacion";
+		men="Se creo el registro correctamente";
+    } else {
+		url = Site+controller+"/update_asignacion";
+		men="Se actualizo el registro correctamente";
+    }
+
+	var formData = new FormData($('#formAsignar')[0]);
+    $.ajax({
+        url : url,
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data)
+        {
+
+            if(data.status)
+            {
+                $('#modal_form').modal('hide');
+				reload_table();
+				$.notify({
+                   title: '<strong>Correcto!</strong>',
+                   message: men
+               },{
+                   type: 'success'
+               });
+
+            }
+            else
+            {
+                for (var i = 0; i < data.inputerror.length; i++) 
+                {
+                    $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
+                    $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
+                }
+            }
+            $('#btnSave').text('Guardar');
+            $('#btnSave').attr('disabled',false); 
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+			$.notify({
+                   title: '<strong>Error!</strong>',
+                   message: 'Se produjo un error al guardar.'
+               },{
+                   type: 'danger'
+               });
+            $('#btnSave').text('Guardar'); 
+            $('#btnSave').attr('disabled',false); 
+
+        }
+    });
+}
+
+
+
 </script>
 
 <!-- Bootstrap modal -->
@@ -233,7 +340,7 @@ function edit(id)
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Productos</h3>
+                <h3 class="modal-title">Cocheras</h3>
             </div>
             <div class="modal-body form">
                 <form action="#" id="form" class="form-horizontal">
@@ -274,6 +381,53 @@ function edit(id)
             </div>
             <div class="modal-footer">
                 <button type="button" id="btnSave" onclick="save()" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- End Bootstrap modal -->
+
+
+
+<!-- Bootstrap modal Asignar Cliente a Cochera-->
+<div class="modal" id="modal_Asignar" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">Asignar cliente a cochera</h3>
+            </div>
+            <div class="modal-body form">
+                <form action="#" id="formAsignar" class="form-horizontal">
+					<input  value="" type="hidden"  name="idCochera"/> 
+					<div class="panel-body">
+						<div class="form-group">
+                            <label class="col-sm-2">Cochera:</label>
+                            <div class="col-sm-10">
+							    <input class="form-control" name="nombrecochera" required type="text" id="nombrecochera" placeholder="Ingrese el nombre" readonly>
+                                <span class="help-block"></span>
+                            </div>   
+						</div> 
+						<div class="form-group">
+                            <label class="col-sm-2">Cliente:</label>
+                            <div class="col-sm-10">								
+									<input type ="text" id="clienteid" name="clienteid" hidden value="">
+									<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">									
+                            </div>   
+						</div> 	 	
+						<div class="form-group">
+                            <label  class="col-sm-2">Fecha:</label>
+                            <div class="col-sm-10">							    
+								<input class="form-control" id="fechaasignacion" name="fechaasignacion" required type="date">
+                                <span class="help-block"></span>
+                            </div>   
+						</div> 	
+					</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" onclick="saveAsignar()" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
             </div>
         </div><!-- /.modal-content -->

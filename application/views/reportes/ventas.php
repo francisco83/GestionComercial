@@ -50,7 +50,9 @@
 										<th>#</th>
 										<th>Fecha</th>
 										<th>Cliente</th>										
-										<th>Total</th>
+										<th>Total Venta</th>
+										<th>Total Pago</th>
+										<th>Total Vuelto</th>
 									</tr>
 								</thead>
 								<tbody id="detalle">
@@ -88,12 +90,14 @@
 		dataType:"json",
 		success:function(response){			
 			filas = "";
-			$.each(response,function(key,item){
+			$.each(response,function(key,item){				
 				 filas+="<tr>"+
 				 "<td>"+i+"</td>"+
-				 "<td>"+StrToFecha(item.fecha)+"</td>"+
+			     "<td>"+StrToFecha(item.fecha)+"</td>"+
 				 "<td>"+item.nombre+" "+item.apellido+"</td>"+
 				 "<td class='r'>"+item.total+"</td>"+		
+				 "<td class='r'>"+item.monto+"</td>"+		
+				 "<td class='r'>"+item.vuelto+"</td>"+		
 				 "</tr>";
 				 i++;
 			});

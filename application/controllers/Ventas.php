@@ -66,7 +66,8 @@ class Ventas extends CI_Controller {
 					$dataPago[$i]['tipo_monedaId'] = $moneda[$i];			
 					$dataPago[$i]['monto'] = $monedaMonto[$i];
 					$dataPago[$i]['fecha_pago'] = $fecha;
-					if($moneda[$i]==1){//si es efectivo solo puede dar vuelto
+
+					if($moneda[$i]== 1 && $monedaMonto[$i]!=0 && $monedaMonto[$i]!=null){//si es efectivo solo puede dar vuelto
 						$dataPago[$i]['vuelto']=$vuelto;
 					}
 					else{
@@ -74,21 +75,29 @@ class Ventas extends CI_Controller {
 					}
 					
 				}
+				if (count($dataPago)!=1 || (count($dataPago)==1 && $dataPago[0]['tipo_monedaId']=='1' && $dataPago[0]['monto']!=0))
+				{
+					$resultado = $this->Pagos_model->guardarCambios($dataPago);
 
-				$resultado = $this->Pagos_model->guardarCambios($dataPago);
+					if($resultado){
+						$mensaje = "Registro cargado correctamente";
+						$clase = "success";			
+					}else{
+						$mensaje = "Error al registrar la venta";
+						$clase = "danger";
+						$json['error'] = $this->upload->display_errors();
+					}
+				}
+				else{
 
-				if($resultado){
 					$mensaje = "Registro cargado correctamente";
-					$clase = "success";			
-				}else{
-					$mensaje = "Error al registrar la venta";
-					$clase = "danger";
-					$json['error'] = $this->upload->display_errors();
+					$clase = "success";	
 				}
 				$this->session->set_flashdata(array(
 					"mensaje" => $mensaje,
 					"clase" => $clase,
 				));
+
 
 			}
 		}
@@ -169,7 +178,9 @@ class Ventas extends CI_Controller {
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Fecha');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Apellido');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Nombre');
-		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Total');  
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Total Venta');  
+		$objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Total Pago');  
+		$objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Total Vuelto');  
 		// set Row
 		$rowCount = 2;
 		foreach ($empInfo as $element) {
@@ -177,6 +188,8 @@ class Ventas extends CI_Controller {
 			$objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['apellido']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['nombre']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $element['total']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $element['monto']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $element['vuelto']);
 			$rowCount++;
 		 }
 		 

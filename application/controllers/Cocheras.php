@@ -5,6 +5,7 @@ class Cocheras extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Cocheras_model");
+		$this->load->model("Cocheras_Clientes_model");
 		$this->load->library(['ion_auth', 'form_validation']);
 
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
@@ -15,6 +16,10 @@ class Cocheras extends CI_Controller {
 
 	public function index(){
 		$this->load->view("cocheras/index");
+	}
+
+	public function asignar(){
+		$this->load->view("cocheras/asignar");
 	}
 
 	public function get_all(){
@@ -83,6 +88,33 @@ class Cocheras extends CI_Controller {
 		$insert = $this->Cocheras_model->save($data);
 		echo json_encode(array("status" => TRUE));
 	}
+
+	public function add_asignacion()
+	{
+		//$this->_validate();		
+		$data = array(				
+				'cocheraid' => $this->input->post('idCochera'),
+				'clienteid' => $this->input->post('clienteid'),				
+				'fecha_asignacion' => $this->input->post('fechaasignacion'),
+			);
+
+		$insert = $this->Cocheras_Clientes_model->save($data);
+		echo json_encode(array("status" => TRUE));
+	}
+
+	public function update_asignacion()
+	{
+		//$this->_validate();
+		$data = array(
+			'clienteId' => $this->input->post('clienteId'),
+			'cocheraId' => $this->input->post('cocheraId'),
+			'fecha_asignacion' => $this->input->post('fecha_asignacion'),
+			);
+		$this->Cocheras_Clientes_model->update(array('id' => $this->input->post('id')), $data);
+		echo json_encode(array("status" => TRUE));
+	}
+
+	
 
 	public function ajax_edit($id)
 	{
