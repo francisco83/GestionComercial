@@ -101,7 +101,7 @@ class Ventas_model extends CI_Model {
 
 	public function detalleCtaCteVentaxCliente($clienteId)
 	{	
-		$this->db->select('ventas.id as codigo_venta,ventas.fecha as fecha_venta,ventas.total as total,IFNULL(sum(pagos.vuelto),0) as vuelto,sIFNULL(um(pagos.monto),0) as monto,clientes.Id as clienteId,clientes.nombre,clientes.apellido');
+		$this->db->select('ventas.id as codigo_venta,ventas.fecha as fecha_venta,ventas.total as total,IFNULL(sum(pagos.vuelto),0) as vuelto,IFNULL(sum(pagos.monto),0) as monto,clientes.Id as clienteId,clientes.nombre,clientes.apellido');
 		$this->db->from('ventas');
 		$this->db->join('pagos','ventas.id=pagos.ventaId','left');
 		$this->db->join('clientes','clientes.id=ventas.clienteId');

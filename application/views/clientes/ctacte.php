@@ -72,7 +72,7 @@
 								<td></td>	
 								<?php if (count($filas)>0) { ?>					
 								<td class="c">Importe Total Ventas: $ <?php echo round(floatval($debe),2)?></td>                                        
-								<td class="c">Total de pagos: $ <?php echo round(floatval($haber),2)?></td>
+								<td class="c">Importe Total Pagos: $ <?php echo round(floatval($haber),2)?></td>
 								<td class="c">Saldo: $ <?php echo round(floatval($saldo),2)?></td>
 								<?php }
 									else{

@@ -158,6 +158,7 @@
 				productoId = ui.item.id;
 				precioVenta = ui.item.precioVenta;
 				codigoProducto = ui.item.codigoProducto;
+				existencia = ui.item.existencia
 			},
 		});		
 
@@ -228,8 +229,30 @@ function borrarFila(index){
 
 function agregarFila() {   
 
-console.log("codigo ---->",productoId);
+
 	cantidad = $('#cantidadid').val();
+
+	/*Validaciones*/
+	if(parseFloat(cantidad) > parseFloat(existencia)){		
+		$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'No hay stock para la cantidad ingresada. Cantidad existente: '+existencia
+               },{
+                   type: 'danger'
+               });
+		return;
+	}
+
+	if(parseFloat(cantidad) <= 0){		
+		$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'Verifique la cantidad no puede ser igual o menor a cero'
+               },{
+                   type: 'danger'
+               });
+		return;
+	}
+	/**/ 
 
 	if ($('#productoid').val()!="")
 	{

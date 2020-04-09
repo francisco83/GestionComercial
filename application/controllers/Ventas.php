@@ -6,6 +6,7 @@ class Ventas extends CI_Controller {
 		parent::__construct();
 		$this->load->model("Ventas_model");
 		$this->load->model("Ventas_detalle_model");
+		$this->load->model("productos_model");
 		$this->load->model("Pagos_model");
 		$this->load->library(['ion_auth', 'form_validation']);
 
@@ -53,6 +54,8 @@ class Ventas extends CI_Controller {
 				$data[$i]['productoId'] = $IdProducto[$i];			
 				$data[$i]['Precio'] = $PrecioVenta[$i];
 				$data[$i]['Cantidad'] = $Cantidad[$i];
+
+				$this->productos_model->update_quantity($IdProducto[$i],$Cantidad[$i]);
 			}
 
 

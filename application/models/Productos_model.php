@@ -119,5 +119,18 @@ class Productos_model extends CI_Model {
 
 	}
 
+	public function update_quantity($id, $quantity)
+	{
+
+		$reg = $this->db->get_where($this->table, array("id" => $id))->row();		
+
+		$data = array(
+			'existencia' => $reg->existencia - $quantity
+		);
+
+		$this->db->update($this->table, $data, array("id" => $id));
+
+	}
+
 
 }
