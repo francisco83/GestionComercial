@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<div class="titulo_reporte">Reporte de Ventas</div>
+				<div class="titulo_reporte">Reporte de Ventas por Productos</div>
 			</div>					
 			<div class="panel-body">
 
@@ -49,10 +49,12 @@
 									<tr>
 										<th>#</th>
 										<th>Fecha</th>
-										<th>Cliente</th>										
+										<th>Cod. Producto</th>										
+										<th>Producto</th>										
+										<th>Cantidad</th>
 										<th>Total Venta</th>
-										<th>Total Pago</th>
-										<th>Total Vuelto</th>
+										<th>Total Costo</th>
+										<th>Ganancia</th>
 									</tr>
 								</thead>
 								<tbody id="detalle">
@@ -81,13 +83,13 @@
 
 
 	function filtrar_venta(fecha_desde,fecha_hasta){
-	var i=1;		
-	var total=0;
-	var monto=0;
-	var vuelto=0;
+	var i=1;	
+	var totalVenta = 0;
+	var totalCompra = 0;
+	var ganancia = 0;
 	$('#detalle').html('');
 	$.ajax({
-		url : "../ventas/ventasXFechas",
+		url : "../ventas/ventasProductosXFechas",
 		type: "POST",
 		data: {fecha_desde:fecha_desde,fecha_hasta:fecha_hasta},
 		dataType:"json",
@@ -97,25 +99,27 @@
 				 filas+="<tr>"+
 				 "<td>"+i+"</td>"+
 			     "<td>"+StrToFecha(item.fecha)+"</td>"+
-				 "<td>"+item.nombre+" "+item.apellido+"</td>"+
-				 "<td class='r'>"+item.total+"</td>"+		
-				 "<td class='r'>"+item.monto+"</td>"+		
-				 "<td class='r'>"+item.vuelto+"</td>"+		
+				 "<td>"+item.codigoproducto+"</td>"+
+				 "<td class='r'>"+item.nombre+"</td>"+		
+				 "<td class='r'>"+item.cantidad+"</td>"+		
+				 "<td class='r'>"+item.precioventa+"</td>"+		
+				 "<td class='r'>"+item.preciocompra+"</td>"+		
+				 "<td class='r'>"+item.diferencia+"</td>"+		
 				 "</tr>";
 				 i++;
-
-				 total = total + item.total;
-				 monto = monto + item.monto;
-				 vuelto = vuelto + item.vuelto;
+				 totalVenta = totalVenta + parseFloat(item.precioventa);
+				 totalCompra = totalCompra+ parseFloat(item.preciocompra);
+				 ganancia= ganancia + parseFloat(item.diferencia);
 			});
-
 			filas+="<tr>"+
 				 "<td></td>"+
 			     "<td></td>"+
-				 "<td>TOTAL</td>"+
-				 "<td class='r'>"+parseFloat(total)+"</td>"+		
-				 "<td class='r'>"+parseFloat(monto)+"</td>"+		
-				 "<td class='r'>"+parseFloat(vuelto)+"</td>"+		
+				 "<td></td>"+
+				 "<td></td>"+
+				 "<td>TOTAL</td>"+	
+				 "<td class='r'>"+totalVenta+"</td>"+		
+				 "<td class='r'>"+totalCompra+"</td>"+		
+				 "<td class='r'>"+ganancia+"</td>"+		
 				 "</tr>";
 
 			$('#detalle').append(filas);
@@ -123,10 +127,10 @@
 	});
 	}
 	function filtrar_venta_print(fecha_desde,fecha_hasta){
-		location.href = 'ventasXFechas?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'';
+		location.href = 'ventasproductosXFechas?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'';
 	}
 	function filtrar_venta_excel(fecha_desde,fecha_hasta){
-		location.href = '../Ventas/createXLS?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'';
+		location.href = '../Ventas/createXLSventasproductos?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'';
 
 	}
 

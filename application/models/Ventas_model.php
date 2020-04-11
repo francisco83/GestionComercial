@@ -153,6 +153,44 @@ class Ventas_model extends CI_Model {
 		return $query->result_array();
 	 }
 
+
+	public function ventasProductosXFechas($fecha_desde,$fecha_hasta)
+	{
+		$this->db->select(array('v.fecha','max(p.codigo) as codigoproducto','p.nombre','sum(vd.cantidad) as cantidad','(precioVenta)*sum(vd.cantidad)  as precioventa','(precioCompra)*sum(vd.cantidad) as preciocompra','((precioVenta)*sum(vd.cantidad))-((precioCompra)*sum(vd.cantidad)) as diferencia'));
+		$this->db->from('ventas as v');
+		$this->db->join('ventas_detalle as vd','vd.ventaId = v.id');
+		$this->db->join('productos as p','vd.productoid = p.id','left');
+		$this->db->where("v.fecha >=",$fecha_desde);
+		$this->db->where("v.fecha <=",$fecha_hasta);
+		$this->db->group_by(array("v.fecha","vd.productoid")); 
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	public function ventasProductosXFechasResult($fecha_desde,$fecha_hasta)
+	{
+		$this->db->select(array('v.fecha','max(p.codigo) as codigoproducto','p.nombre','sum(vd.cantidad) as cantidad','(precioVenta)*sum(vd.cantidad)  as precioventa','(precioCompra)*sum(vd.cantidad) as preciocompra','((precioVenta)*sum(vd.cantidad))-((precioCompra)*sum(vd.cantidad)) as diferencia'));	
+		$this->db->from('ventas as v');
+		$this->db->join('ventas_detalle as vd','vd.ventaId = v.id');
+		$this->db->join('productos as p','vd.productoid = p.id','left');
+		$this->db->where("v.fecha >=",$fecha_desde);
+		$this->db->where("v.fecha <=",$fecha_hasta);
+		$this->db->group_by(array("v.fecha","vd.productoid")); 
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function get_all_ventasproductos_export_by_date($fecha_desde,$fecha_hasta) {
+		$this->db->select(array('v.fecha','max(p.codigo) as codigoproducto','p.nombre','sum(vd.cantidad) as cantidad','(precioVenta)*sum(vd.cantidad)  as precioventa','(precioCompra)*sum(vd.cantidad) as preciocompra','((precioVenta)*sum(vd.cantidad))-((precioCompra)*sum(vd.cantidad)) as diferencia'));
+		$this->db->from('ventas as v');
+		$this->db->join('ventas_detalle as vd','vd.ventaId = v.id');
+		$this->db->join('productos as p','vd.productoid = p.id','left');
+		$this->db->where("v.fecha >=",$fecha_desde);
+		$this->db->where("v.fecha <=",$fecha_hasta);
+		$this->db->group_by(array("v.fecha","vd.productoid")); 
+		$query = $this->db->get();
+		return $query->result_array();
+	 }
 	// public function enabled_by_id($id)
 	// {
 	// 	$reg = $this->db->get_where($this->table, array("id" => $id))->row();

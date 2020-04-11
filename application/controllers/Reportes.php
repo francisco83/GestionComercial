@@ -129,6 +129,10 @@ class Reportes extends CI_Controller {
 		$this->load->view("Reportes/ventas");
 	}
 
+	public function ventasxproductos(){			
+		$this->load->view("Reportes/ventasxproductos");
+	}
+
 	public function ventasXFechas()
 	{		
 		$fecha_desde = $_GET['fecha_desde']; 
@@ -138,6 +142,17 @@ class Reportes extends CI_Controller {
 		$data['filas'] = $this->Ventas_model->ventasXFechasResult($fecha_desde,$fecha_hasta);
 		$this->load->view("Reportes/ventas_print",$data);
 	}
+
+	public function ventasproductosXFechas()
+	{		
+		$fecha_desde = $_GET['fecha_desde']; 
+		$fecha_hasta = $_GET['fecha_hasta'];
+		$this->load->view("partial/cabecera_reporte");	
+		$this->load->model("Ventas_model");		
+		$data['filas'] = $this->Ventas_model->ventasProductosXFechasResult($fecha_desde,$fecha_hasta);
+		$this->load->view("Reportes/ventasxproductos_print",$data);
+	}
+
 
 	public function productos_filtros(){			
 		$this->load->view("Reportes/productos_filtros");
