@@ -162,6 +162,15 @@ class Productos extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	public function verdetallehistorico ()
+	{
+		$IdProducto = $this->input->post("IdProducto");
+		$this->load->model("Productos_model");		
+		$data = $this->Productos_model->buscarDetalleHistorico($IdProducto);		
+		echo json_encode($data);	
+
+	}
+
 	public function createXLS() {
 
 	   $this->load->library('excel');

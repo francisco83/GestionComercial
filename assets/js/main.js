@@ -283,3 +283,11 @@ function enabled(id)
 /**/ 
 
 
+
+
+$(function ($) {
+    //Solo permite numeros positivos
+    $('.only_number').keypress(function (tecla) {
+        if (tecla.charCode < 47 || tecla.charCode > 57) return false;
+    });
+});

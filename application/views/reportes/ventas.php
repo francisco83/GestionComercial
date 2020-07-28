@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<div class="titulo_reporte">Reporte de Ventas</div>
+				<h4>Reporte de Ventas</h4>
 			</div>					
 			<div class="panel-body">
 
@@ -104,18 +104,18 @@
 				 "</tr>";
 				 i++;
 
-				 total = total + item.total;
-				 monto = monto + item.monto;
-				 vuelto = vuelto + item.vuelto;
+				 total = total + parseFloat(item.total);
+				 monto = monto + parseFloat(item.monto);
+				 vuelto = vuelto + parseFloat(item.vuelto);
 			});
 
 			filas+="<tr>"+
 				 "<td></td>"+
 			     "<td></td>"+
-				 "<td>TOTAL</td>"+
-				 "<td class='r'>"+parseFloat(total)+"</td>"+		
-				 "<td class='r'>"+parseFloat(monto)+"</td>"+		
-				 "<td class='r'>"+parseFloat(vuelto)+"</td>"+		
+				 "<td class='r'><strong>TOTAL</strong></td>"+
+				 "<td class='r'><strong>"+parseFloat(total).toFixed(2)+"</strong></td>"+		
+				 "<td class='r'><strong>"+parseFloat(monto).toFixed(2)+"</strong></td>"+		
+				 "<td class='r'><strong>"+parseFloat(vuelto).toFixed(2)+"</strong></td>"+		
 				 "</tr>";
 
 			$('#detalle').append(filas);

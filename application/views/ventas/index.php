@@ -41,7 +41,7 @@
 						<div class="col-md-1 col-xs-2">	
 							<div class="form-group">					
 								<label>Cantidad:</label>
-								<input type ="number" class="form-control"  id="cantidadid" name="cantidadid" value='1'>									
+								<input  class="form-control only_number"  id="cantidadid" name="cantidadid" value='1'>									
 							</div>
 						</div>
 						<div class="col-md-2 col-xs-3">						

@@ -119,6 +119,17 @@ class Productos_model extends CI_Model {
 
 	}
 
+	public function buscarDetalleHistorico($IdProducto)
+	{
+		$this->db->select(array('e.id', 'e.nombre', 'h.fecha','h.precioventaanterior','h.precioventanuevo','h.preciocompraanterior','h.preciocompranuevo'));
+		$this->db->from('productos as e');
+		$this->db->join('historico_productos as h','e.id=h.idproducto');
+		$this->db->where("e.id =",$IdProducto);
+		$this->db->order_by('h.fecha', 'DESC');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function update_quantity($id, $quantity)
 	{
 

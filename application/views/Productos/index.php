@@ -53,6 +53,8 @@
 		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
 		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
 		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>			
+		<a class='btn btn-info'  href='javascript:verHistorico($("#tbl tr.selected td:first").html())'><i class=''></i>Histórico Precios</a>								
+
 		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
@@ -207,6 +209,51 @@ function edit(id)
 	
 }
 
+
+
+function verHistorico(IdProducto)
+{
+	var i=1;
+	var detallehistorico="";
+	
+
+	detallehistorico+="<tr>";
+	detallehistorico+="<th class='r padding0'><strong>#</strong></th>";
+	detallehistorico+="<th class='padding0'><strong>Fecha</strong></th>";
+	detallehistorico+="<th class='padding0'><strong>Venta Anterior</strong></th>";
+	detallehistorico+="<th class='padding0'><strong>Venta Nuevo</strong></th>";
+	detallehistorico+="<th class='padding0'><strong>Compra Anterior</strong></th>";
+	detallehistorico+="<th class='padding0'><strong>Compra Nuevo</strong></th>";
+	detallehistorico+="</tr>"; 
+	
+	//Recupero los pagos			 
+	$.ajax({
+		url : "<?php echo site_url('Productos/verdetallehistorico')?>",
+		type: "POST",
+		dataType:"json",
+		data: {IdProducto: IdProducto},
+		success:function(response){						
+			$.each(response,function(key,item){
+				detallehistorico+="<tr>";					
+				detallehistorico+="<td class='r'>"+i+"</td>"; 
+				detallehistorico+="<td>"+item.fecha+"</td>";				
+				detallehistorico+="<td class='r'>"+parseFloat(item.precioventaanterior)+"</td>";									
+				detallehistorico+="<td class='r'>"+parseFloat(item.precioventanuevo)+"</td>";									
+				detallehistorico+="<td class='r'>"+parseFloat(item.preciocompraanterior)+"</td>";									
+				detallehistorico+="<td class='r'>"+parseFloat(item.preciocompranuevo)+"</td>";																	
+				detallehistorico+="</tr>"
+				i++;
+			});				
+			$('#tbodypagos').html(detallehistorico);
+		}
+	});
+
+	$('.help-block').empty();
+    $('#modal_historico').modal('show'); 
+    $('.modal-title').text('Histórico de precio');
+	$('.modal-backdrop').remove();
+}
+
 </script>
 
 <!-- Bootstrap modal -->
@@ -282,6 +329,31 @@ function edit(id)
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- End Bootstrap modal -->
+
+
+<!-- Bootstrap modal -->
+<div class="modal" id="modal_historico" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">Historico de Precios de Productos</h3>
+            </div>
+            <div class="modal-body form tableFixHead">
+			<table class="table table-bordered" style="font-size: smaller">
+				<tbody id="tbodypagos">  									
+				</tbody>
+			</table>
+
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- End Bootstrap modal -->
+
 
 </body>
 </html>

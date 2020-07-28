@@ -85,6 +85,7 @@ class Clientes extends CI_Controller {
 				'dni' => $this->input->post('dni'),
 				'email' => $this->input->post('email'),				
 				'telefono' => $this->input->post('telefono'),
+				'habilitado' => 1,
 			);
 
 		$insert = $this->Clientes_model->save($data);

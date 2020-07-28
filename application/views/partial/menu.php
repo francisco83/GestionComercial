@@ -64,6 +64,7 @@
 							<li><a href="<?php echo base_url();?>tipos_pagos">Tipos de Pagos <span class="sr-only">(current)</span></a></li>					
 							<li><a href="<?php echo base_url();?>tipos_monedas">Tipos de Monedas <span class="sr-only">(current)</span></a></li>					
 							<li><a href="<?php echo base_url();?>categorias_productos">Categorias de Productos <span class="sr-only">(current)</span></a></li>					
+							<li><a href="<?php echo base_url();?>estados_pedidos">Estados Pedidos <span class="sr-only">(current)</span></a></li>					
 						</ul>
 					</li>
 					<li class="dropdown active">					

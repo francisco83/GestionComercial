@@ -37,7 +37,7 @@
 					<div class="panel-body">
 
 						<form action="" id="form_insert">
-
+						<input type="text" id="serviceid" name="serviceid" value="<?php echo ($servicioId)?>">
 							<div class="col-md-12">
 							<div class="col-md-3">
 								<div class="form-group">
@@ -57,9 +57,6 @@
 
 
 						<div class="col-md-12" id="detalle">
-
-
-
 
 						</div>			
 
@@ -112,6 +109,35 @@ var filas;
 		});
 
 
+		jQuery(document).on('submit','#form_insert',function(event)
+		{
+			console.log("Entra");
+			event.preventDefault();
+			jQuery.ajax({
+				url:"<?php echo site_url('Registrar/modificar');?>",
+				type: 'POST',
+				datetype: 'json',
+				data: $(this).serialize()
+			})
+			.done(function(respuesta)
+			{
+				$("#detalle").html('');
+
+				$.notify({
+                   title: '<strong>Atención!</strong>',
+                   message: 'Se registro el servicio.'
+               },{
+                   type: 'success'
+               });
+
+			})
+			.fail(function(resp)
+			{
+			 	console.log("Error");
+			 });
+
+		});
+
 
 		console.log("<?php echo ($servicioId)?>");
 		var i=1;
@@ -132,10 +158,14 @@ var filas;
 				fil+='<div class="row fila" id="fila'+i+'">'+
 				'<div class="id_" hidden>'+i+'</div>'+
   							'<div class="col-md-12">'+
-								'<div class="col-md-6">'+
-									'Tipo de Servicio:'+
+								'<div class="col-md-4">'+
+									'Tipo de Servicio:'+ 
 									'</br>'+
 									'<select class="form-control" name="servicio[]" required id ="comboservicio'+i+'"></select>'+
+								'</div>'+
+								'<div class="col-md-2">'+
+									''+
+									item.nombre+ 
 								'</div>'+
 								'<div class="col-md-2">'+
 									'Precio:'+

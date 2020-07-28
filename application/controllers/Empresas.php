@@ -79,6 +79,7 @@ class Empresas extends CI_Controller {
 				'direccion' => $this->input->post('direccion'),
 				'telefono' => $this->input->post('telefono'),
 				'email' => $this->input->post('email'),
+				'habilitado' => 1,
 			);
 
 		$insert = $this->Empresas_model->save($data);

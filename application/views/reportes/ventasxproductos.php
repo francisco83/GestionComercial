@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<div class="titulo_reporte">Reporte de Ventas por Productos</div>
+				<h4>Reporte de Ventas por Productos</h4>
 			</div>					
 			<div class="panel-body">
 
@@ -97,10 +97,10 @@
 			filas = "";
 			$.each(response,function(key,item){				
 				 filas+="<tr>"+
-				 "<td>"+i+"</td>"+
-			     "<td>"+StrToFecha(item.fecha)+"</td>"+
+				 "<td class='r'>"+i+"</td>"+
+			     "<td class='c'>"+StrToFecha(item.fecha)+"</td>"+
 				 "<td>"+item.codigoproducto+"</td>"+
-				 "<td class='r'>"+item.nombre+"</td>"+		
+				 "<td>"+item.nombre+"</td>"+		
 				 "<td class='r'>"+item.cantidad+"</td>"+		
 				 "<td class='r'>"+item.precioventa+"</td>"+		
 				 "<td class='r'>"+item.preciocompra+"</td>"+		
@@ -116,10 +116,10 @@
 			     "<td></td>"+
 				 "<td></td>"+
 				 "<td></td>"+
-				 "<td>TOTAL</td>"+	
-				 "<td class='r'>"+totalVenta+"</td>"+		
-				 "<td class='r'>"+totalCompra+"</td>"+		
-				 "<td class='r'>"+ganancia+"</td>"+		
+				 "<td><strong>TOTAL</strong></td>"+	
+				 "<td class='r'><strong>"+totalVenta.toFixed(2)+"</strong></td>"+		
+				 "<td class='r'><strong>"+totalCompra.toFixed(2)+"</strong></td>"+		
+				 "<td class='r'><strong>"+ganancia.toFixed(2)+"</strong></td>"+		
 				 "</tr>";
 
 			$('#detalle').append(filas);

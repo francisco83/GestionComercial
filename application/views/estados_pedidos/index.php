@@ -5,9 +5,9 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-                        <h4>Clientes</h4>
-                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/clientes" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
-						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/clientes/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
+                        <h4>Estados Pedidos</h4>
+                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/estados_pedidos" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
+						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/estados_pedidos/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -30,11 +30,7 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Apellido</th>
-										<th>Nombre</th>
-										<th>DNI</th>
-										<th>Email</th>
-										<th>Telefono</th>
+										<th>Nombre</th>																		
 										<th>Habilitado</th>
 									</tr>
 								</thead>
@@ -51,18 +47,18 @@
 		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
 		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
 		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>	
-		<button class="btn btn-info" onclick="Accion('registrar')"><i class='glyphicon glyphicon-tasks'></i> Reg. Servicio</button>
-		<button class="btn btn-primary" onclick="Accion('ctacte')"><i class='glyphicon glyphicon-briefcase'></i> Cta. Cte.</button>
 		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
 <script>
 
 var valor, pag;
-var controller ='clientes';
+var controller ='estados_pedidos';
 var Site="<?php echo site_url()?>"
 
-
+function reload_table(){
+	mostrarDatos(valor,pag,$("#cantidad").val());	
+};
 
 function mostrarDatos(valorBuscar,pagina,cantidad){
 	valor = valorBuscar;
@@ -73,20 +69,16 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		type: "POST",
 		data: {buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
-		success:function(response){		
+		success:function(response){			
 			filas = "";
-			$.each(response.Clientes,function(key,item){
+			$.each(response.estados_pedidos,function(key,item){
 				if(item.habilitado=="1")
 					habilitado ='SI';		
 				else
 					habilitado ='NO';
 				filas+="<tr>"+
-				"<td>"+item.id+"</td>"+
-				"<td>"+item.apellido+"</td>"+
-				"<td>"+item.nombre+"</td>"+
-				"<td class='r'>"+item.dni+"</td>"+
-				"<td>"+item.email+"</td>"+
-				"<td class='r'>"+item.telefono+"</td>"+
+				"<td>"+item.Id+"</td>"+
+				"<td>"+item.nombre+"</td>"+							
 				"<td class='c'>"+habilitado+"</td>"+
 				"</tr>";
 			});
@@ -110,7 +102,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 
 // En el onload
 $(function() {
-	main();  
+	main(); 
 	$("#busqueda").focus();
 });
 
@@ -122,9 +114,12 @@ function add()
 	$('.panel-body').removeClass('has-error'); 
     $('.help-block').empty();
     $('#modal_form').modal('show'); 
-    $('.modal-title').text('Agregar Clientes');
+    $('.modal-title').text('Agregar Estados Pedidos');
 	$('.modal-backdrop').remove();
 }
+
+
+
 
 
 function edit(id)
@@ -141,53 +136,18 @@ function edit(id)
         dataType: "JSON",
         success: function(data)
         {
-            $('[name="id"]').val(data.id);
-			$('[name="apellido"]').val(data.apellido);
-            $('[name="nombre"]').val(data.nombre);
-			$('[name="dni"]').val(data.dni);
-			$('[name="email"]').val(data.email);
-			$('[name="telefono"]').val(data.telefono);			
+            $('[name="id"]').val(data.Id);
+            $('[name="nombre"]').val(data.nombre);                    
             $('#modal_form').modal('show');
-            $('.modal-title').text('Editar Cliente');
+            $('.modal-title').text('Editar Estados Pedidos');
 			$('.modal-backdrop').remove();
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
-			$.notify({
-                   title: '<strong>Atención!</strong>',
-                   message: 'Se produjo un error.'
-               },{
-                   type: 'danger'
-               });
+            alert('Error get data from ajax');
         }
     });
 }
-
-
-function Accion(tipo){
-	var id = $("#tbl tr.selected td:first").html();
-	if (id !=  undefined){
-		switch(tipo){
-			case "registrar":
-				location.href ="<?php echo base_url().'registrar/index/'?>"+id;
-				break;
-			case "ctacte":
-				location.href ="<?php echo base_url().'Clientes/ctacte/'?>"+id;
-				break;
-			default:
-			 	break;
-		}
-	}	
-	else{
-		$.notify({
-                   title: '<strong>Atención!</strong>',
-                   message: 'Seleccione una fila.'
-               },{
-                   type: 'info'
-               });
-	}	
-}
-
 </script>
 
 <!-- Bootstrap modal -->
@@ -196,47 +156,19 @@ function Accion(tipo){
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Servicio</h3>
+                <h3 class="modal-title">Estados de Pedidos</h3>
             </div>
             <div class="modal-body form">
                 <form action="#" id="form" class="form-horizontal">
 					<input type="hidden" value="" name="id"/> 
 					<div class="panel-body">
 						<div class="form-group">
-                            <label class="col-sm-2">Nombre:</label>
+                            <label for="nombre" class="col-sm-2">Nombre:</label>
                             <div class="col-sm-10">
 							    <input class="form-control" name="nombre" required type="text" id="nombre" placeholder="Ingrese el nombre">
                                 <span class="help-block"></span>
                             </div>   
-						</div>
-						<div class="form-group">
-                            <label class="col-sm-2">Apellido:</label>
-                            <div class="col-sm-10">
-							    <input class="form-control" name="apellido" required type="text" id="apellido" placeholder="Ingrese el apellido">
-                                <span class="help-block"></span>
-                            </div>   
-						</div> 	 	
-						<div class="form-group">
-                            <label class="col-sm-2">DNI:</label>
-                            <div class="col-sm-10">
-							    <input class="form-control only_number" name="dni" required type="text" id="dni" placeholder="Ingrese el DNI">
-                                <span class="help-block"></span>
-                            </div>   
-						</div> 
-						<div class="form-group">
-                            <label class="col-sm-2">Email:</label>
-                            <div class="col-sm-10">
-							    <input class="form-control" name="email" required type="text" id="email" placeholder="Ingrese el email">
-                                <span class="help-block"></span>
-                            </div>   
-						</div>  
-						<div class="form-group">
-                            <label class="col-sm-2">Teléfono:</label>
-                            <div class="col-sm-10">
-							    <input class="form-control" name="telefono" required type="text" id="telefono" placeholder="Ingrese el teléfono">
-                                <span class="help-block"></span>
-                            </div>   
-						</div> 	 	
+						</div> 		
 					</div>
                 </form>
             </div>
