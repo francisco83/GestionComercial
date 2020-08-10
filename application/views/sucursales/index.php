@@ -18,7 +18,7 @@
 									<option value="10">10</option>
 								</select>
 							</div>
-							<div class="col-md-4 col-md-offset-2 pull-right">
+							<div class="col-md-4 col-xs-12 col-md-offset-2 pull-right">
 								<div class="form-group has-feedback has-feedback-left">				  
 									<input type="text" class="form-control" name="busqueda" id="busqueda" placeholder="Buscar" />
 									<i class="glyphicon glyphicon-search form-control-feedback"></i>
@@ -31,6 +31,7 @@
 									<tr>
 										<th>#</th>
 										<th>Nombre</th>
+										<th>Empresa</th>
 										<th>Dirección</th>
 										<th>Telefono</th>
 										<th>Email</th>
@@ -47,9 +48,9 @@
 				</div>
 			</div>
 		</div>
-		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
-		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
-		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>	
+		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i></button>
+		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i></button>
+		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i></button>	
 		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
@@ -70,14 +71,15 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		dataType:"json",
 		success:function(response){		
 			filas = "";
-			$.each(response.Sucursales,function(key,item){
+			$.each(response.Sucursales,function(key,item){				
 				if(item.habilitado=="1")
 					habilitado ='SI';		
 				else
 					habilitado ='NO';
 				filas+="<tr>"+
-				"<td>"+item.id+"</td>"+
+				"<td>"+item.id+"</td>"+	
 				"<td>"+item.nombre+"</td>"+
+				"<td>"+item.empresa+"</td>"+
 				"<td>"+item.direccion+"</td>"+
 				"<td>"+item.telefono+"</td>"+
 				"<td>"+item.email+"</td>"+
@@ -118,6 +120,7 @@ function add()
     $('#modal_form').modal('show'); 
     $('.modal-title').text('Agregar sucursales');
 	$('.modal-backdrop').remove();
+	cargar_empresas(0);
 }
 
 
@@ -134,15 +137,17 @@ function edit(id)
         type: "GET",
         dataType: "JSON",
         success: function(data)
-        {
+        {			
             $('[name="id"]').val(data.id);
-            $('[name="nombre"]').val(data.nombre);
+			$('[name="nombre"]').val(data.nombre);
+			$('[name="empresa"]').val(data.empresaId);
             $('[name="direccion"]').val(data.direccion);
 			$('[name="telefono"]').val(data.telefono);
             $('[name="email"]').val(data.email);			
             $('#modal_form').modal('show');
             $('.modal-title').text('Editar Sucursal');
 			$('.modal-backdrop').remove();
+			cargar_empresas(data.empresaId);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
@@ -152,6 +157,40 @@ function edit(id)
 }
 
 
+function cargar_empresas(id){
+
+	console.log("valor",id);
+var combo_empresas='';
+
+	//Combo empresas			 
+	$.ajax({		
+		url : "<?php echo site_url('empresas/get_all_array');?>",
+		type: "POST",
+		dataType:"json",
+		success:function(response){
+			combo_empresas = "<option value='-1'>Seleccione una empresa...</option>";	
+			$.each(response,function(key,item){
+				if(id != 0 && item.id == id){
+					combo_empresas+="<option value='"+item.id+"' selected>"+item.nombre+"</option>";					
+				}
+				else{
+					combo_empresas+="<option value='"+item.id+"'>"+item.nombre+"</option>";
+				}
+			});		
+			$("#empresaid").html(combo_empresas);
+		},
+		error: function (jqXHR, textStatus, errorThrown)
+		{
+			$.notify({
+					title: '<strong>Atención!</strong>',
+					message: 'Se produjo un error al cargar las empresas'
+				},{
+					type: 'danger'
+				});
+		}
+	});
+
+}
 </script>
 
 <!-- Bootstrap modal -->
@@ -173,6 +212,14 @@ function edit(id)
                                 <span class="help-block"></span>
                             </div>   
 						</div>
+						<div class="form-group">
+                            <label class="col-sm-2">Empresa:</label>
+                            <div class="col-sm-10">
+							<select  class="form-control" name="empresaid" id="empresaid">
+							</select>							    
+                                <span class="help-block"></span>
+                            </div>   
+						</div> 
 						<div class="form-group">
                             <label class="col-sm-2">Dirección:</label>
                             <div class="col-sm-10">

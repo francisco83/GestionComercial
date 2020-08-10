@@ -7,18 +7,40 @@ class Empresas_model extends CI_Model {
 
 	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
+		/*
 		$this->db->like("nombre",$buscar);
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
 		$consulta = $this->db->get($this->table);
+		return $consulta->result();*/
+
+
+		$this->db->select(array('e.id', 'e.nombre', 'e.cuit', 'e.ingresosbrutos','e.direccion','e.telefono','e.email','e.fechainicio','e.logo','e.user_id','u.username','e.habilitado'));
+		$this->db->from('empresas as e');
+		$this->db->join('users as u','u.id=e.user_id', 'left outer');
+		$this->db->or_like('e.nombre', $buscar);
+		$this->db->order_by('e.nombre', 'ASC');
+		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
+			$this->db->limit($cantidadregistro,$inicio);
+		}
+
+		$consulta = $this->db->get();
+
 		return $consulta->result();
+
 	}
 
 	public function get_all()
 	{
 		$consulta = $this->db->get($this->table);
 		return $consulta->result();
+	}
+
+	public function get_all_array()
+	{
+		$consulta = $this->db->get($this->table);
+		return $consulta->result_array();
 	}
 
 	public function get_all_export() {

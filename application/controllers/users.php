@@ -23,6 +23,11 @@ class Users extends CI_Controller {
 		echo $resultado;
 	}
 
+	public function get_all_array(){
+		$resultado = $this->Users_model->get_all_array();		
+		echo json_encode($resultado);
+	}
+
 	public function mostrar()
 	{	
 		$buscar = $this->input->post("buscar");

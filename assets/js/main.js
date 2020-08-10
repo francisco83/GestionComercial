@@ -22,6 +22,15 @@ function main(){
 		mostrarDatos(valorBuscar,1,valoroption);
 	});
 
+
+	$(document).keyup(function(e) {     
+		if(e.keyCode== 27) {
+			$("#busqueda").val(''); 
+			mostrarDatos("",1,5);
+			$("#busqueda").focus();
+		} 
+	});
+
 }
 
 
@@ -289,5 +298,5 @@ $(function ($) {
     //Solo permite numeros positivos
     $('.only_number').keypress(function (tecla) {
         if (tecla.charCode < 47 || tecla.charCode > 57) return false;
-    });
+	});
 });

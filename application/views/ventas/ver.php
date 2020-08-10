@@ -60,10 +60,10 @@
 									<!-- <label>Cliente:</label> -->
 									<input type ="text" id="clienteid" name="clienteid" hidden>
 									<div class="row">
-										<div class="col-md-8 col-xs-8">
+										<div class="col-md-8 col-xs-12">
 											<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">										
 										</div>									
-										<div class="col-md-2 col-xs-4">
+										<div class="col-md-2 col-xs-12">
 											<input class="btn btn-primary btn-block" value="Buscar" onclick="Filtrar($('#clienteid').val())"  >	
 										</div>
 									</div>							

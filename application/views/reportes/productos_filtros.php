@@ -10,17 +10,17 @@
 				<form action="" id="form_insert">
 
 					<div class="row">
-						<div class="col-md-3 col-xs-3">
+						<div class="col-md-3 col-xs-12">
 							<div class="form-group">
 									<label for="fecha">Categoría de productos:</label>
 									<select  class="form-control" name="tipo_categoria_id" id="tipo_categoria_id">
 									</select>	
 							</div>  						
 						</div>
-						<div class="col-md-2 col-xs-3">
+						<div class="col-md-1 col-xs-3">
 							<div class="form-group">
 								<label></label>
-								<a onclick="filtrar($('#tipo_categoria_id').val())" class="form-control btn btn-info"><i class="glyphicon glyphicon-search"></i>Filtrar</a>												
+								<a onclick="filtrar($('#tipo_categoria_id').val())" class="form-control btn btn-info"><i class="glyphicon glyphicon-search"></i></a>												
 							</div>
 						</div>	
 						<div class="col-md-1 col-xs-3">

@@ -22,6 +22,11 @@ class Empresas extends CI_Controller {
 		echo $resultado;
 	}
 
+	public function get_all_array(){
+		$resultado = $this->Empresas_model->get_all_array();		
+		echo json_encode($resultado);
+	}
+
 	public function mostrar()
 	{	
 		$buscar = $this->input->post("buscar");
@@ -79,6 +84,7 @@ class Empresas extends CI_Controller {
 				'direccion' => $this->input->post('direccion'),
 				'telefono' => $this->input->post('telefono'),
 				'email' => $this->input->post('email'),
+				'user_id' => $this->input->post('user_id'),
 				'habilitado' => 1,
 			);
 
@@ -111,6 +117,7 @@ class Empresas extends CI_Controller {
 				'direccion' => $this->input->post('direccion'),
 				'telefono' => $this->input->post('telefono'),
 				'email' => $this->input->post('email'),
+				'user_id' => $this->input->post('user_id'),
 			);
 		$this->Empresas_model->update(array('id' => $this->input->post('id')), $data);
 		echo json_encode(array("status" => TRUE));

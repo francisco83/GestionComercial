@@ -79,6 +79,7 @@ class Sucursales extends CI_Controller {
 		$this->_validate();		
 		$data = array(
 				'nombre' => $this->input->post('nombre'),
+				'empresaid' => $this->input->post('empresaid'),
 				'direccion' => $this->input->post('direccion'),
 				'telefono' => $this->input->post('telefono'),
 				'email' => $this->input->post('email'),
@@ -110,6 +111,7 @@ class Sucursales extends CI_Controller {
 		$this->_validate();
 		$data = array(
 				'nombre' => $this->input->post('nombre'),
+				'empresaid' => $this->input->post('empresaid'),
 				'direccion' => $this->input->post('direccion'),
 				'telefono' => $this->input->post('telefono'),
 				'email' => $this->input->post('email'),
@@ -160,6 +162,16 @@ class Sucursales extends CI_Controller {
 			echo json_encode($data);
 			exit();
 		}
+	}
+
+	
+	public function sucursales_Empresa ()
+	{
+		$IdEmpresa = $this->input->post("IdEmpresa");
+		$this->load->model("Sucursales_model");		
+		$data = $this->Sucursales_model->sucursales_Empresa($IdEmpresa);		
+		echo json_encode($data);	
+
 	}
 
 	public function createXLS() {

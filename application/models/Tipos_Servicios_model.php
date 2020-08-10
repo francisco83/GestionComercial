@@ -58,6 +58,16 @@ class Tipos_Servicios_model extends CI_Model {
 	 $this->db->delete($this->table, array("id" => $id));
 	}
 
+	public function buscarDetalleHistorico($IdServicio)
+	{
+		$this->db->select(array('e.id', 'e.nombre', 'h.fecha','h.precioanterior','h.precionuevo'));
+		$this->db->from('tipos_servicios as e');
+		$this->db->join('precio_servicios_h as h','e.id=h.idservicio');
+		$this->db->where("e.id =",$IdServicio);
+		$this->db->order_by('h.fecha', 'DESC');
+		$query = $this->db->get();
+		return $query->result();
+	}
 
 	public function enabled_by_id($id)
 	{

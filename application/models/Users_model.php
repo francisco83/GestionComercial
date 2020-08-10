@@ -21,6 +21,13 @@ class Users_model extends CI_Model {
 		return $consulta->result();
 	}
 
+	public function get_all_array()
+	{			
+		$this->db->where("active",1);
+		$consulta = $this->db->get($this->table);
+		return $consulta->result_array();
+	}
+
 	public function get_all_export() {
 		$this->db->select(array('e.id', 'e.first_name', 'e.last_name', 'e.email'));
 		$this->db->from('servicios as e');

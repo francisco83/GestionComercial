@@ -22,7 +22,8 @@ class Categorias_Productos_model extends CI_Model {
 	}
 
 	public function get_all_array()
-	{
+	{			
+		$this->db->where("habilitado",1);
 		$consulta = $this->db->get($this->table);
 		return $consulta->result_array();
 	}

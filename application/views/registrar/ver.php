@@ -55,15 +55,14 @@
 					<div class="panel-body">
 					<form action="" id="form_insert">
 						<div class="col-md-12">
-						<div class="col-md-9">
+						<div class="col-md-12">
 							<div class="form-group">
-									<!-- <label>Cliente:</label> -->
 									<input type ="text" id="clienteid" name="clienteid" hidden>
 									<div class="row">
-										<div class="col-md-8 col-xs-8">
+										<div class="col-md-6 col-xs-12">
 											<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">										
-										</div>									
-										<div class="col-md-2 col-xs-4">
+										</div>																						
+										<div class="col-md-2 col-xs-12">
 											<input class="btn btn-primary btn-block" value="Buscar" onclick="Filtrar($('#clienteid').val())"  >	
 										</div>
 									</div>							
@@ -156,6 +155,16 @@
 				$("#tbldetalle tbody").html('');				
 			},
 			});	
+
+			$(document).keyup(function(e) {     
+				if(e.keyCode== 27) {
+					$("#combocliente").val(''); 
+					$("#tbldetalle tbody").html('');
+					$("#tbl tbody").html('');
+					$("#combocliente").focus();
+				} 
+			});
+
 		});
 
 		
@@ -177,7 +186,7 @@
 				"<td>"+StrToFecha(item.fecha)+"</td>"+
 				"<td>"+
 				//"<a class='btn btn-sm btn-info' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+				
-				" <a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>"+
+			    " <a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>"+
 				" <a class='btn btn-sm btn-danger' onclick='javascript:borrar_Servicio("+item.id+")'><i class='glyphicon glyphicon-trash'></i></a>"+				
 				" <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_registrar/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-print'></i></a>"+
 				"</td>"+

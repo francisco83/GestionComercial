@@ -143,6 +143,15 @@ class Tipos_Servicios extends CI_Controller {
 		}
 	}
 
+	public function verdetallehistorico ()
+	{
+		$IdServicio = $this->input->post("IdServicio");
+		$this->load->model("Tipos_Servicios_model");		
+		$data = $this->Tipos_Servicios_model->buscarDetalleHistorico($IdServicio);		
+		echo json_encode($data);	
+
+	}
+
 	public function createXLS() {
 
        $this->load->library('excel');

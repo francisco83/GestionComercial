@@ -21,7 +21,7 @@
 									<option value="10">10</option>
 								</select>
 							</div>
-							<div class="col-md-4 col-md-offset-2 pull-right">
+							<div class="col-md-4 col-xs-12 col-md-offset-2 pull-right">
 								<div class="form-group has-feedback has-feedback-left">				  
 									<input type="text" class="form-control" name="busqueda" id="busqueda" placeholder="Buscar" />
 									<i class="glyphicon glyphicon-search form-control-feedback"></i>
@@ -50,9 +50,9 @@
 				</div>
 			</div>
 		</div>
-		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
-		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
-		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>			
+		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i></button>
+		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i></button>
+		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i></button>			
 		<button class="btn btn-info" onclick="AsingarCliente()"><i class='glyphicon glyphicon-tasks'></i> Asignar Cliente</button>
 		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>

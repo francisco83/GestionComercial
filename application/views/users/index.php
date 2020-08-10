@@ -18,7 +18,7 @@
 									<option value="10">10</option>
 								</select>
 							</div>
-							<div class="col-md-4 col-md-offset-2 pull-right">
+							<div class="col-md-4 col-xs-12 col-md-offset-2 pull-right">
 								<div class="form-group has-feedback has-feedback-left">				  
 									<input type="text" class="form-control" name="busqueda" id="busqueda" placeholder="Buscar" />
 									<i class="glyphicon glyphicon-search form-control-feedback"></i>
@@ -47,16 +47,19 @@
 				</div>
 			</div>
         </div>
-        <a class="btn btn-success" href="<?php echo base_url();?>auth/create_user"><i class="glyphicon glyphicon-plus"></i>Nuevo</a>				
-		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
-        <button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>			
+        <a class="btn btn-success" href="<?php echo base_url();?>auth/create_user"><i class="glyphicon glyphicon-plus"></i></a>				
+		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> </button>
+        <button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> </button>			
+		<a class='btn btn-info'  href='javascript:asignarSucursales($("#tbl tr.selected td:first").html())'><i class=''></i>Asignar Sucursales</a>
         <button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
+<script src="<?php echo base_url();?>assets/js/multiselect.js"></script>
 <script>
 
 var valor, pag;
 var controller ='users';
+var ingreso = 0;
 
 function reload_table(){
 	mostrarDatos(valor,pag,$("#cantidad").val());	
@@ -119,6 +122,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 $(function() {
 	main();  
 	$("#busqueda").focus();
+
 });
 
 function add()
@@ -279,8 +283,59 @@ function enabled(id)
             }
         });
 }
+function asignarSucursales(Id)
+{	
+	var detalle="";
+	
+	detalle+="<select name='from[]' id='lstview' class='form-control' size='8' multiple='multiple'>";
+
+	$.ajax({
+		
+		url : "<?php echo site_url('Sucursales/sucursales_Empresa')?>",
+		type: "POST",
+		dataType:"json",
+		data: {IdEmpresa: Id},
+		success:function(response){						
+			$.each(response,function(key,item){				
+				detalle+="<option value='"+item.id+"'>"+item.nombre+"</option>";				
+				i++;
+			});	
+			detalle+="</select>";
+			console.log(detalle);	
+			$('#detalle').html('');
+			$('#to').html('');
+			$("#lstview").html('');
+			$("#lstview_to").html('');
+			$('#detalle').html(detalle);
+			$('#to').html("<select name='to[]' id='lstview_to' class='form-control' size='8' multiple='multiple'></select>");
+
+			$('#lstview').multiselect({
+			search: {
+				left: '<input type="text" name="q" class="form-control" placeholder="Buscar..." />',
+				right: '<input type="text" name="q" class="form-control" placeholder="Buscar..." />',
+			}
+			});
+
+
+		}
+	
+	});
+
+	$('.help-block').empty();
+    $('#modal_sucursales').modal('show'); 
+    $('.modal-title').text('Asignar Sucursales');
+	$('.modal-backdrop').remove();
+
+
+	
+}
+
+
+
 
 </script>
+
+
 
 <!-- Bootstrap modal -->
 <div class="modal" id="modal_form" role="dialog">
@@ -372,6 +427,48 @@ function enabled(id)
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- End Bootstrap modal -->
+
+
+<!-- Bootstrap modal -->
+<div class="modal" id="modal_sucursales" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">Asignar Sucursales</h3>
+            </div>
+
+            <div class="modal-body form tableFixHead">
+				<table class="table table-bordered" style="font-size: smaller">
+					<tbody id="tbodypagos"> 				
+						<div class='row'>
+							<div class='col-xs-5'>						
+								<div id="detalle"></div>								
+							</div>
+						<div class='col-xs-2'>
+							<button type='button' id='lstview_rightAll' class='btn btn-default btn-block'><i class='glyphicon glyphicon-forward'></i></button>
+							<button type='button' id='lstview_rightSelected' class='btn btn-default btn-block'><i class='glyphicon glyphicon-chevron-right'></i></button>
+							<button type='button' id='lstview_leftSelected' class='btn btn-default btn-block'><i class='glyphicon glyphicon-chevron-left'></i></button>
+							<button type='button' id='lstview_leftAll' class='btn btn-default btn-block'><i class='glyphicon glyphicon-backward'></i></button>
+						</div>						
+						<div class='col-xs-5'>
+							<div id="to"></div>					
+						</div>	
+						</div>							
+					</tbody>
+				</table>
+			</div>
+
+           
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- End Bootstrap modal -->
+
 
 </body>
 </html>

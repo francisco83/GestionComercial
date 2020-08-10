@@ -18,7 +18,7 @@
 									<option value="10">10</option>
 								</select>
 							</div>
-							<div class="col-md-4 col-md-offset-2 pull-right">
+							<div class="col-md-4 col-xs-12 col-md-offset-2 pull-right">
 								<div class="form-group has-feedback has-feedback-left">				  
 									<input type="text" class="form-control" name="busqueda" id="busqueda" placeholder="Buscar" />
 									<i class="glyphicon glyphicon-search form-control-feedback"></i>
@@ -36,6 +36,7 @@
 										<th>Dirección</th>
 										<th>Telefono</th>
 										<th>Email</th>
+										<th>Usuario ADMIN</th>
 										<th>Habilitado</th>
 									</tr>
 								</thead>
@@ -49,9 +50,9 @@
 				</div>
 			</div>
 		</div>
-		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i> Nuevo</button>
-		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i> Editar</button>
-		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i> Eliminar</button>	
+		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i></button>
+		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i></button>
+		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i></button>	
 		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
 	</div>
 	
@@ -86,6 +87,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 				"<td>"+item.direccion+"</td>"+
 				"<td>"+item.telefono+"</td>"+
 				"<td>"+item.email+"</td>"+
+				"<td>"+item.username+"</td>"+
 				"<td class='c'>"+habilitado+"</td>"+
 				"</tr>";
 			});
@@ -123,6 +125,7 @@ function add()
     $('#modal_form').modal('show'); 
     $('.modal-title').text('Agregar empresa');
 	$('.modal-backdrop').remove();
+	cargar_usuarios(0);
 }
 
 function edit(id)
@@ -145,16 +148,54 @@ function edit(id)
             $('[name="ingresosbrutos"]').val(data.ingresosbrutos);
             $('[name="direccion"]').val(data.direccion);
 			$('[name="telefono"]').val(data.telefono);
-            $('[name="email"]').val(data.email);			
+            $('[name="email"]').val(data.email);		
+			$('[name="user_id"]').val(data.user_id);	
             $('#modal_form').modal('show');
-            $('.modal-title').text('Editar Servicio');
+            $('.modal-title').text('Editar Empresa');
 			$('.modal-backdrop').remove();
+			cargar_usuarios(data.user_id);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert('Error get data from ajax');
         }
     });
+}
+
+
+function cargar_usuarios(id){
+
+console.log("valor",id);
+var combo_users='';
+
+//Combo de categorias			 
+$.ajax({		
+	url : "<?php echo site_url('Users/get_all_array');?>",
+	type: "POST",
+	dataType:"json",
+	success:function(response){
+		combo_users = "<option value='-1'>Seleccione un usuario...</option>";	
+		$.each(response,function(key,item){
+			console.log("-->>",item);
+			if(id != 0 && item.id == id){
+				combo_users+="<option value='"+item.id+"' selected>"+item.username+"</option>";					
+			}
+			else{
+				combo_users+="<option value='"+item.id+"'>"+item.username+"</option>";
+			}
+		});		
+		$("#user_id").html(combo_users);
+	},
+	error: function (jqXHR, textStatus, errorThrown)
+	{
+		$.notify({
+				title: '<strong>Atención!</strong>',
+				message: 'Se produjo un error al cargar los usuarios.'
+			},{
+				type: 'danger'
+			});
+	}
+});
 }
 
 </script>
@@ -165,7 +206,7 @@ function edit(id)
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Servicio</h3>
+                <h3 class="modal-title"></h3>
             </div>
             <div class="modal-body form">
                 <form action="#" id="form" class="form-horizontal">
@@ -213,6 +254,14 @@ function edit(id)
                                 <span class="help-block"></span>
                             </div>   
 						</div>  	 	
+						<div class="form-group">
+                            <label class="col-sm-2">Usuario Admin:</label>
+                            <div class="col-sm-10">
+							<select  class="form-control" name="user_id" id="user_id">
+							</select>							    
+                                <span class="help-block"></span>
+                            </div>   
+						</div> 
 					</div>
                 </form>
             </div>

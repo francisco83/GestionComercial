@@ -7,17 +7,28 @@ class Sucursales_model extends CI_Model {
 
 	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
-		$this->db->like("nombre",$buscar);
+		$this->db->select(array('e.id', 'e.nombre', 'e.direccion', 'e.telefono','e.email','e.habilitado','c.nombre as empresa'));
+		$this->db->from('sucursales as e');
+		$this->db->join('empresas as c','c.id=e.empresaid', 'left outer');
+		$this->db->or_like('e.nombre', $buscar);
+		$this->db->order_by('e.nombre', 'ASC');
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
-		$consulta = $this->db->get($this->table);
+
+		$consulta = $this->db->get();
+
 		return $consulta->result();
 	}
 
 	public function get_all()
 	{
-		$consulta = $this->db->get($this->table);
+		$this->db->select(array('e.id', 'e.nombre', 'e.direccion', 'e.telefono','e.email','e.habilitado','c.nombre as empresa'));
+		$this->db->from('sucursales as e');
+		$this->db->join('empresas as c','c.id=e.empresaid', 'left outer');
+		$this->db->order_by('e.nombre', 'ASC');
+		$consulta = $this->db->get();
+
 		return $consulta->result();
 	}
 
@@ -75,6 +86,18 @@ class Sucursales_model extends CI_Model {
 
 		$this->db->update($this->table, $data, array("id" => $id));
 
+	}
+
+
+	public function sucursales_Empresa($IdEmpresa)
+	{
+		$this->db->select(array('s.id', 's.nombre', 's.direccion','s.telefono','s.email'));
+		$this->db->from('sucursales as s');	
+		$this->db->where("s.empresaId =",$IdEmpresa);
+		$this->db->where("s.habilitado =",1);
+		$this->db->order_by('s.nombre', 'DESC');
+		$query = $this->db->get();
+		return $query->result();
 	}
 
 }
