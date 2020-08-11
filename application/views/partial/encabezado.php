@@ -17,7 +17,16 @@
 	<script src="<?php echo base_url();?>assets/js/bootstrap-notify.min.js"></script>
 </head>
 <body>
-<?php  $this->load->view("partial/menu"); ?>
+
+<?php  
+if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+{	
+	$this->load->view("partial/menu_user"); 
+}
+else{
+	$this->load->view("partial/menu_admin"); 
+}
+?>
 
 <script>
 

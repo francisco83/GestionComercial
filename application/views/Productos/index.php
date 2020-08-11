@@ -135,8 +135,7 @@ function add()
 
 
 function cargar_categorias(id){
-
-	console.log("valor",id);
+	
 	var combo_categorias='';
 
 	//Combo de categorias			 

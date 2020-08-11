@@ -67,8 +67,7 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 		type: "POST",
 		data: {buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
-		success:function(response){		
-            console.log(response);	
+		success:function(response){		            	
 			filas = "";
 			$.each(response.groups,function(key,item){
 				filas+="<tr>"+

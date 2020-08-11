@@ -165,7 +165,6 @@ function edit(id)
 
 function cargar_usuarios(id){
 
-console.log("valor",id);
 var combo_users='';
 
 //Combo de categorias			 
@@ -175,8 +174,7 @@ $.ajax({
 	dataType:"json",
 	success:function(response){
 		combo_users = "<option value='-1'>Seleccione un usuario...</option>";	
-		$.each(response,function(key,item){
-			console.log("-->>",item);
+		$.each(response,function(key,item){		
 			if(id != 0 && item.id == id){
 				combo_users+="<option value='"+item.id+"' selected>"+item.username+"</option>";					
 			}

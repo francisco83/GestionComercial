@@ -207,14 +207,12 @@ function agregarFila() {
 
 		$("#fila"+i).click(function(){
 				$(this).addClass('selected').siblings().removeClass('selected');    
-				var value=$(this).find('div:first').html(); 
-				console.log(value);				
+				var value=$(this).find('div:first').html(); 							
 			});
 
 		
 		$("#cantidad"+i).on('change',function(){
-			  var a = $('.selected').find('div:first').html();
-			  console.log("cambios",a);
+			  var a = $('.selected').find('div:first').html();			  
 			  Resultado = $("#precio"+a).val() * $("#cantidad"+a).val();
 			  $("#total"+a).val(Resultado);  
 		});

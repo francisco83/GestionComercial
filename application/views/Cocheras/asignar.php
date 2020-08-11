@@ -89,8 +89,7 @@
 
 <script>
     for(i=0;i<=19;i++){
-        $("#id"+i).click(function(){
-            console.log("ingreso");
+        $("#id"+i).click(function(){            
             $("#ModalConfig").modal("show");
         });
     }

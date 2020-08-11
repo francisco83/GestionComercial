@@ -8,9 +8,9 @@ class Clientes extends CI_Controller {
 		$this->load->model("Ventas_model");
 		$this->load->library(['ion_auth', 'form_validation']);
 
-		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		if (!$this->ion_auth->logged_in())
 		{
-			redirect('auth', 'refresh');
+			redirect('Home', 'refresh');
 		}
 	}
 
