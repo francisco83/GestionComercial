@@ -6,8 +6,8 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">
                         <h4>Clientes</h4>
-                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/clientes" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
-						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/clientes/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
+                        <a class="pull-right btn btn-primary" style="margin-top: -30px" data-toggle="tooltip" title="Imprimir" href="<?php echo site_url()?>reportes/clientes" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
+						<a class="pull-right btn btn-primary" style="margin-top: -30px" data-toggle="tooltip" title="Excel" href="<?php echo site_url()?>/clientes/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -48,9 +48,9 @@
 				</div>
 			</div>
 		</div>
-		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i></button>
-		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i></button>
-		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i></button>	
+		<button class="btn btn-success" onclick="add()" data-toggle="tooltip" title="Nuevo"><i class="glyphicon glyphicon-plus"></i></button>
+		<button class="btn btn-warning" onclick="action('edit')" data-toggle="tooltip" title="Editar"><i class="glyphicon glyphicon-edit"></i></button>
+		<button class="btn btn-danger" onclick="action('delete')" data-toggle="tooltip" title="Eliminar"><i class="glyphicon glyphicon-trash"></i></button>	
 		<button class="btn btn-info" onclick="Accion('registrar')"><i class='glyphicon glyphicon-tasks'></i> Reg. Servicio</button>
 		<button class="btn btn-primary" onclick="Accion('ctacte')"><i class='glyphicon glyphicon-briefcase'></i> Cta. Cte.</button>
 		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	

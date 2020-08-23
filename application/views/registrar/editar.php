@@ -37,7 +37,7 @@
 					<div class="panel-body">
 
 						<form action="" id="form_insert">
-						<input type="text" id="serviceid" name="serviceid" value="<?php echo ($servicioId)?>">
+						<input type="text" id="serviceid" name="serviceid" value="<?php echo ($servicioId)?>" hidden>
 							<div class="col-md-12">
 							<div class="col-md-3">
 								<div class="form-group">
@@ -152,26 +152,50 @@ var filas;
 			url : "<?php echo site_url('Registrar/get_servicios/'.$servicioId);?>",
 			type: "POST",
 			dataType:"json",
-			success:function(response){
-				console.log("ingreso");
+			success:function(response){				
 				$("#fechahoy").val(response[0].fecha_servicio);
 				$("#combocliente").val(response[0].apellido+" "+response[0].nombrecliente);
 				$("#clienteid").val(response[0].clienteId);
 
-				fil = "";
+				fil = '<div class="tbl_grid">'+
+					'<table id="tbl" class="table table-bordered table-hover">'+
+						'<thead>'+
+							'<tr>'+
+								'<th>#</th>'+
+								'<th>Servicio</th>'+
+								'<th>Precio</th>'+
+								'<th>Cantidad</th>'+
+								'<th>Total</th>'+
+								'<th>Detalle</th>'+								
+								'<th>Opciones</th>'+								
+							'</tr>'+
+						'</thead>'+
+						'<tbody>';
+				
 				$.each(response,function(key,item){
+					console.log("valor",item);
+					fil+="<tr>"+
+					"<td>"+item.id+"</td>"+
+					"<td>"+item.nombre+"</td>"+
+					"<td class='r'>"+item.precio+"</td>"+
+					"<td class='r'>"+item.cantidad+"</td>"+
+					"<td class='r'>"+item.precio * item.cantidad+"</td>"+
+					"<td>"+item.descripcion+"</td>"+					
+					"<td class='c'>"+"<a class='btn btn-sm btn-warning' onclick='editarFila("+item.id+")'><i class='glyphicon glyphicon-edit'></i></a> "+
+					"<a class='btn btn-sm btn-danger' onclick='borrarFila("+item.id+")'><i class='glyphicon glyphicon-trash'></i></a>"+"</td>"+			
+					"</tr>";
 
-
-				fil+='<div class="row fila" id="fila'+i+'">'+
+				/*fil+='<div class="row fila" id="fila'+i+'">'+
 				'<div class="id_" hidden>'+i+'</div>'+
   							'<div class="col-md-12">'+
+								// '<div class="col-md-4">'+
+								// 	'Tipo de Servicio:'+ 
+								// 	'</br>'+
+								// 	'<select class="form-control" name="servicio[]" required id ="comboservicio'+i+'"></select>'+
+								// '</div>'+
 								'<div class="col-md-4">'+
-									'Tipo de Servicio:'+ 
+								'Tipo de Servicio:'+ 
 									'</br>'+
-									'<select class="form-control" name="servicio[]" required id ="comboservicio'+i+'"></select>'+
-								'</div>'+
-								'<div class="col-md-2">'+
-									''+
 									item.nombre+ 
 								'</div>'+
 								'<div class="col-md-2">'+
@@ -199,10 +223,14 @@ var filas;
 							'</div>'+
 						'</div>';
 
-						
+						*/
+
 						i++;
 
 			});
+			fil+='</tbody>'+
+				'</table>'+
+				'</div>';
 			$("#detalle").html(fil);	
 			for(m=1;m<i;m++){
 				cargar(m);

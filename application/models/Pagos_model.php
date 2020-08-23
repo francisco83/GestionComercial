@@ -47,14 +47,38 @@ class Pagos_model extends CI_Model {
 
 	public function update($where, $data)
 	{
+		$this->db->trans_begin();
+
 		$this->db->update($this->table, $data, $where);
+
+		if ($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+		}
+		else
+		{
+			$this->db->trans_commit();
+		}
+
 		return $this->db->affected_rows();
 	}
 
 	public function delete_by_id($id)
 	{
-	 $this->db->delete($this->table, array("id" => $id));
+		 $this->db->trans_begin();
+		 
+	 	$this->db->delete($this->table, array("id" => $id));
+
+		if ($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+		}
+		else
+		{
+			$this->db->trans_commit();
+		}
 	}
+
 
 
 }

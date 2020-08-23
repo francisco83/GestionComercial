@@ -77,29 +77,11 @@ class Registrar extends CI_Controller {
 		$detalle = $_POST['detalle'];
 		$precio = $_POST['precio'];
 
-		$id = $this->Cli_servicios_model->guardarCambios($clienteid,$fecha);
-
-		for ($i=0; $i < count($servicio); $i++) 
-		{   
-			//$data[$i]['id_cliente'] = $clienteid;
-			$data[$i]['id_cli_servicios'] = $id;
-			$data[$i]['id_servicio'] = $servicio[$i];
-			//$data[$i]['fecha'] = $fecha;
-			$data[$i]['precio'] = $precio[$i];
-			$data[$i]['cantidad'] = $cantidad[$i];
-			$data[$i]['descripcion'] = $detalle[$i];
-		}
-
-
-		$resultado = $this->Cli_servicios_detalle_model->guardarCambios($data);
+		$resultado = $this->Cli_servicios_model->guardar($clienteid,$fecha,$cantidad,$servicio,$detalle,$precio);
 
 		if($resultado){
             $mensaje = "Registro cargado correctamente";
-			$clase = "success";
-			
-			//$json['success'] = 'You have upload your selected files!';
-
-
+			$clase = "success";			
         }else{
             $mensaje = "Error al registrar la carga de servicios";
 			$clase = "danger";
@@ -110,12 +92,7 @@ class Registrar extends CI_Controller {
             "clase" => $clase,
 		));
 		
-		//$resultado = $this->Tipos_Servicios_model->listar();
 		echo json_encode($this);
-		
-		//redirect('registrar');
-		//redirect("registrar/"+$clienteid);
-		
 	}
 
 	public function modificar(){

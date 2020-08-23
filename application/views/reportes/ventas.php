@@ -53,6 +53,7 @@
 										<th>Total Venta</th>
 										<th>Total Pago</th>
 										<th>Total Vuelto</th>
+										<th>Acciones</th>
 									</tr>
 								</thead>
 								<tbody id="detalle">
@@ -93,14 +94,18 @@
 		dataType:"json",
 		success:function(response){			
 			filas = "";
-			$.each(response,function(key,item){				
+			$.each(response,function(key,item){		
+				console.log("VENTAS",item);		
 				 filas+="<tr>"+
 				 "<td>"+i+"</td>"+
 			     "<td>"+StrToFecha(item.fecha)+"</td>"+
 				 "<td>"+item.nombre+" "+item.apellido+"</td>"+
 				 "<td class='r'>"+item.total+"</td>"+		
 				 "<td class='r'>"+item.monto+"</td>"+		
-				 "<td class='r'>"+item.vuelto+"</td>"+		
+				 "<td class='r'>"+item.vuelto+"</td>"+	
+				 "<td>"+				 				
+				 " <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta/"+item.id+"' target='_blank' data-toggle='tooltip' title='Imprimir'><i class='glyphicon glyphicon-print'></i></a>"+
+				 " <a class='btn btn-sm btn-danger' onclick='javascript:borrar_Venta("+item.id+")' data-toggle='tooltip' title='Cancelar Venta'><i class='glyphicon glyphicon-ban-circle'></i></a></td>"+
 				 "</tr>";
 				 i++;
 

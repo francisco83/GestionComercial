@@ -25,11 +25,19 @@ function main(){
 
 	$(document).keyup(function(e) {     
 		if(e.keyCode== 27) {
-			$("#busqueda").val(''); 
-			mostrarDatos("",1,5);
-			$("#busqueda").focus();
+			if(!$('#modal_form').hasClass('show')){		
+				$("#busqueda").val(''); 
+				mostrarDatos("",1,5);
+				$("#busqueda").focus();
+			}
+			else{
+				$('#modal_form').modal('hide');
+				$("#busqueda").focus();
+			}
 		} 
 	});
+
+
 
 }
 
@@ -299,4 +307,18 @@ $(function ($) {
     $('.only_number').keypress(function (tecla) {
         if (tecla.charCode < 47 || tecla.charCode > 57) return false;
 	});
+
+	//Editar haciendo doble clic
+	$("#tbl").dblclick(function(){
+		var id = $("#tbl tr.selected td:first").html();
+		if (id !=  undefined){
+			edit(id);
+		}
+	});
+	
 });
+
+
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip()
+  });

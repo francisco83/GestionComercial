@@ -222,8 +222,7 @@ function borrar_Servicio(id)
 }
 
 
-function verDetalle(servicioId,valorBuscar,pagina,cantidad){
-		console.log("Servicio a ver",servicioId);
+function verDetalle(servicioId,valorBuscar,pagina,cantidad){		
 	$.ajax({
 		url : "../registrar/mostrarDetalleXcliente",
 		type: "POST",
@@ -235,8 +234,8 @@ function verDetalle(servicioId,valorBuscar,pagina,cantidad){
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.nombre+"</td>"+
-				"<td>"+item.precio+"</td>"+
-				"<td>"+item.cantidad+"</td>"+
+				"<td class='r'>"+item.precio+"</td>"+
+				"<td class='r'>"+item.cantidad+"</td>"+
 				"<td>"+item.descripcion+"</td>"+			
 				"</tr>";
 			});
