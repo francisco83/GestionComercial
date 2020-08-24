@@ -22,24 +22,8 @@ function main(){
 		mostrarDatos(valorBuscar,1,valoroption);
 	});
 
-
-	$(document).keyup(function(e) {     
-		if(e.keyCode== 27) {
-			if(!$('#modal_form').hasClass('show')){		
-				$("#busqueda").val(''); 
-				mostrarDatos("",1,5);
-				$("#busqueda").focus();
-			}
-			else{
-				$('#modal_form').modal('hide');
-				$("#busqueda").focus();
-			}
-		} 
-	});
-
-
-
 }
+
 
 
 function cargarPaginado(response,valorBuscar,pagina,cantidad){
@@ -320,5 +304,20 @@ $(function ($) {
 
 
 $(function () {
-	$('[data-toggle="tooltip"]').tooltip()
+	$('[data-toggle="tooltip"]').tooltip();
+
+	//limpia la busqueda y cierra los popup
+	$(document).keyup(function(e) {   
+		if(e.keyCode== 27) {
+			if(!$('#modal_form').hasClass('show')){		
+				$("#busqueda").val(''); 
+				mostrarDatos("",1,5);
+				$("#busqueda").focus();
+			}
+			else{
+				$('#modal_form').modal('hide');
+				$("#busqueda").focus();
+			}
+		} 
+	});
   });

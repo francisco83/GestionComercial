@@ -135,6 +135,16 @@
 				$("#tbldetalle tbody").html('');				
 			},
 			});	
+
+			$(document).keyup(function(e) {     
+				if(e.keyCode== 27) {
+					$("#combocliente").val(''); 
+					$("#tbldetalle tbody").html('');
+					$("#tbl tbody").html('');
+					$("#combocliente").focus();
+				} 
+			});
+			
 		});
 
 		

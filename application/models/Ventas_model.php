@@ -19,6 +19,68 @@ class Ventas_model extends CI_Model {
 		return $this->db->insert_id();		
 	}
 
+	public function guardar($fecha,$total,$clienteId,$empleadoId,$sucursalId,$IdProducto,$PrecioVenta,$Cantidad,$moneda,$monedaMonto,$vuelto)
+	{
+		$this->fecha = $fecha;
+		$this->total= $total;
+		$this->clienteId = $clienteId;
+		$this->empleadoId =$empleadoId;
+		$this->sucursalId =$sucursalId;
+
+		$this->db->trans_begin();
+
+		$this->db->insert('ventas', $this);		
+		$id = $this->db->insert_id();		
+
+		for ($i=0; $i < count($IdProducto); $i++) 
+		{   			
+			$data[$i]['ventaId'] = $id;
+			$data[$i]['productoId'] = $IdProducto[$i];			
+			$data[$i]['Precio'] = $PrecioVenta[$i];
+			$data[$i]['Cantidad'] = $Cantidad[$i];
+
+			$this->productos_model->update_quantity($IdProducto[$i],$Cantidad[$i]);
+		}
+
+
+		$resultado = $this->Ventas_detalle_model->guardarCambios($data);
+
+		if($resultado){
+
+			for ($i=0; $i < count($moneda); $i++) 
+			{   			
+				$dataPago[$i]['ventaId'] = $id;
+				$dataPago[$i]['tipo_monedaId'] = $moneda[$i];			
+				$dataPago[$i]['monto'] = $monedaMonto[$i];
+				$dataPago[$i]['fecha_pago'] = $fecha;
+
+				if($moneda[$i]== 1 && $monedaMonto[$i]!=0 && $monedaMonto[$i]!=null){//si es efectivo solo puede dar vuelto
+					$dataPago[$i]['vuelto']=$vuelto;
+				}
+				else{
+					$dataPago[$i]['vuelto']=0;
+				}
+				
+			}
+			if (count($dataPago)!=1 || (count($dataPago)==1 && $dataPago[0]['tipo_monedaId']=='1' && $dataPago[0]['monto']!=0))
+			{
+				$resultado = $this->Pagos_model->guardarCambios($dataPago);
+			}
+
+			if ($this->db->trans_status() === FALSE)
+			{
+				$this->db->trans_rollback();
+			}
+			else
+			{
+				$this->db->trans_commit();		
+			}
+	
+			return $resultado;
+		
+		}
+	}
+
 	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
 		$this->db->like("fecha",$buscar);
