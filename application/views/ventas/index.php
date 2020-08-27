@@ -10,7 +10,7 @@
 				<form action="" id="form_insert">
 
 					<div class="row">
-						<div class="col-md-2 col-xs-4">
+						<div class="col-md-2 col-xs-6">
 							<div class="form-group">
 									<label for="fecha">Fecha:</label>
 									<input class="form-control" id="fechahoy" name="fechahoy" required type="date">
@@ -22,8 +22,14 @@
 									<input type ="text" id="clienteid" name="clienteid" hidden value="">
 									<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
 							</div>
+						</div>	
+						<div class="col-md-1 col-xs-6">
+							<div class="form-group">
+								<label></label>
+								<a onclick="nuevoCliente()" class="form-control btn btn-info"data-toggle="tooltip" title="Nuevo Cliente" ><i class="glyphicon glyphicon-user"></i></a>						
+							</div>
 						</div>		
-						<div class="col-md-2 col-xs-2">
+						<div class="col-md-2 col-xs-6">
 							<div class="form-group">
 								<label></label>
 								<a onclick="nuevaVenta()" class="form-control btn btn-success"><i class="glyphicon glyphicon-plus"></i>Nueva venta</a>						
@@ -121,11 +127,12 @@
 	</div>
 </div>
 
+<?php  $this->load->view("partial/cliente_formulario"); ?>
 
 <script src="<?php echo base_url();?>assets/js/combos.js"></script>
 <script>
 	
-
+	var Site="<?php echo site_url()?>"
 	var i = 1;
 	var precioVenta = 0;
 	var codigoProducto = 0;
@@ -179,32 +186,46 @@
 
 		jQuery(document).on('submit','#form_insert',function(event)
 		{
-			event.preventDefault();
-			jQuery.ajax({
-				url:"<?php echo site_url('ventas/insertar');?>",
-				type: 'POST',
-				datetype: 'json',
-				data: $(this).serialize()
-			})
-			.done(function(respuesta)
-			{
-				//$("#detalle").html('');
-				
-				$.notify({
-                   title: '<strong>Atención!</strong>',
-                   message: 'Se registro la venta.'
-               },{
-                   type: 'success'
-               });
+				var mensaje_error='';
 
-			   nuevaVenta();
+				event.preventDefault();
+				jQuery.ajax({
+					url:"<?php echo site_url('ventas/insertar');?>",
+					type: 'POST',
+					datetype: 'json',
+					data: $(this).serialize()
+				})
+				.done(function(respuesta)
+				{					
+					obj = JSON.parse(respuesta);
+					if(obj.status)
+            		{		
+						$.notify({
+						title: '<strong>Atención!</strong>',
+						message: 'Se registro la venta.'
+						},
+						{
+							type: 'success'
+						});
 
-			})
-			.fail(function(resp)
-			{
-			 	console.log("Error");
-			 });
+						nuevaVenta();
 
+					}
+					else{
+						
+					
+						$.notify({
+							title: '<strong>Atención!</strong>',
+							message: obj.error_string		
+						},{
+							type: 'danger'
+						});	
+					}			
+				})
+				.fail(function(resp)
+				{
+					console.log("Error");
+				});
 		});
 });
 
@@ -382,5 +403,76 @@ function nuevaVenta(){
 	$("#combocliente").val('');
 	$("#detalle_moneda").html('');
 }
+
+function nuevoCliente()
+{
+    //save_method = 'add';
+    $('#form')[0].reset(); 
+    $('.form-group').removeClass('has-error'); 
+	$('.panel-body').removeClass('has-error'); 
+    $('.help-block').empty();
+    $('#modal_form').modal('show'); 
+    $('.modal-title').text('Agregar Clientes');
+	$('.modal-backdrop').remove();
+}
+
+
+function saveCliente()
+{
+    $('#btnSave').text('Guardando...'); 
+    $('#btnSave').attr('disabled',true); 
+    var url,men;
+
+	url = Site+"clientes/ajax_add";
+	men="Se creo el usuario correctamente";
+ 
+	var formData = new FormData($('#form')[0]);
+    $.ajax({
+        url : url,
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data)
+        {			
+            if(data.status)
+            {
+                $('#modal_form').modal('hide');
+				//reload_table();
+				$.notify({
+                   title: '<strong>Correcto!</strong>',
+                   message: men
+               },{
+                   type: 'success'
+               });
+            }
+            else
+            {
+                for (var i = 0; i < data.inputerror.length; i++) 
+                {
+                    $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
+                    $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
+                }
+            }
+            $('#btnSave').text('Guardar');
+            $('#btnSave').attr('disabled',false); 
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+			$.notify({
+                   title: '<strong>Error!</strong>',
+                   message: 'Se produjo un error al crear el usuario.'
+               },{
+                   type: 'danger'
+               });
+            $('#btnSave').text('Guardar'); 
+            $('#btnSave').attr('disabled',false); 
+
+        }
+    });
+}
+
+
 
 </script>

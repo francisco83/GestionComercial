@@ -33,7 +33,8 @@ class Clientes_model extends CI_Model {
 	function search_autocomplete($title){	
 		$this->db->where('habilitado', 1);	
 		$this->db->like('apellido', $title);
-        $this->db->or_like('nombre', $title);
+		$this->db->or_like('nombre', $title);
+		$this->db->or_like('dni', $title);
         $this->db->order_by('apellido', 'ASC');
         $this->db->limit(10);
         return $this->db->get($this->table)->result();

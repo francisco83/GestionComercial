@@ -48,17 +48,17 @@ class Cli_servicios_detalle_model extends CI_Model {
 
 	public function delete_by_masterid($id)
 	{
-	 $this->db->trans_begin();
-	 $this->db->delete("cli_servicios_detalle", array("id_cli_servicios" => $id));
-	 $this->db->delete("cli_servicios", array("id" => $id));
-	 if ($this->db->trans_status() === FALSE)
-	 {
-		 $this->db->trans_rollback();
-	 }
-	 else
-	 {
-		 $this->db->trans_commit();
-	 }
+		$this->db->trans_begin();
+		$this->db->delete("cli_servicios_detalle", array("id_cli_servicios" => $id));
+		$this->db->delete("cli_servicios", array("id" => $id));
+		if ($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+		}
+		else
+		{
+			$this->db->trans_commit();
+		}
 	}
 
 	public function get_by_serviceId($servicioId){

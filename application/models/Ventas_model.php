@@ -142,6 +142,37 @@ class Ventas_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 
+	public function delete_by_masterid($id)
+	{
+		$this->db->trans_begin();
+
+		$this->db->select(array('vd.id', 'vd.productoId', 'vd.cantidad'));
+		$this->db->from('ventas_detalle as vd');
+		$this->db->where("ventaId",$id);
+		$query = $this->db->get();
+
+		if (count($query) > 0) {
+			foreach ($query->result() as $row)	
+			{
+				$this->db->set('existencia', 'existencia + '.$row->cantidad, FALSE);
+				$this->db->where('id', $row->productoId);
+				$this->db->update("productos");
+			}							
+		}	
+	
+		$this->db->delete("pagos", array("ventaId" => $id));
+		$this->db->delete("ventas_detalle", array("ventaId" => $id));
+		$this->db->delete("ventas", array("id" => $id));
+		if ($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+		}
+		else
+		{
+			$this->db->trans_commit();
+		}
+	}
+
 	public function delete_by_id($id)
 	{
 		 $this->db->trans_begin();
@@ -277,23 +308,6 @@ class Ventas_model extends CI_Model {
 		$query = $this->db->get();
 		return $query->result_array();
 	 }
-	// public function enabled_by_id($id)
-	// {
-	// 	$reg = $this->db->get_where($this->table, array("id" => $id))->row();
-
-	// 	if($reg->active == "1"){
-	// 		$this->active = 0;
-	// 	}
-	// 	else{
-	// 		$this->active = 1;
-	// 	}
-	// 	$data = array(
-	// 		'active' => $this->active
-	// 	);
-
-	// 	$this->db->update($this->table, $data, array("id" => $id));
-
-	// }
 
 	//buscarDetalleImprimir
 

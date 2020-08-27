@@ -68,7 +68,7 @@ class Clientes extends CI_Controller {
 			{
 				$data[] = array(
 					'id' => $row->id,
-					'value'=> $row->apellido.' '.$row->nombre
+					'value'=> $row->apellido.' '.$row->nombre.'  -  '.$row->dni 
 				);
 			}				
                 echo json_encode($data);

@@ -24,7 +24,57 @@ class Ventas extends CI_Controller {
 		$this->load->view("Ventas/ver");
 	}
 
+	private function _validate()
+	{
+		$data = array();
+		$data['error_string'] = array();
+		$data['inputerror'] = array();
+		$data['status'] = TRUE;
+
+		if($this->input->post('clienteid') == '')
+		{
+			$data['inputerror'][] = 'nombre';
+			$data['error_string'][] = 'Debe seleccionar un cliente para realizar la venta.';
+			$data['status'] = FALSE;
+		}
+
+		if($this->input->post('fechahoy') == '')
+		{
+			$data['inputerror'][] = 'Fecha';
+			$data['error_string'][] = 'Debe ingresar una fecha para la venta.';
+			$data['status'] = FALSE;
+		}
+
+		if($this->input->post('IdProducto') == '')
+		{
+			$data['inputerror'][] = 'Productos';
+			$data['error_string'][] = 'No hay productos cargados.';
+			$data['status'] = FALSE;
+		}
+
+		// if($this->input->post('monedaMonto') == 0)
+		// {
+		// 	$data['inputerror'][] = 'Moneda';
+		// 	$data['error_string'][] = 'El monto del pago no puede ser cero.';
+		// 	$data['status'] = FALSE;
+		// }
+
+		// if($this->input->post('Cantidad') <= 0)
+		// {
+		// 	$data['inputerror'][] = 'Cantidad';
+		// 	$data['error_string'][] = 'La cantidad no puede ser negativa o igual a cero.';
+		// 	$data['status'] = FALSE;
+		// }
+
+		if($data['status'] === FALSE)
+		{
+			echo json_encode($data);
+			exit();
+		}
+	}
+
 	public function insertar(){
+		$this->_validate();
 		$clienteId = $_POST['clienteid']; 
 		$fecha = $_POST['fechahoy'];
 		$IdProducto = $_POST['IdProducto'];
@@ -41,97 +91,22 @@ class Ventas extends CI_Controller {
 		$empleadoId =1;
 		$sucursalId=0;
 
-		//
 		$resultado = $this->Ventas_model->guardar($fecha,$total,$clienteId,$empleadoId,$sucursalId,$IdProducto,$PrecioVenta,$Cantidad,$moneda,$monedaMonto,$total,$vuelto);
 		
+		$data = array();
+		$data['error_string'] = array();
+		$data['inputerror'] = array();
+		$data['status'] = TRUE;
+
 
 		if($resultado){
-            $mensaje = "Venta registrada correctamente";
-			$clase = "success";			
+			$data['status'] = TRUE;	
         }else{
-            $mensaje = "Error al registrar la venta";
-			$clase = "danger";
-			$json['error'] = $this->upload->display_errors();
+			$data['status'] = FALSE;
         }
-        $this->session->set_flashdata(array(
-            "mensaje" => $mensaje,
-            "clase" => $clase,
-		));
-		
-		echo json_encode($this);
 
-		//$id = $this->Ventas_model->guardarCambios($fecha,$total,$clienteId,$empleadoId,$sucursalId);
+		echo json_encode($data);
 
-		//$id = $id;
-		
-		// if($id > 0)
-		// {
-		// 	for ($i=0; $i < count($IdProducto); $i++) 
-		// 	{   			
-		// 		$data[$i]['ventaId'] = $id;
-		// 		$data[$i]['productoId'] = $IdProducto[$i];			
-		// 		$data[$i]['Precio'] = $PrecioVenta[$i];
-		// 		$data[$i]['Cantidad'] = $Cantidad[$i];
-
-		// 		$this->productos_model->update_quantity($IdProducto[$i],$Cantidad[$i]);
-		// 	}
-
-
-		// 	$resultado = $this->Ventas_detalle_model->guardarCambios($data);
-
-		// 	if($resultado){
-
-		// 		for ($i=0; $i < count($moneda); $i++) 
-		// 		{   			
-		// 			$dataPago[$i]['ventaId'] = $id;
-		// 			$dataPago[$i]['tipo_monedaId'] = $moneda[$i];			
-		// 			$dataPago[$i]['monto'] = $monedaMonto[$i];
-		// 			$dataPago[$i]['fecha_pago'] = $fecha;
-
-		// 			if($moneda[$i]== 1 && $monedaMonto[$i]!=0 && $monedaMonto[$i]!=null){//si es efectivo solo puede dar vuelto
-		// 				$dataPago[$i]['vuelto']=$vuelto;
-		// 			}
-		// 			else{
-		// 				$dataPago[$i]['vuelto']=0;
-		// 			}
-					
-		// 		}
-		// 		if (count($dataPago)!=1 || (count($dataPago)==1 && $dataPago[0]['tipo_monedaId']=='1' && $dataPago[0]['monto']!=0))
-		// 		{
-		// 			$resultado = $this->Pagos_model->guardarCambios($dataPago);
-
-		// 			if($resultado){
-		// 				$mensaje = "Registro cargado correctamente";
-		// 				$clase = "success";			
-		// 			}else{
-		// 				$mensaje = "Error al registrar la venta";
-		// 				$clase = "danger";
-		// 				$json['error'] = $this->upload->display_errors();
-		// 			}
-		// 		}
-		// 		else{
-
-		// 			$mensaje = "Registro cargado correctamente";
-		// 			$clase = "success";	
-		// 		}
-		// 		$this->session->set_flashdata(array(
-		// 			"mensaje" => $mensaje,
-		// 			"clase" => $clase,
-		// 		));
-
-
-		// 	}
-		// }
-		// else{
-
-		// 	$mensaje = "Error al registrar la venta";
-		// 			$clase = "danger";
-		// 			$json['error'] = $this->upload->display_errors();
-		// }
-		// 		$this->session->set_flashdata(array(
-		// 			"mensaje" => $mensaje,
-		// 			"clase" => $clase,
-		// 		));
 	}
 
 
@@ -193,6 +168,12 @@ class Ventas extends CI_Controller {
 		$this->load->model("Ventas_model");		
 		$data = $this->Ventas_model->ventasProductosXFechas($fecha_desde,$fecha_hasta);		
 		echo json_encode($data);
+	}
+
+	public function ajax_delete($id)
+	{	
+		$this->Ventas_model->delete_by_masterid($id);		
+		echo json_encode(array("status" => TRUE));
 	}
 
 	public function createXLS() {

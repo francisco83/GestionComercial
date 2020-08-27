@@ -166,7 +166,7 @@
 				"<td class='r'>"+parseFloat(item.total)+"</td>"+				
 				"<td>"+
 				//"<a class='btn btn-sm btn-info' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+				
-				" <a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>"+
+				//" <a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>"+
 				" <a class='btn btn-sm btn-danger' onclick='javascript:borrar_Venta("+item.id+")'><i class='glyphicon glyphicon-trash'></i></a>"+				
 				" <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-print'></i></a>"+
 				"</td>"+
@@ -188,37 +188,37 @@
 }
 
 
-// function borrar_Servicio(id)
-// {
-//     if(confirm('¿Esta seguro que desea eliminar el registro?'))
-//     {
-//         $.ajax({
-//             url : Site+controller+"/ajax_delete/"+id,
-//             type: "POST",
-//             dataType: "JSON",
-//             success: function(data)
-//             {
-// 				Filtrar($('#clienteid').val());
-// 				$.notify({
-//                    title: '<strong>Correcto!</strong>',
-//                    message: 'El registro se elimino correctamente.'
-//                },{
-//                    type: 'success'
-//                });
-//             },
-//             error: function (jqXHR, textStatus, errorThrown)
-//             {
-// 				$.notify({
-//                    title: '<strong>Error!</strong>',
-//                    message: 'Se produjo un error al eliminar el registro.'
-//                },{
-//                    type: 'danger'
-//                });
-//             }
-//         });
+function borrar_Venta(id)
+{
+    if(confirm('¿Esta seguro que desea eliminar el registro?'))
+    {
+        $.ajax({
+            url : Site+controller+"/ajax_delete/"+id,
+            type: "POST",
+            dataType: "JSON",
+            success: function(data)
+            {
+				Filtrar($('#clienteid').val());
+				$.notify({
+                   title: '<strong>Correcto!</strong>',
+                   message: 'El registro se elimino correctamente.'
+               },{
+                   type: 'success'
+               });
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+				$.notify({
+                   title: '<strong>Error!</strong>',
+                   message: 'Se produjo un error al eliminar el registro.'
+               },{
+                   type: 'danger'
+               });
+            }
+        });
 
-//     }
-// }
+    }
+}
 
 
 function verDetalle(ventaId,valorBuscar,pagina,cantidad){
