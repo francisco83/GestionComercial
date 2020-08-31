@@ -2,6 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Proveedores extends CI_Controller {
+
+	var $empresaId;
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Proveedores_model");
@@ -11,6 +14,10 @@ class Proveedores extends CI_Controller {
 		{
 			redirect('Home', 'refresh');
 		}
+		else
+		{
+			$this->empresaId = $this->ion_auth->get_empresa_id();
+		}	
 	}
 
 	public function index(){
@@ -30,8 +37,8 @@ class Proveedores extends CI_Controller {
 		
 		$inicio = ($numeropagina -1)*$cantidad;
 		$data = array(
-			"Proveedores" => $this->Proveedores_model->buscar($buscar,$inicio,$cantidad),
-			"totalregistros" => count($this->Proveedores_model->buscar($buscar)),
+			"Proveedores" => $this->Proveedores_model->buscar($this->empresaId,$buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Proveedores_model->buscar($this->empresaId,$buscar)),
 			"cantidad" =>$cantidad
 			
 		);
@@ -56,7 +63,7 @@ class Proveedores extends CI_Controller {
 
 	function get_autocomplete(){
         if (isset($_GET['term'])) {
-            $result = $this->Proveedores_model->search_autocomplete($_GET['term']);
+            $result = $this->Proveedores_model->search_autocomplete($this->empresaId,$_GET['term']);
             if (count($result) > 0) {
 			foreach ($result as $row)	
 			{
@@ -80,7 +87,8 @@ class Proveedores extends CI_Controller {
 				'direccion' => $this->input->post('direccion'),
 				'telefono' => $this->input->post('telefono'),
 				'email' => $this->input->post('email'),	
-				'habilitado' =>1,							
+				'habilitado' => 1,	
+				'empresaId' => $this->empresaId						
 			);
 
 		$insert = $this->Proveedores_model->save($data);
@@ -145,7 +153,7 @@ class Proveedores extends CI_Controller {
 	public function createXLS() {
 
        $this->load->library('excel');
-       $empInfo = $this->Proveedores_model->get_all_export();
+       $empInfo = $this->Proveedores_model->get_all_export($this->empresaId);
        $objPHPExcel = new PHPExcel();
        $objPHPExcel->setActiveSheetIndex(0);
        // set Header

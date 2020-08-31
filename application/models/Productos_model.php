@@ -5,49 +5,56 @@ class Productos_model extends CI_Model {
 
 	var $table = 'productos';
 
-	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
+	public function buscar($empresaId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
-
 		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
 		$this->db->from('productos as e');
 		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
+		$this->db->where('e.empresaId',$empresaId);
+		$this->db->group_start();
 		$this->db->like('e.codigo', $buscar);
 		$this->db->or_like('e.nombre', $buscar);
 		$this->db->order_by('e.nombre', 'ASC');
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
-
+		$this->db->group_end();
 		$consulta = $this->db->get();
 
 		return $consulta->result();
 	}
 
-	public function get_all()
+	public function get_all($empresaId)
 	{
 		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
 		$this->db->from('productos as e');
 		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
+		$this->db->where('e.empresaId',$empresaId);
 		$this->db->order_by('e.nombre', 'ASC');
 		$consulta = $this->db->get();
 		return $consulta->result();
 	}
 
-	public function get_all_export() {
+	public function get_all_export($empresaId) {
 		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
 		$this->db->from('productos as e');
 		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
+		$this->db->where('e.empresaId',$empresaId);
 		$this->db->order_by('e.nombre', 'ASC');
 		$query = $this->db->get();
 		return $query->result_array();
 	 }
  
 
-	function search_autocomplete($title){		
+	function search_autocomplete($empresaId,$title){	
+		$this->db->where('habilitado', 1);	
+		$this->db->where('empresaId', $empresaId);	
+		$this->db->group_start();	
 		$this->db->like('codigo', $title);
         $this->db->or_like('nombre', $title);
         $this->db->order_by('nombre', 'ASC');
-        $this->db->limit(10);
+		$this->db->limit(10);
+		$this->db->group_end();
         return $this->db->get($this->table)->result();
 	}
 	
@@ -116,11 +123,12 @@ class Productos_model extends CI_Model {
 
 	}
 
-	public function get_all_by_categoria($categoria)
+	public function get_all_by_categoria($empresaId,$categoria)
 	{
 		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
 		$this->db->from('productos as e');
 		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
+		$this->db->where('empresaId', $empresaId);	
 		$this->db->where("e.tipo_categoria_id =",$categoria);
 		$this->db->or_where('"-1" =', $categoria); 
 		$this->db->order_by('e.nombre', 'ASC');
@@ -130,11 +138,12 @@ class Productos_model extends CI_Model {
 	}
 
 
-	public function productosXCategoriaResult($categoria)
+	public function productosXCategoriaResult($empresaId,$categoria)
 	{
 		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
 		$this->db->from('productos as e');
 		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
+		$this->db->where('empresaId', $empresaId);	
 		$this->db->where("e.tipo_categoria_id =",$categoria);
 		$this->db->or_where('"-1" =', $categoria); 
 		$this->db->order_by('e.nombre', 'ASC');
@@ -143,11 +152,12 @@ class Productos_model extends CI_Model {
 
 	}
 
-	public function buscarDetalleHistorico($IdProducto)
+	public function buscarDetalleHistorico($empresaId,$IdProducto)
 	{
 		$this->db->select(array('e.id', 'e.nombre', 'h.fecha','h.precioventaanterior','h.precioventanuevo','h.preciocompraanterior','h.preciocompranuevo'));
 		$this->db->from('productos as e');
 		$this->db->join('precio_productos_h as h','e.id=h.idproducto');
+		$this->db->where('empresaId', $empresaId);
 		$this->db->where("e.id =",$IdProducto);
 		$this->db->order_by('h.fecha', 'DESC');
 		$query = $this->db->get();

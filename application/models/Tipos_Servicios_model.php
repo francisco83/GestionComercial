@@ -5,9 +5,12 @@ class Tipos_Servicios_model extends CI_Model {
 
 	var $table = 'tipos_servicios';
 
-	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
+	public function buscar($empresaId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
+		$this->db->where('empresaId',$empresaId);
+		$this->db->group_start();
 		$this->db->like("nombre",$buscar);
+		$this->db->group_end();
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
@@ -15,22 +18,27 @@ class Tipos_Servicios_model extends CI_Model {
 		return $consulta->result();
 	}
 
-	public function get_all()
+	public function get_all($empresaId)
 	{
+		$this->db->where('empresaId',$empresaId);
 		$consulta = $this->db->get($this->table);
 		return $consulta->result();
 	}
 
-	public function get_all_export() {
+	public function get_all_export($empresaId) {
 		$this->db->select(array('e.id', 'e.nombre', 'e.descripcion', 'e.precio'));
 		$this->db->from('tipos_servicios as e');
+		$this->db->where('empresaId',$empresaId);
 		$query = $this->db->get();
 		return $query->result_array();
 	 }
  
 
-	function search_autocomplete($title){
-        $this->db->like('nombre', $title);
+	function search_autocomplete($empresaId,$title){
+		$this->db->where('empresaId',$empresaId);
+		$this->db->group_start();
+		$this->db->like('nombre', $title);
+		$this->db->group_end();
         $this->db->order_by('nombre', 'ASC');
         $this->db->limit(10);
         return $this->db->get($this->table)->result();
@@ -82,12 +90,13 @@ class Tipos_Servicios_model extends CI_Model {
 	}
 
 
-	public function buscarDetalleHistorico($IdServicio)
+	public function buscarDetalleHistorico($empresaId,$IdServicio)
 	{
 		$this->db->select(array('e.id', 'e.nombre', 'h.fecha','h.precioanterior','h.precionuevo'));
 		$this->db->from('tipos_servicios as e');
 		$this->db->join('precio_servicios_h as h','e.id=h.idservicio');
 		$this->db->where("e.id =",$IdServicio);
+		$this->db->where('e.empresaId',$empresaId);
 		$this->db->order_by('h.fecha', 'DESC');
 		$query = $this->db->get();
 		return $query->result();

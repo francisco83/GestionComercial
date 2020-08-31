@@ -2,6 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ventas extends CI_Controller {
+
+	var $empresaId;		
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Ventas_model");
@@ -14,6 +17,10 @@ class Ventas extends CI_Controller {
 		{
 			redirect('auth', 'refresh');
 		}
+		else
+		{
+			$this->empresaId = $this->ion_auth->get_empresa_id();
+		}	
 	}
 
 	public function index(){
@@ -91,7 +98,7 @@ class Ventas extends CI_Controller {
 		$empleadoId =1;
 		$sucursalId=0;
 
-		$resultado = $this->Ventas_model->guardar($fecha,$total,$clienteId,$empleadoId,$sucursalId,$IdProducto,$PrecioVenta,$Cantidad,$moneda,$monedaMonto,$total,$vuelto);
+		$resultado = $this->Ventas_model->guardar($this->empresaId,$fecha,$total,$clienteId,$empleadoId,$sucursalId,$IdProducto,$PrecioVenta,$Cantidad,$moneda,$monedaMonto,$total,$vuelto);
 		
 		$data = array();
 		$data['error_string'] = array();
@@ -119,8 +126,8 @@ class Ventas extends CI_Controller {
 		
 		$inicio = ($numeropagina -1)*$cantidad;
 		$data = array(
-			"cli_ventas" => $this->Ventas_model->buscarXcliente($clienteId,$buscar,$inicio,$cantidad),
-			"totalregistros" => count($this->Ventas_model->buscarXcliente($clienteId,$buscar)),
+			"cli_ventas" => $this->Ventas_model->buscarXcliente($this->empresaId,$clienteId,$buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Ventas_model->buscarXcliente($this->empresaId,$clienteId,$buscar)),
 			"cantidad" =>$cantidad
 			
 		);
@@ -157,7 +164,7 @@ class Ventas extends CI_Controller {
 		$fecha_desde = $_POST['fecha_desde']; 
 		$fecha_hasta = $_POST['fecha_hasta'];
 		$this->load->model("Ventas_model");		
-		$data = $this->Ventas_model->ventasXFechas($fecha_desde,$fecha_hasta);		
+		$data = $this->Ventas_model->ventasXFechas($this->empresaId,$fecha_desde,$fecha_hasta);		
 		echo json_encode($data);
 	}
 
@@ -166,7 +173,7 @@ class Ventas extends CI_Controller {
 		$fecha_desde = $_POST['fecha_desde']; 
 		$fecha_hasta = $_POST['fecha_hasta'];
 		$this->load->model("Ventas_model");		
-		$data = $this->Ventas_model->ventasProductosXFechas($fecha_desde,$fecha_hasta);		
+		$data = $this->Ventas_model->ventasProductosXFechas($this->empresaId,$fecha_desde,$fecha_hasta);		
 		echo json_encode($data);
 	}
 
@@ -182,7 +189,7 @@ class Ventas extends CI_Controller {
 		$fecha_desde = $_GET['fecha_desde']; 
 		$fecha_hasta = $_GET['fecha_hasta'];
 
-		$empInfo = $this->Ventas_model->get_all_export_by_date($fecha_desde,$fecha_hasta);
+		$empInfo = $this->Ventas_model->get_all_export_by_date($this->empresaId,$fecha_desde,$fecha_hasta);
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->setActiveSheetIndex(0);
 		// set Header
@@ -223,7 +230,7 @@ class Ventas extends CI_Controller {
 		$fecha_desde = $_GET['fecha_desde']; 
 		$fecha_hasta = $_GET['fecha_hasta'];
 
-		$empInfo = $this->Ventas_model->get_all_ventasproductos_export_by_date($fecha_desde,$fecha_hasta);
+		$empInfo = $this->Ventas_model->get_all_ventasproductos_export_by_date($this->empresaId,$fecha_desde,$fecha_hasta);
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->setActiveSheetIndex(0);
 		// set Header

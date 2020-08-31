@@ -2,6 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Categorias_Productos extends CI_Controller {
+
+	var $empresaId;	
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Categorias_Productos_model");
@@ -11,6 +14,10 @@ class Categorias_Productos extends CI_Controller {
 		{
 			redirect('Home', 'refresh');
 		}
+		else
+		{
+			$this->empresaId = $this->ion_auth->get_empresa_id();
+		}	
 	}
 
 	public function index(){
@@ -23,7 +30,7 @@ class Categorias_Productos extends CI_Controller {
 	}
 
 	public function get_all_array(){
-		$resultado = $this->Categorias_Productos_model->get_all_array();		
+		$resultado = $this->Categorias_Productos_model->get_all_array($this->empresaId);		
 		echo json_encode($resultado);
 	}
 
@@ -35,8 +42,8 @@ class Categorias_Productos extends CI_Controller {
 		
 		$inicio = ($numeropagina -1)*$cantidad;
 		$data = array(
-			"categorias_productos" => $this->Categorias_Productos_model->buscar($buscar,$inicio,$cantidad),
-			"totalregistros" => count($this->Categorias_Productos_model->buscar($buscar)),
+			"categorias_productos" => $this->Categorias_Productos_model->buscar($this->empresaId,$buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Categorias_Productos_model->buscar($this->empresaId,$buscar)),
 			"cantidad" =>$cantidad
 			
 		);
@@ -60,7 +67,7 @@ class Categorias_Productos extends CI_Controller {
 
 	function get_autocomplete(){
         if (isset($_GET['term'])) {
-            $result = $this->Categorias_Productos_model->search_autocomplete($_GET['term']);
+            $result = $this->Categorias_Productos_model->search_autocomplete($this->empresaId,$_GET['term']);
             if (count($result) > 0) {
 			foreach ($result as $row)	
 			{
@@ -79,7 +86,8 @@ class Categorias_Productos extends CI_Controller {
 		$this->_validate();		
 		$data = array(
 				'nombre' => $this->input->post('nombre'),
-				'descripcion' => $this->input->post('descripcion')
+				'descripcion' => $this->input->post('descripcion'),
+				'empresaId'=> $this->empresaId
 			);
 
 		$insert = $this->Categorias_Productos_model->save($data);
@@ -140,7 +148,7 @@ class Categorias_Productos extends CI_Controller {
 	public function createXLS() {
 
        $this->load->library('excel');
-       $empInfo = $this->Categorias_Productos_model->get_all_export();
+       $empInfo = $this->Categorias_Productos_model->get_all_export($this->empresaId);
        $objPHPExcel = new PHPExcel();
        $objPHPExcel->setActiveSheetIndex(0);
        // set Header

@@ -5,10 +5,13 @@ class Proveedores_model extends CI_Model {
 
 	var $table = 'proveedores';
 
-	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
+	public function buscar($empresaId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
+		$this->db->where('empresaId',$empresaId);
+		$this->db->group_start();
 		$this->db->like('nombre', $buscar);
-        $this->db->or_like('nombre_contacto', $buscar);
+		$this->db->or_like('nombre_contacto', $buscar);		
+		$this->db->group_end();
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
@@ -16,25 +19,30 @@ class Proveedores_model extends CI_Model {
 		return $consulta->result();
 	}
 
-	public function get_all()
+	public function get_all($empresaId)
 	{
+		$this->db->where('empresaId',$empresaId);
 		$consulta = $this->db->get($this->table);
 		return $consulta->result();
 	}
 
-	public function get_all_export() {
+	public function get_all_export($empresaId) {
 		$this->db->select(array('e.id', 'e.nombre', 'e.nombre_contacto', 'e.cuit','e.direccion','e.telefono','e.email'));
 		$this->db->from('proveedores as e');
+		$this->db->where('empresaId',$empresaId);
 		$query = $this->db->get();
 		return $query->result_array();
 	 }
  
 
-	function search_autocomplete($title){		
+	function search_autocomplete($empresaId,$title){	
+		$this->db->where('empresaId',$empresaId);	
+		$this->db->group_start();
 		$this->db->like('nombre', $title);
         $this->db->or_like('nombre_contacto', $title);
         $this->db->order_by('nombre', 'ASC');
-        $this->db->limit(10);
+		$this->db->limit(10);
+		$this->db->group_end();
         return $this->db->get($this->table)->result();
 	}
 	

@@ -30,9 +30,9 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Apellido</th>
 										<th>Nombre</th>
-										<th>DNI</th>
+										<th>Apellido</th>										
+										<th>DNI/CUIT</th>
 										<th>Email</th>
 										<th>Telefono</th>
 										<th>Habilitado</th>
@@ -82,8 +82,8 @@ function mostrarDatos(valorBuscar,pagina,cantidad){
 					habilitado ='NO';
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
-				"<td>"+item.apellido+"</td>"+
 				"<td>"+item.nombre+"</td>"+
+				"<td>"+item.apellido+"</td>"+
 				"<td class='r'>"+item.dni+"</td>"+
 				"<td>"+item.email+"</td>"+
 				"<td class='r'>"+item.telefono+"</td>"+
@@ -124,6 +124,7 @@ function add()
     $('#modal_form').modal('show'); 
     $('.modal-title').text('Agregar Clientes');
 	$('.modal-backdrop').remove();
+	cargar_provincias(0);
 }
 
 
@@ -147,9 +148,11 @@ function edit(id)
 			$('[name="dni"]').val(data.dni);
 			$('[name="email"]').val(data.email);
 			$('[name="telefono"]').val(data.telefono);			
+			$('[name="direccion"]').val(data.direccion);			
             $('#modal_form').modal('show');
             $('.modal-title').text('Editar Cliente');
 			$('.modal-backdrop').remove();
+			cargar_provincias(data.provinciaId);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {

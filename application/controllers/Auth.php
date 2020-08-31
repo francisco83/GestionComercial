@@ -621,6 +621,7 @@ class Auth extends CI_Controller
 		$this->form_validation->set_rules('last_name', $this->lang->line('edit_user_validation_lname_label'), 'trim|required');
 		$this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'trim');
 		$this->form_validation->set_rules('company', $this->lang->line('edit_user_validation_company_label'), 'trim');
+		$this->form_validation->set_rules('email', $this->lang->line('edit_user_validation_email_label'), 'trim');
 
 		if (isset($_POST) && !empty($_POST))
 		{
@@ -644,6 +645,7 @@ class Auth extends CI_Controller
 					'last_name' => $this->input->post('last_name'),
 					'company' => $this->input->post('company'),
 					'phone' => $this->input->post('phone'),
+					'email' => $this->input->post('email'),
 				];
 
 				// update the password if it was posted
@@ -728,6 +730,13 @@ class Auth extends CI_Controller
 			'type'  => 'text',
 			'class'=>'form-control',
 			'value' => $this->form_validation->set_value('phone', $user->phone),
+		];
+		$this->data['email'] = [
+			'name'  => 'email',
+			'id'    => 'email',
+			'type'  => 'text',
+			'class'=>'form-control',
+			'value' => $this->form_validation->set_value('email', $user->email),
 		];
 		$this->data['password'] = [
 			'name' => 'password',

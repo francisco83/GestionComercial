@@ -2,6 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Reportes extends CI_Controller {
+
+	var $empresaId;	
+
 	public function __construct(){
 		parent::__construct();			
 		$this->load->library(['ion_auth', 'form_validation']);
@@ -10,6 +13,10 @@ class Reportes extends CI_Controller {
 		{
 			redirect('auth', 'refresh');
 		}
+		else
+		{
+			$this->empresaId = $this->ion_auth->get_empresa_id();
+		}	
 	}
 
 
@@ -30,7 +37,7 @@ class Reportes extends CI_Controller {
 	public function clientes(){
 		$this->load->model("Clientes_model");
 		$this->load->view("partial/cabecera_reporte");		
-		$data['filas'] = $this->Clientes_model->get_all();		
+		$data['filas'] = $this->Clientes_model->get_all($this->empresaId);		
 		$this->load->view("Reportes/clientes",$data);
 	}
 
@@ -72,21 +79,21 @@ class Reportes extends CI_Controller {
 	public function productos(){
 		$this->load->model("Productos_model");
 		$this->load->view("partial/cabecera_reporte");		
-		$data['filas'] = $this->Productos_model->get_all();		
+		$data['filas'] = $this->Productos_model->get_all($this->empresaId);		
 		$this->load->view("Reportes/productos",$data);
 	}
 
 	public function proveedores(){
 		$this->load->model("Proveedores_model");
 		$this->load->view("partial/cabecera_reporte");		
-		$data['filas'] = $this->Proveedores_model->get_all();		
+		$data['filas'] = $this->Proveedores_model->get_all($this->empresaId);		
 		$this->load->view("Reportes/proveedores",$data);
 	}
 
 	public function tipos_servicios(){
 		$this->load->model("Tipos_Servicios_model");
 		$this->load->view("partial/cabecera_reporte");		
-		$data['tipos_servicios'] = $this->Tipos_Servicios_model->get_all();		
+		$data['tipos_servicios'] = $this->Tipos_Servicios_model->get_all($this->empresaId);		
 		$this->load->view("Reportes/tipos_servicios",$data);
 	}
 
@@ -128,7 +135,7 @@ class Reportes extends CI_Controller {
 	public function categorias_productos(){
 		$this->load->model("Categorias_Productos_model");
 		$this->load->view("partial/cabecera_reporte");		
-		$data['categorias_productos'] = $this->Categorias_Productos_model->get_all();		
+		$data['categorias_productos'] = $this->Categorias_Productos_model->get_all($this->empresaId);		
 		$this->load->view("Reportes/categorias_productos",$data);
 	}
 
@@ -146,7 +153,7 @@ class Reportes extends CI_Controller {
 		$fecha_hasta = $_GET['fecha_hasta'];
 		$this->load->view("partial/cabecera_reporte");	
 		$this->load->model("Ventas_model");		
-		$data['filas'] = $this->Ventas_model->ventasXFechasResult($fecha_desde,$fecha_hasta);
+		$data['filas'] = $this->Ventas_model->ventasXFechasResult($this->empresaId,$fecha_desde,$fecha_hasta);
 		$this->load->view("Reportes/ventas_print",$data);
 	}
 
@@ -156,7 +163,7 @@ class Reportes extends CI_Controller {
 		$fecha_hasta = $_GET['fecha_hasta'];
 		$this->load->view("partial/cabecera_reporte");	
 		$this->load->model("Ventas_model");		
-		$data['filas'] = $this->Ventas_model->ventasProductosXFechasResult($fecha_desde,$fecha_hasta);
+		$data['filas'] = $this->Ventas_model->ventasProductosXFechasResult($this->empresaId,$fecha_desde,$fecha_hasta);
 		$this->load->view("Reportes/ventasxproductos_print",$data);
 	}
 

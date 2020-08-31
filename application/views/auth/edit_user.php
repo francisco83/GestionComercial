@@ -29,7 +29,12 @@
                   <div class="form-group">
                         <?php echo lang('edit_user_phone_label', 'phone');?> <br />
                         <?php echo form_input($phone);?>
-                  </div>
+			</div>
+			
+                  <div class="form-group">
+                        <?php echo lang('edit_user_email_label', 'email');?> <br />
+                        <?php echo form_input($email);?>
+			</div>
 
                   <div class="form-group">
                         <?php echo lang('edit_user_password_label', 'password');?> <br />

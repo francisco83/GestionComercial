@@ -15,8 +15,8 @@
 	    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      		<ul class="nav navbar-nav">	        					
 				  	<li><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
-					<!-- <li><a href="<?php echo base_url();?>productos">Productos</a></li>	
-					<li><a href="<?php echo base_url();?>proveedores">Proveedores</a></li>	 -->
+					<li><a href="<?php echo base_url();?>productos">Productos</a></li>	
+					<li><a href="<?php echo base_url();?>proveedores">Proveedores</a></li>	
 					<li><a href="<?php echo base_url();?>registrar/ver">Ver servicios <span class="sr-only">(current)</span></a></li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,17 +28,6 @@
 							<li><a href="<?php echo base_url();?>ventas\ver">Ver por cliente <span class="sr-only">(current)</span></a></li>
 						</ul>
 					</li>
-					<!-- <li class="dropdown">
-						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon"></i> Cocheras
-						<span class="caret"></span>
-						</a>						
-						<ul class="dropdown-menu">					
-							<li><a href="<?php echo base_url();?>cocheras"> Adm. Cocheras <span class="sr-only">(current)</span></a></li>
-							<li><a href="<?php echo base_url();?>tipos_cocheras"> Tipos Cocheras <span class="sr-only">(current)</span></a></li>
-							<li><a href="<?php echo base_url();?>cocheras\asignar"> Asignar Cliente <span class="sr-only">(current)</span></a></li>
-						</ul>
-					</li> -->
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="glyphicon glyphicon-list-alt"></i> Reportes
@@ -48,6 +37,18 @@
 							<li><a href="<?php echo base_url();?>reportes\ventas"> Ventas <span class="sr-only">(current)</span></a></li>
 							<li><a href="<?php echo base_url();?>reportes\ventasxproductos"> Ventas por productos<span class="sr-only">(current)</span></a></li>
 							<li><a href="<?php echo base_url();?>reportes\productos_filtros"> Productos <span class="sr-only">(current)</span></a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-cog"></i> Configuración
+						<span class="caret"></span>
+						</a>						
+						<ul class="dropdown-menu">					
+							<li><a href="<?php echo base_url();?>tipos_servicios">Tipos de Servicios <span class="sr-only">(current)</span></a></li>					
+							<li><a href="<?php echo base_url();?>tipos_pagos">Tipos de Pagos <span class="sr-only">(current)</span></a></li>					
+							<li><a href="<?php echo base_url();?>tipos_monedas">Tipos de Monedas <span class="sr-only">(current)</span></a></li>					
+							<li><a href="<?php echo base_url();?>categorias_productos">Categorias de Productos <span class="sr-only">(current)</span></a></li>												
 						</ul>
 					</li>
 

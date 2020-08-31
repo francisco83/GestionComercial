@@ -14,6 +14,8 @@
                                         <td class="padding0"><strong>DNI</strong></td>                                        
                                         <td class="padding0"><strong>Teléfono</strong></td>
                                         <td class="padding0"><strong>Email</strong></td>
+                                        <td class="padding0"><strong>Provincia</strong></td>
+                                        <td class="padding0"><strong>Dirección</strong></td>
                                     </tr>                                                    
                                     <?php foreach ($filas as $fila): ?>
                                     <tr>
@@ -23,6 +25,8 @@
                                         <td class="r"><?= $fila->dni ?></td>                                        
                                         <td class="r"><?= $fila->telefono ?></td>
                                         <td><?= $fila->email ?></td>
+                                        <td><?= $fila->nombre_provincia ?></td>
+                                        <td><?= $fila->direccion ?></td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>

@@ -2,6 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Productos extends CI_Controller {
+
+	var $empresaId;	
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Productos_model");
@@ -11,6 +14,10 @@ class Productos extends CI_Controller {
 		{
 			redirect('Home', 'refresh');
 		}
+		else
+		{
+			$this->empresaId = $this->ion_auth->get_empresa_id();
+		}	
 	}
 
 	public function index(){
@@ -30,8 +37,8 @@ class Productos extends CI_Controller {
 		
 		$inicio = ($numeropagina -1)*$cantidad;
 		$data = array(
-			"Productos" => $this->Productos_model->buscar($buscar,$inicio,$cantidad),
-			"totalregistros" => count($this->Productos_model->buscar($buscar)),
+			"Productos" => $this->Productos_model->buscar($this->empresaId,$buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Productos_model->buscar($this->empresaId,$buscar)),
 			"cantidad" =>$cantidad
 			
 		);
@@ -56,7 +63,7 @@ class Productos extends CI_Controller {
 
 	function get_autocomplete(){
         if (isset($_GET['term'])) {
-            $result = $this->Productos_model->search_autocomplete($_GET['term']);
+            $result = $this->Productos_model->search_autocomplete($this->empresaId,$_GET['term']);
             if (count($result) > 0) {
 			foreach ($result as $row)	
 			{
@@ -84,6 +91,7 @@ class Productos extends CI_Controller {
 				'precioVenta' => $this->input->post('precioVenta'),
 				'precioCompra' => $this->input->post('precioCompra'),				
 				'existencia' => $this->input->post('existencia'),
+				'empresaId' =>$this->empresaId,
 			);
 
 		$insert = $this->Productos_model->save($data);
@@ -158,7 +166,7 @@ class Productos extends CI_Controller {
 	{		
 		$categoria = $_POST['categoria']; 
 		$this->load->model("Productos_model");		
-		$data = $this->Productos_model->get_all_by_categoria($categoria);		
+		$data = $this->Productos_model->get_all_by_categoria($this->empresaId,$categoria);		
 		echo json_encode($data);
 	}
 
@@ -166,7 +174,7 @@ class Productos extends CI_Controller {
 	{
 		$IdProducto = $this->input->post("IdProducto");
 		$this->load->model("Productos_model");		
-		$data = $this->Productos_model->buscarDetalleHistorico($IdProducto);		
+		$data = $this->Productos_model->buscarDetalleHistorico($this->empresaId,$IdProducto);		
 		echo json_encode($data);	
 
 	}
@@ -175,7 +183,7 @@ class Productos extends CI_Controller {
 
 	   $this->load->library('excel');
 
-       $empInfo = $this->Productos_model->get_all_export();
+       $empInfo = $this->Productos_model->get_all_export($this->empresaId);
 	          
        $objPHPExcel = new PHPExcel();
        $objPHPExcel->setActiveSheetIndex(0);

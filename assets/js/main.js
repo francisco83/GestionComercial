@@ -321,3 +321,37 @@ $(function () {
 		} 
 	});
   });
+
+
+
+function cargar_provincias(id){
+	
+	var combo_provincias='';
+		 
+	$.ajax({		
+		url : Site+"Provincias/get_all_array/",
+		type: "POST",
+		dataType:"json",
+		success:function(response){
+			combo_provincias = "<option value='-1'>Seleccione una Provincia...</option>";	
+			$.each(response,function(key,item){
+				if(id != 0 && item.Id == id){
+					combo_provincias+="<option value='"+item.Id+"' selected>"+item.nombre+"</option>";					
+				}
+				else{
+					combo_provincias+="<option value='"+item.Id+"'>"+item.nombre+"</option>";
+				}
+			});		
+			$("#provinciaId").html(combo_provincias);
+		},
+		error: function (jqXHR, textStatus, errorThrown)
+		{
+			$.notify({
+					title: '<strong>Atención!</strong>',
+					message: 'Se produjo un error al cargar las provincias'
+				},{
+					type: 'danger'
+				});
+		}
+	});
+}

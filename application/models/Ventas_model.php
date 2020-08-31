@@ -19,13 +19,14 @@ class Ventas_model extends CI_Model {
 		return $this->db->insert_id();		
 	}
 
-	public function guardar($fecha,$total,$clienteId,$empleadoId,$sucursalId,$IdProducto,$PrecioVenta,$Cantidad,$moneda,$monedaMonto,$vuelto)
+	public function guardar($empresaId,$fecha,$total,$clienteId,$empleadoId,$sucursalId,$IdProducto,$PrecioVenta,$Cantidad,$moneda,$monedaMonto,$vuelto)
 	{
 		$this->fecha = $fecha;
 		$this->total= $total;
 		$this->clienteId = $clienteId;
 		$this->empleadoId =$empleadoId;
 		$this->sucursalId =$sucursalId;
+		$this->empresaId = $empresaId;
 
 		$this->db->trans_begin();
 
@@ -53,6 +54,7 @@ class Ventas_model extends CI_Model {
 				$dataPago[$i]['tipo_monedaId'] = $moneda[$i];			
 				$dataPago[$i]['monto'] = $monedaMonto[$i];
 				$dataPago[$i]['fecha_pago'] = $fecha;
+				$dataPago[$i]['empresaId'] = $empresaId;
 
 				if($moneda[$i]== 1 && $monedaMonto[$i]!=0 && $monedaMonto[$i]!=null){//si es efectivo solo puede dar vuelto
 					$dataPago[$i]['vuelto']=$vuelto;
@@ -81,9 +83,12 @@ class Ventas_model extends CI_Model {
 		}
 	}
 
-	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
+	public function buscar($empresaId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
+		$this->db->where('empresaId',$empresaId);
+		$this->db->group_start();
 		$this->db->like("fecha",$buscar);
+		$this->db->group_end();
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
@@ -91,15 +96,17 @@ class Ventas_model extends CI_Model {
 		return $consulta->result();
 	}
 
-	public function get_all()
+	public function get_all($empresaId)
 	{
+		$this->db->where('empresaId',$empresaId);
 		$consulta = $this->db->get('ventas');
 		return $consulta->result();
 	}
 
-	public function get_all_export() {
+	public function get_all_export($empresaId) {
 		$this->db->select(array('e.id', 'e.fecha', 'e.total'));
 		$this->db->from('ventas as e');
+		$this->db->where('e.empresaId',$empresaId);
 		$query = $this->db->get();
 		return $query->result_array();
 	 }
@@ -190,8 +197,9 @@ class Ventas_model extends CI_Model {
 	}
 
 
-	public function buscarXcliente($clienteId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
-	{
+	public function buscarXcliente($empresaId,$clienteId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
+	{		
+		$this->db->where("empresaId",$empresaId);
 		$this->db->where("clienteId",$clienteId);
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 		 	$this->db->limit($cantidadregistro,$inicio);
@@ -216,13 +224,14 @@ class Ventas_model extends CI_Model {
 	// }
 
 
-	public function detalleCtaCteVentaxCliente($clienteId)
+	public function detalleCtaCteVentaxCliente($empresaId,$clienteId)
 	{	
 		$this->db->select('ventas.id as codigo_venta,ventas.fecha as fecha_venta,ventas.total as total,IFNULL(sum(pagos.vuelto),0) as vuelto,IFNULL(sum(pagos.monto),0) as monto,clientes.Id as clienteId,clientes.nombre,clientes.apellido');
 		$this->db->from('ventas');
 		$this->db->join('pagos','ventas.id=pagos.ventaId','left');
 		$this->db->join('clientes','clientes.id=ventas.clienteId');
 		$this->db->where("ventas.clienteId",$clienteId);
+		$this->db->where('ventas.empresaId',$empresaId);
 		$this->db->group_by(array("ventas.id", "ventas.fecha")); 
 		$this->db->order_by("ventas.Id,ventas.fecha","desc");
 
@@ -230,7 +239,7 @@ class Ventas_model extends CI_Model {
 		return $consulta->result();
 	}
 
-	public function ventasXFechas($fecha_desde,$fecha_hasta)
+	public function ventasXFechas($empresaId,$fecha_desde,$fecha_hasta)
 	{
 		$this->db->select(array('e.id', 'e.fecha', 'e.total','clientes.Id as clienteId','clientes.nombre','clientes.apellido','IFNULL(sum(pagos.monto),0) as monto','IFNULL(sum(pagos.vuelto),0) as vuelto'));
 		$this->db->from('ventas as e');
@@ -238,13 +247,14 @@ class Ventas_model extends CI_Model {
 		$this->db->join('clientes','clientes.id=e.clienteId');
 		$this->db->where("e.fecha >=",$fecha_desde);
 		$this->db->where("e.fecha <=",$fecha_hasta);
+		$this->db->where('e.empresaId',$empresaId);
 		$this->db->group_by(array("e.id", "e.fecha")); 
 		$query = $this->db->get();
 		return $query->result_array();
 
 	}
 
-	public function ventasXFechasResult($fecha_desde,$fecha_hasta)
+	public function ventasXFechasResult($empresaId,$fecha_desde,$fecha_hasta)
 	{
 		$this->db->select(array('e.id', 'e.fecha', 'e.total','clientes.Id as clienteId','clientes.nombre','clientes.apellido','IFNULL(sum(pagos.monto),0) as monto','IFNULL(sum(pagos.vuelto),0) as vuelto'));
 		$this->db->from('ventas as e');
@@ -252,26 +262,28 @@ class Ventas_model extends CI_Model {
 		$this->db->join('clientes','clientes.id=e.clienteId');
 		$this->db->where("e.fecha >=",$fecha_desde);
 		$this->db->where("e.fecha <=",$fecha_hasta);
+		$this->db->where('e.empresaId',$empresaId);
 		$this->db->group_by(array("e.id", "e.fecha")); 
 		$query = $this->db->get();
 		return $query->result();
 
 	}
 
-	public function get_all_export_by_date($fecha_desde,$fecha_hasta) {
+	public function get_all_export_by_date($empresaId,$fecha_desde,$fecha_hasta) {
 		$this->db->select(array('e.id', 'e.fecha', 'e.total','clientes.Id as clienteId','clientes.nombre','clientes.apellido','IFNULL(sum(pagos.monto),0) as monto','IFNULL(sum(pagos.vuelto),0) as vuelto'));
 		$this->db->from('ventas as e');
 		$this->db->join('pagos','e.id=pagos.ventaId','left');
 		$this->db->join('clientes','clientes.id=e.clienteId');
 		$this->db->where("e.fecha >=",$fecha_desde);
 		$this->db->where("e.fecha <=",$fecha_hasta);
+		$this->db->where('e.empresaId',$empresaId);
 		$this->db->group_by(array("e.id", "e.fecha")); 
 		$query = $this->db->get();
 		return $query->result_array();
 	 }
 
 
-	public function ventasProductosXFechas($fecha_desde,$fecha_hasta)
+	public function ventasProductosXFechas($empresaId,$fecha_desde,$fecha_hasta)
 	{
 		$this->db->select(array('v.fecha','max(p.codigo) as codigoproducto','p.nombre','sum(vd.cantidad) as cantidad','(precioVenta)*sum(vd.cantidad)  as precioventa','(precioCompra)*sum(vd.cantidad) as preciocompra','((precioVenta)*sum(vd.cantidad))-((precioCompra)*sum(vd.cantidad)) as diferencia'));
 		$this->db->from('ventas as v');
@@ -279,12 +291,13 @@ class Ventas_model extends CI_Model {
 		$this->db->join('productos as p','vd.productoid = p.id','left');
 		$this->db->where("v.fecha >=",$fecha_desde);
 		$this->db->where("v.fecha <=",$fecha_hasta);
+		$this->db->where('v.empresaId',$empresaId);
 		$this->db->group_by(array("v.fecha","vd.productoid")); 
 		$query = $this->db->get();
 		return $query->result_array();
 	}
 
-	public function ventasProductosXFechasResult($fecha_desde,$fecha_hasta)
+	public function ventasProductosXFechasResult($empresaId,$fecha_desde,$fecha_hasta)
 	{
 		$this->db->select(array('v.fecha','max(p.codigo) as codigoproducto','p.nombre','sum(vd.cantidad) as cantidad','(precioVenta)*sum(vd.cantidad)  as precioventa','(precioCompra)*sum(vd.cantidad) as preciocompra','((precioVenta)*sum(vd.cantidad))-((precioCompra)*sum(vd.cantidad)) as diferencia'));	
 		$this->db->from('ventas as v');
@@ -292,18 +305,20 @@ class Ventas_model extends CI_Model {
 		$this->db->join('productos as p','vd.productoid = p.id','left');
 		$this->db->where("v.fecha >=",$fecha_desde);
 		$this->db->where("v.fecha <=",$fecha_hasta);
+		$this->db->where('v.empresaId',$empresaId);
 		$this->db->group_by(array("v.fecha","vd.productoid")); 
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	public function get_all_ventasproductos_export_by_date($fecha_desde,$fecha_hasta) {
+	public function get_all_ventasproductos_export_by_date($empresaId,$fecha_desde,$fecha_hasta) {
 		$this->db->select(array('v.fecha','max(p.codigo) as codigoproducto','p.nombre','sum(vd.cantidad) as cantidad','(precioVenta)*sum(vd.cantidad)  as precioventa','(precioCompra)*sum(vd.cantidad) as preciocompra','((precioVenta)*sum(vd.cantidad))-((precioCompra)*sum(vd.cantidad)) as diferencia'));
 		$this->db->from('ventas as v');
 		$this->db->join('ventas_detalle as vd','vd.ventaId = v.id');
 		$this->db->join('productos as p','vd.productoid = p.id','left');
 		$this->db->where("v.fecha >=",$fecha_desde);
 		$this->db->where("v.fecha <=",$fecha_hasta);
+		$this->db->where('v.empresaId',$empresaId);
 		$this->db->group_by(array("v.fecha","vd.productoid")); 
 		$query = $this->db->get();
 		return $query->result_array();

@@ -5,9 +5,12 @@ class Categorias_Productos_model extends CI_Model {
 
 	var $table = 'categorias_productos';
 
-	public function buscar($buscar,$inicio = FALSE, $cantidadregistro = FALSE)
+	public function buscar($empresaId,$buscar,$inicio = FALSE, $cantidadregistro = FALSE)
 	{
+		$this->db->where('empresaId',$empresaId);
+		$this->db->group_start();
 		$this->db->like("nombre",$buscar);
+		$this->db->group_end();
 		if ($inicio !== FALSE && $cantidadregistro !== FALSE) {
 			$this->db->limit($cantidadregistro,$inicio);
 		}
@@ -15,29 +18,35 @@ class Categorias_Productos_model extends CI_Model {
 		return $consulta->result();
 	}
 
-	public function get_all()
+	public function get_all($empresaId)
 	{
+		$this->db->where('empresaId',$empresaId);
 		$consulta = $this->db->get($this->table);
 		return $consulta->result();
 	}
 
-	public function get_all_array()
+	public function get_all_array($empresaId)
 	{			
 		$this->db->where("habilitado",1);
+		$this->db->where('empresaId',$empresaId);
 		$consulta = $this->db->get($this->table);
 		return $consulta->result_array();
 	}
 
-	public function get_all_export() {
+	public function get_all_export($empresaId) {
 		$this->db->select(array('e.id', 'e.nombre', 'e.descripcion'));
 		$this->db->from('categorias_productos as e');
+		$this->db->where('empresaId',$empresaId);
 		$query = $this->db->get();
 		return $query->result_array();
 	 }
  
 
-	function search_autocomplete($title){
-        $this->db->like('nombre', $title);
+	function search_autocomplete($empresaId,$title){
+		$this->db->where('empresaId',$empresaId);
+		$this->db->group_start();
+		$this->db->like('nombre', $title);
+		$this->db->group_end();
         $this->db->order_by('nombre', 'ASC');
         $this->db->limit(10);
         return $this->db->get($this->table)->result();

@@ -406,7 +406,6 @@ function nuevaVenta(){
 
 function nuevoCliente()
 {
-    //save_method = 'add';
     $('#form')[0].reset(); 
     $('.form-group').removeClass('has-error'); 
 	$('.panel-body').removeClass('has-error'); 
@@ -414,6 +413,7 @@ function nuevoCliente()
     $('#modal_form').modal('show'); 
     $('.modal-title').text('Agregar Clientes');
 	$('.modal-backdrop').remove();
+	cargar_provincias(0);
 }
 
 

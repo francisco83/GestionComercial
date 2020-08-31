@@ -1,4 +1,3 @@
-<!-- Bootstrap modal -->
 <div class="modal" id="modal_form" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -25,7 +24,7 @@
                             </div>   
 						</div> 	 	
 						<div class="form-group">
-                            <label class="col-sm-2">DNI:</label>
+                            <label class="col-sm-2">DNI/CUIT:</label>
                             <div class="col-sm-10">
 							    <input class="form-control only_number" name="dni" required type="text" id="dni" placeholder="Ingrese el DNI">
                                 <span class="help-block"></span>
@@ -44,7 +43,22 @@
 							    <input class="form-control" name="telefono" required type="text" id="telefono" placeholder="Ingrese el teléfono">
                                 <span class="help-block"></span>
                             </div>   
-						</div> 	 	
+						</div> 	 
+						<div class="form-group">
+                            <label class="col-sm-2">Provincia:</label>							
+							<div class="col-sm-10">
+							<select  class="form-control" name="provinciaId" id="provinciaId">
+							</select>							    
+                                <span class="help-block"></span>
+                            </div> 
+						</div> 	
+						<div class="form-group">
+                            <label class="col-sm-2">Dirección:</label>
+                            <div class="col-sm-10">
+							    <input class="form-control" name="direccion" required type="text" id="direccion" placeholder="Ingrese una dirección">
+                                <span class="help-block"></span>
+                            </div>   
+						</div> 		
 					</div>
                 </form>
             </div>
@@ -55,4 +69,3 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<!-- End Bootstrap modal -->

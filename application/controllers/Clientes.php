@@ -1,8 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
 class Clientes extends CI_Controller {
-	public function __construct(){
+	
+	var $empresaId;		
+
+	public function __construct(){		
 		parent::__construct();
 		$this->load->model("Clientes_model");
 		$this->load->model("Ventas_model");
@@ -12,6 +16,10 @@ class Clientes extends CI_Controller {
 		{
 			redirect('Home', 'refresh');
 		}
+		else
+		 {
+		 	$this->empresaId = $this->ion_auth->get_empresa_id();
+		 }		
 	}
 
 	public function index(){
@@ -19,12 +27,17 @@ class Clientes extends CI_Controller {
 	}
 
 	public function ctacte($id){		
-		$data['filas'] = $this->Ventas_model->detalleCtaCteVentaxCliente($id);		
+		$data['filas'] = $this->Ventas_model->detalleCtaCteVentaxCliente($this->empresaId,$id);		
 		$this->load->view("Clientes/ctacte",$data);
 	}
 
 	public function get_all(){
 		$resultado = $this->Clientes_model->get_all();
+		echo $resultado;
+	}
+
+	public function get_all_by_empresaid($empresaId){
+		$resultado = $this->Clientes_model->get_all_by_id($empresaId);
 		echo $resultado;
 	}
 
@@ -36,8 +49,8 @@ class Clientes extends CI_Controller {
 		
 		$inicio = ($numeropagina -1)*$cantidad;
 		$data = array(
-			"Clientes" => $this->Clientes_model->buscar($buscar,$inicio,$cantidad),
-			"totalregistros" => count($this->Clientes_model->buscar($buscar)),
+			"Clientes" => $this->Clientes_model->buscar($this->empresaId,$buscar,$inicio,$cantidad),
+			"totalregistros" => count($this->Clientes_model->buscar($this->empresaId,$buscar)),
 			"cantidad" =>$cantidad
 			
 		);
@@ -62,7 +75,7 @@ class Clientes extends CI_Controller {
 
 	function get_autocomplete(){
         if (isset($_GET['term'])) {
-            $result = $this->Clientes_model->search_autocomplete($_GET['term']);
+            $result = $this->Clientes_model->search_autocomplete($this->empresaId,$_GET['term']);
             if (count($result) > 0) {
 			foreach ($result as $row)	
 			{
@@ -85,7 +98,10 @@ class Clientes extends CI_Controller {
 				'dni' => $this->input->post('dni'),
 				'email' => $this->input->post('email'),				
 				'telefono' => $this->input->post('telefono'),
+				'provinciaId' => $this->input->post('provinciaId'),
+				'direccion' => $this->input->post('direccion'),
 				'habilitado' => 1,
+				'empresaId' =>$this->empresaId,
 			);
 
 		$insert = $this->Clientes_model->save($data);
@@ -107,6 +123,8 @@ class Clientes extends CI_Controller {
 			'dni' => $this->input->post('dni'),
 			'email' => $this->input->post('email'),				
 			'telefono' => $this->input->post('telefono'),
+			'provinciaId' => $this->input->post('provinciaId'),
+			'direccion' => $this->input->post('direccion'),
 			);
 		$this->Clientes_model->update(array('id' => $this->input->post('id')), $data);
 		echo json_encode(array("status" => TRUE));
@@ -149,7 +167,7 @@ class Clientes extends CI_Controller {
 	public function createXLS() {
 
        $this->load->library('excel');
-       $empInfo = $this->Clientes_model->get_all_export();
+       $empInfo = $this->Clientes_model->get_all_export($this->empresaId);
        $objPHPExcel = new PHPExcel();
        $objPHPExcel->setActiveSheetIndex(0);
        // set Header
@@ -158,6 +176,8 @@ class Clientes extends CI_Controller {
        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'DNI');  
        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Email');  
        $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Teléfono');  
+       $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Provincia');  
+       $objPHPExcel->getActiveSheet()->SetCellValue('G1', 'Dirección');  
        // set Row
        $rowCount = 2;
        foreach ($empInfo as $element) {
@@ -166,6 +186,8 @@ class Clientes extends CI_Controller {
            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['dni']);
            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $element['email']);
            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $element['telefono']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $element['nombre_provincia']);
+           $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $element['direccion']);
            $rowCount++;
         }
         
@@ -173,8 +195,7 @@ class Clientes extends CI_Controller {
        header('Content-Type: application/vnd.ms-excel');
        header('Content-Disposition: attachment;filename="'.$archivo.'"');
        header('Cache-Control: max-age=0');
-       $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-       //Hacemos una salida al navegador con el archivo Excel.
+       $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');       
        $objWriter->save('php://output');  
    }
 

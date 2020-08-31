@@ -900,11 +900,22 @@ class Ion_auth_model extends CI_Model
 
 		$this->trigger_events('extra_where');
 
+		/* codigo correcto del login
 		$query = $this->db->select($this->identity_column . ', email, id, password, active, last_login')
 						  ->where($this->identity_column, $identity)
 						  ->limit(1)
 						  ->order_by('id', 'desc')
 						  ->get($this->tables['users']);
+		*/
+
+		$query = $this->db->select('u.email, u.id, u.password, u.active, u.last_login, e.id as empresa_id, e.nombre as nombre_empresa')
+			->from('users as u' )
+			->join('empresas as e','u.id=e.user_id', 'left outer')
+			->where('u.email', $identity)
+			->limit(1)
+			->order_by('u.id', 'desc')
+			->get();
+
 
 		if ($this->is_max_login_attempts_exceeded($identity))
 		{
@@ -1933,13 +1944,16 @@ class Ion_auth_model extends CI_Model
 	{
 		$this->trigger_events('pre_set_session');
 
+		//Se agrego empresa_id y nombre_empresa - 26/08/2020	
 		$session_data = [
 		    'identity'             => $user->{$this->identity_column},
 		    $this->identity_column => $user->{$this->identity_column},
 		    'email'                => $user->email,
 		    'user_id'              => $user->id, //everyone likes to overwrite id so we'll use user_id
 		    'old_last_login'       => $user->last_login,
-		    'last_check'           => time(),
+			'last_check'           => time(),
+			'empresa_id'		   => $user->empresa_id,	
+			'nombre_empresa'	   => $user->nombre_empresa,
 		];
 
 		$this->session->set_userdata($session_data);

@@ -31,7 +31,7 @@
 						<div class="col-md-1 col-xs-3">
 							<div class="form-group">
 								<label></label>
-								<a onclick="filtrar_venta_print($('#fechadesde').val(),$('#fechahasta').val())" class="form-control btn btn-primary"><i class="glyphicon glyphicon-print"></i></a>												
+								<a onclick="filtrar_venta_print($('#fechadesde').val(),$('#fechahasta').val())" class="form-control btn btn-primary" target="_blank"><i class="glyphicon glyphicon-print"></i></a>												
 							</div>
 						</div>	
 						<div class="col-md-1 col-xs-3">
@@ -128,7 +128,7 @@
 	});
 	}
 	function filtrar_venta_print(fecha_desde,fecha_hasta){
-		location.href = 'ventasXFechas?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'';
+		location.href = 'ventasXFechas?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+' target="_blank"';
 	}
 	function filtrar_venta_excel(fecha_desde,fecha_hasta){
 		location.href = '../Ventas/createXLS?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'';
