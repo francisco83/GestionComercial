@@ -218,6 +218,18 @@ function save()
 }
 
 
+function MensajesError(Mensaje) {
+	var mensajeError;
+
+	if (Mensaje.search("Error Number: 1451") != -1) {
+		mensajeError = 'No se puede eliminar, existen registros asociados. Debe eliminar los registros asociados o bien deshabilitar.';
+	} else {
+		mensajeError = 'Se produjo un error al eliminar el registro. ';
+	}
+	return mensajeError;
+  }
+
+
 function delete_(id)
 {
     if(confirm('¿Esta seguro que desea eliminar el registro?'))
@@ -240,9 +252,10 @@ function delete_(id)
             error: function (jqXHR, textStatus, errorThrown)
             {
 				console.log(jqXHR, textStatus, errorThrown);
+
 				$.notify({
                    title: '<strong>Error!</strong>',
-				   message: 'Se produjo un error al eliminar el registro. '
+				   message: MensajesError(jqXHR.responseText)
 				   
                },{
                    type: 'danger'

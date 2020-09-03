@@ -89,10 +89,10 @@ class Empresas_model extends CI_Model {
 
 	public function delete_by_id($id)
 	{
-		 $this->db->trans_begin();
-		 
-	 	$this->db->delete($this->table, array("id" => $id));
-
+		$this->db->trans_begin();
+		
+		$this->db->delete($this->table, array("id" => $id));
+		
 		if ($this->db->trans_status() === FALSE)
 		{
 			$this->db->trans_rollback();

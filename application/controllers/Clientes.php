@@ -10,10 +10,12 @@ class Clientes extends CI_Controller {
 		parent::__construct();
 		$this->load->model("Clientes_model");
 		$this->load->model("Ventas_model");
+		$this->load->model("Permisos_model");
 		$this->load->library(['ion_auth', 'form_validation']);
 
 		if (!$this->ion_auth->logged_in())
 		{
+
 			redirect('Home', 'refresh');
 		}
 		else
@@ -23,6 +25,9 @@ class Clientes extends CI_Controller {
 	}
 
 	public function index(){
+		//$result = $this->Permisos_model->get_by_controllerAndUser('Clientes',$this->ion_auth->get_user_id());
+
+
 		$this->load->view("Clientes/index");
 	}
 

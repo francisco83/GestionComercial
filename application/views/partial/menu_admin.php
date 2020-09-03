@@ -1,3 +1,4 @@
+<?php $this->load->library(['ion_auth', 'form_validation']);?>
 <nav class="navbar navbar-default">
 	  	<div class="container-fluid">
 	    	<!-- Brand and toggle get grouped for better mobile display -->
@@ -8,7 +9,7 @@
 	        		<span class="icon-bar"></span>
 	        		<span class="icon-bar"></span>
 	      		</button>
-	      		<a class="navbar-brand" href="<?php echo base_url();?>">Soft. Gestión</a>
+	      		<a class="navbar-brand" href="<?php echo base_url();?>"><?php echo $this->ion_auth->get_empresa(); ?></a>
 	    	</div>
 
 	    	<!-- Collect the nav links, forms, and other content for toggling -->
@@ -55,11 +56,12 @@
 						<i class="glyphicon glyphicon-cog"></i> Configuración
 						<span class="caret"></span>
 						</a>						
-						<ul class="dropdown-menu">					
-							<li><a href="<?php echo base_url();?>empresas">Empresas <span class="sr-only">(current)</span></a></li>
-							<li><a href="<?php echo base_url();?>sucursales">Sucursales <span class="sr-only">(current)</span></a></li>
+						<ul class="dropdown-menu">	
 							<li><a href="<?php echo base_url();?>users">Usuarios <span class="sr-only">(current)</span></a></li>					
 							<li><a href="<?php echo base_url();?>groups">Grupos Usuarios <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>permisos">Permisos <span class="sr-only">(current)</span></a></li>				
+							<li><a href="<?php echo base_url();?>empresas">Empresas <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>sucursales">Sucursales <span class="sr-only">(current)</span></a></li>
 							<li><a href="<?php echo base_url();?>tipos_servicios">Tipos de Servicios <span class="sr-only">(current)</span></a></li>					
 							<li><a href="<?php echo base_url();?>tipos_pagos">Tipos de Pagos <span class="sr-only">(current)</span></a></li>					
 							<li><a href="<?php echo base_url();?>tipos_monedas">Tipos de Monedas <span class="sr-only">(current)</span></a></li>					

@@ -14,7 +14,7 @@
                                     </tr>                                                    
                                     <?php foreach ($estados_pedidos as $estados_pedidos): ?>
                                     <tr>
-                                        <td class="r"><?= $estados_pedidos->id ?></td>
+                                        <td class="r"><?= $estados_pedidos->Id ?></td>
                                         <td><?= $estados_pedidos->nombre ?></td>
                                         <td class="c"><?= $estados_pedidos->habilitado==1?"SI":"NO" ?></td>										
                                     </tr>

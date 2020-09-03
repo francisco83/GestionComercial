@@ -132,6 +132,7 @@ class Empresas extends CI_Controller {
 		}
 
 		$this->Empresas_model->delete_by_id($id);
+	
 		echo json_encode(array("status" => TRUE));
 	}
 

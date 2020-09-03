@@ -177,7 +177,7 @@ class Reportes extends CI_Controller {
 		$categoria = $_GET['categoria']; 	   
 		$this->load->view("partial/cabecera_reporte");
 		$this->load->model("Productos_model");		
-		$data['filas'] =   $this->Productos_model->productosXCategoriaResult($categoria);				
+		$data['filas'] =   $this->Productos_model->productosXCategoriaResult($this->empresaId,$categoria);				
 		$this->load->view("Reportes/productos_print",$data);
 	}
 	

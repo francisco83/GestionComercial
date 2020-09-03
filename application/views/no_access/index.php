@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +24,7 @@ body{
        <div class="logo">
 		   <p style="font-size:xxx-large;">UPS!!!</p>
 		   <img src="<?php echo base_url(); ?>assets/images/exclamacion.jpg" width="400px"/>
-		   	   <h2>La página que busca no existe.</h2>
+		   	   <h2>!!!!!!!La página que busca no existe.</h2>
                <div class="sub">
                  <p><a href="<?php echo base_url(); ?>">Regresar</a></p>
                </div>

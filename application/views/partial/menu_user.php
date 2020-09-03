@@ -1,3 +1,4 @@
+<?php $this->load->library(['ion_auth', 'form_validation']);?>
 <nav class="navbar navbar-default">
 	  	<div class="container-fluid">
 	    	<!-- Brand and toggle get grouped for better mobile display -->
@@ -8,7 +9,7 @@
 	        		<span class="icon-bar"></span>
 	        		<span class="icon-bar"></span>
 	      		</button>
-	      		<a class="navbar-brand" href="<?php echo base_url();?>">Soft. Gestión</a>
+	      		<a class="navbar-brand" href="<?php echo base_url();?>"><?php echo $this->ion_auth->get_empresa(); ?></a>
 	    	</div>
 
 	    	<!-- Collect the nav links, forms, and other content for toggling -->

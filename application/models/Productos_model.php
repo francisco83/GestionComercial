@@ -128,7 +128,7 @@ class Productos_model extends CI_Model {
 		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
 		$this->db->from('productos as e');
 		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
-		$this->db->where('empresaId', $empresaId);	
+		$this->db->where('e.empresaId', $empresaId);	
 		$this->db->where("e.tipo_categoria_id =",$categoria);
 		$this->db->or_where('"-1" =', $categoria); 
 		$this->db->order_by('e.nombre', 'ASC');
@@ -143,7 +143,7 @@ class Productos_model extends CI_Model {
 		$this->db->select(array('e.id', 'e.codigo', 'e.nombre', 'e.descripcion','c.nombre as categoria', 'e.precioVenta','e.precioCompra','e.existencia','e.habilitado'));
 		$this->db->from('productos as e');
 		$this->db->join('categorias_productos as c','c.id=e.tipo_categoria_id', 'left outer');
-		$this->db->where('empresaId', $empresaId);	
+		$this->db->where('e.empresaId', $empresaId);	
 		$this->db->where("e.tipo_categoria_id =",$categoria);
 		$this->db->or_where('"-1" =', $categoria); 
 		$this->db->order_by('e.nombre', 'ASC');

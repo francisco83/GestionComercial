@@ -186,7 +186,7 @@ function Accion(tipo){
                    title: '<strong>Atención!</strong>',
                    message: 'Seleccione una fila.'
                },{
-                   type: 'info'
+                   type: 'warning'
                });
 	}	
 }
