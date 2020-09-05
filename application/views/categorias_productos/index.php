@@ -1,13 +1,17 @@
 <?php  $this->load->view("partial/encabezado"); ?>
 
+<?php if(isset($this->permisos )){
+	$permisos = (array_column($this->permisos, 'accion'));
+}?>
+
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-                        <h4>Categorias de Productos</h4>
-                        <a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>reportes/categorias_productos" target="_blank"><i class="glyphicon glyphicon-print"></i></a>					
-						<a class="pull-right btn btn-primary" style="margin-top: -30px" href="<?php echo site_url()?>/categorias_productos/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>					
+						<h4>Categorias de Productos</h4>
+						<?php if(verifPermiso('IMPRIMIR_ALL', $permisos)){echo'<a class="pull-right btn btn-primary" style="margin-top: -30px" data-toggle="tooltip" title="Imprimir" href="'.site_url().'reportes/categorias_productos" target="_blank"><i class="glyphicon glyphicon-print"></i></a>';}?>					
+						<?php if(verifPermiso('EXPORTAR_ALL', $permisos)){echo'<a class="pull-right btn btn-primary" style="margin-top: -30px" data-toggle="tooltip" title="Excel" href="'.site_url().'produccategorias_productostos/createxls"><i class="glyphicon glyphicon-floppy-save"></i></a>';}?>								
 					</div>
 					<div class="panel-body">						
 						<div class="row">
@@ -45,10 +49,10 @@
 				</div>
 			</div>
 		</div>
-		<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i></button>
-		<button class="btn btn-warning" onclick="action('edit')"><i class="glyphicon glyphicon-edit"></i></button>
-		<button class="btn btn-danger" onclick="action('delete')"><i class="glyphicon glyphicon-trash"></i></button>	
-		<button id="btn_enabled"class="btn btn-secondary" onclick="action('enabled')">Habilitar/Deshabilitar</button>	
+		<?php if(verifPermiso('NUEVO', $permisos)){echo '<button class="btn btn-success" onclick="add()"><i class="glyphicon glyphicon-plus"></i></button>';}?>
+		<?php if(verifPermiso('EDITAR', $permisos)){echo '<button class="btn btn-warning" onclick="action(\'edit\')"><i class="glyphicon glyphicon-edit"></i></button>';}?>
+		<?php if(verifPermiso('BORRAR', $permisos)){echo '<button class="btn btn-danger" onclick="action(\'delete\')"><i class="glyphicon glyphicon-trash"></i></button>';}?>	
+		<?php if(verifPermiso('HABILITAR', $permisos)){echo '<button id="btn_enabled"class="btn btn-secondary" onclick="action(\'enabled\')">Habilitar/Deshabilitar</button>';}?>	
 	</div>
 	
 <script>

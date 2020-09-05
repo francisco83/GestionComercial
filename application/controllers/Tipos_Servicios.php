@@ -3,12 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tipos_Servicios extends CI_Controller {
 
-	var $empresaId;
-
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Tipos_Servicios_model");
 		$this->load->library(['ion_auth', 'form_validation']);
+		$this->load->model("Permisos_model");
+		$this->controlador = 'tipos_Servicios';	
 
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
 		{
@@ -17,16 +17,28 @@ class Tipos_Servicios extends CI_Controller {
 		else
 		{
 			$this->empresaId = $this->ion_auth->get_empresa_id();
+			$this->userId = $this->ion_auth->get_user_id();			 
+			$this->permisos = $this->Permisos_model->VerificarPermisos($this->userId,$this->controlador);
 		}	
 	}
 
 	public function index(){
-		$this->load->view("tipos_servicios/index");
+		if(array_search('VER', array_column($this->permisos, 'accion'))===false){
+			redirect('Home', 'refresh');	
+		}
+		else{
+			$this->load->view($this->controlador."/index",$this->permisos);
+		}
 	}
 
 	public function get_all(){
-		$resultado = $this->Tipos_Servicios_model->get_all();
-		echo $resultado;
+		if(array_search('VER', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador, 'refresh');	
+		}
+		else{
+			$resultado = $this->Tipos_Servicios_model->get_all();
+			echo $resultado;
+		}
 	}
 
 	public function mostrar()
@@ -79,48 +91,73 @@ class Tipos_Servicios extends CI_Controller {
 
 	public function ajax_add()
 	{
-		$this->_validate();		
-		$data = array(
-				'nombre' => $this->input->post('nombre'),
-				'descripcion' => $this->input->post('descripcion'),
-				'precio' => $this->input->post('precio'),
-				'habilitado' =>1,
-				'empresaId' => $this->empresaId,
-			);
+		if(array_search('AGREGAR', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador, 'refresh');	
+		}
+		else{
+			$this->_validate();		
+			$data = array(
+					'nombre' => $this->input->post('nombre'),
+					'descripcion' => $this->input->post('descripcion'),
+					'precio' => $this->input->post('precio'),
+					'habilitado' =>1,
+					'empresaId' => $this->empresaId,
+				);
 
-		$insert = $this->Tipos_Servicios_model->save($data);
-		echo json_encode(array("status" => TRUE));
+			$insert = $this->Tipos_Servicios_model->save($data);
+			echo json_encode(array("status" => TRUE));
+		}
 	}
 
 	public function ajax_edit($id)
 	{
-		$data = $this->Tipos_Servicios_model->get_by_id($id);
-		echo json_encode($data);
+		if(array_search('EDITAR', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador, 'refresh');	
+		}
+		else{		
+			$data = $this->Tipos_Servicios_model->get_by_id($id);
+			echo json_encode($data);
+		}
 	}
 
 	public function ajax_update()
 	{
-		$this->_validate();
-		$data = array(
-				'nombre' => $this->input->post('nombre'),
-				'descripcion' => $this->input->post('descripcion'),
-				'precio' => $this->input->post('precio'),
-			);
-		$this->Tipos_Servicios_model->update(array('id' => $this->input->post('id')), $data);
-		echo json_encode(array("status" => TRUE));
+		if(array_search('EDITAR', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador, 'refresh');	
+		}
+		else{	
+			$this->_validate();
+			$data = array(
+					'nombre' => $this->input->post('nombre'),
+					'descripcion' => $this->input->post('descripcion'),
+					'precio' => $this->input->post('precio'),
+				);
+			$this->Tipos_Servicios_model->update(array('id' => $this->input->post('id')), $data);
+			echo json_encode(array("status" => TRUE));
+		}
 	}
 
 
 	public function ajax_delete($id)
 	{	
-		$this->Tipos_Servicios_model->delete_by_id($id);
-		echo json_encode(array("status" => TRUE));
+		if(array_search('BORRAR', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador, 'refresh');	
+		}
+		else{	
+			$this->Tipos_Servicios_model->delete_by_id($id);
+			echo json_encode(array("status" => TRUE));
+		}
 	}
 
 	public function ajax_enabled($id)
 	{		
-		$this->Tipos_Servicios_model->enabled_by_id($id);
-		echo json_encode(array("status" => TRUE));
+		if(array_search('HABILITAR', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador, 'refresh');	
+		}
+		else{	
+			$this->Tipos_Servicios_model->enabled_by_id($id);
+			echo json_encode(array("status" => TRUE));
+		}
 	}
 
 	private function _validate()
@@ -153,39 +190,48 @@ class Tipos_Servicios extends CI_Controller {
 
 	public function verdetallehistorico ()
 	{
-		$IdServicio = $this->input->post("IdServicio");
-		$this->load->model("Tipos_Servicios_model");		
-		$data = $this->Tipos_Servicios_model->buscarDetalleHistorico($this->empresaId,$IdServicio);		
-		echo json_encode($data);	
+		if(array_search('VERHISTORICO', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador, 'refresh');	
+		}
+		else{	
+			$IdServicio = $this->input->post("IdServicio");
+			$this->load->model("Tipos_Servicios_model");		
+			$data = $this->Tipos_Servicios_model->buscarDetalleHistorico($this->empresaId,$IdServicio);		
+			echo json_encode($data);	
+		}
 
 	}
 
 	public function createXLS() {
-
-       $this->load->library('excel');
-       $empInfo = $this->Tipos_Servicios_model->get_all_export($this->empresaId);
-       $objPHPExcel = new PHPExcel();
-       $objPHPExcel->setActiveSheetIndex(0);
-       // set Header
-       $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Nombre');
-       $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Descripcion');
-       $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Precio');  
-       // set Row
-       $rowCount = 2;
-       foreach ($empInfo as $element) {
-           $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $element['nombre']);
-           $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['descripcion']);
-           $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['precio']);
-           $rowCount++;
-        }
-        
-       $archivo = "Tipos_Servicios.xls";
-       header('Content-Type: application/vnd.ms-excel');
-       header('Content-Disposition: attachment;filename="'.$archivo.'"');
-       header('Cache-Control: max-age=0');
-       $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-       //Hacemos una salida al navegador con el archivo Excel.
-       $objWriter->save('php://output');  
+		if(array_search('VERHISTORICO', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador, 'refresh');	
+		}
+		else{	
+			$this->load->library('excel');
+			$empInfo = $this->Tipos_Servicios_model->get_all_export($this->empresaId);
+			$objPHPExcel = new PHPExcel();
+			$objPHPExcel->setActiveSheetIndex(0);
+			// set Header
+			$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Nombre');
+			$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Descripcion');
+			$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Precio');  
+			// set Row
+			$rowCount = 2;
+			foreach ($empInfo as $element) {
+				$objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $element['nombre']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['descripcion']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $element['precio']);
+				$rowCount++;
+				}
+				
+			$archivo = $this->controlador.".xls";
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="'.$archivo.'"');
+			header('Cache-Control: max-age=0');
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			//Hacemos una salida al navegador con el archivo Excel.
+			$objWriter->save('php://output');  
+	}
    }
 
 

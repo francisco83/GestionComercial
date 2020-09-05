@@ -145,7 +145,21 @@ class Permisos_model extends CI_Model {
 			$this->db->trans_commit();		
 		}
 
-	}		
+	}	
+	
+	
+	public function VerificarPermisos($userId,$controlador)
+	{
+		$this->db->select('upper(p.accion) as accion');
+		$this->db->from('users u');
+		$this->db->join('users_groups ug','u.id = ug.user_id');
+		$this->db->join('grupos_permisos gp','ug.group_id = gp.grupoId' );
+		$this->db->join('permisos p','p.id= gp.permisoId' );
+		$this->db->where('upper(p.controlador)',strtoupper($controlador));
+		$this->db->where('u.id',$userId);		
+		$query = $this->db->get();
+		return $query->result();
+	}
 
 
 }

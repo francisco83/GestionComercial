@@ -28,6 +28,14 @@ else{
 }
 ?>
 
+
+<?php 
+function verifPermiso($accion, $permisos)
+{
+	if(array_search($accion, $permisos)===false ){return false;}else{ return true;}     
+}
+?>
+
 <script>
 
 

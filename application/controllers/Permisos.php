@@ -42,21 +42,6 @@ class Permisos extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	// public function buscar_pagos()
-	// {
-	// 	$json = [];
-	// 	$this->load->database();		
-	// 	if(!empty($this->input->get("q"))){
-	// 		$this->db->like('nombre', $this->input->get("q"));
-	// 	}
-	// 		$query = $this->db->select('id,nombre as text')
-	// 					->limit(10)
-	// 					->get("Permisos");
-	// 		$json = $query->result();		
-		
-	// 	echo json_encode($json);
-	// }
-
 	function get_autocomplete(){
         if (isset($_GET['term'])) {
             $result = $this->Permisos_model->search_autocomplete($_GET['term']);
@@ -184,16 +169,24 @@ class Permisos extends CI_Controller {
 
    public function AddGruposPermisos()
    {
+		$grupoId = $this->input->post("grupoId");
+		$permisos_ = $this->input->post("permisosId");
+		$permisosId = explode(",", $permisos_);
 
-	$grupoId = $this->input->post("grupoId");
-	$permisos_ = $this->input->post("permisosId");
-	$permisosId = explode(",", $permisos_);
-	
-	$this->load->model("Permisos_model");		
-	$data = $this->Permisos_model->Insertar_grupos_permisos($grupoId,$permisosId);		
-	echo json_encode(array("status" => TRUE));	
+		$this->load->model("Permisos_model");		
+		$data = $this->Permisos_model->Insertar_grupos_permisos($grupoId,$permisosId);		
+		echo json_encode(array("status" => TRUE));	
    }
 
+   public function VerificarPermisos()
+   {
+		$userId = $this->input->post("userId");
+		$controlador = $this->input->post("controlador");				
+		$this->load->model("Permisos_model");		
+
+		$data = $this->Permisos_model->VerificarPermisos($userId,$controlador);		
+		echo json_encode($data);	
+   }
    
 
 }

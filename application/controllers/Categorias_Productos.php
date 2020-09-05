@@ -3,12 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Categorias_Productos extends CI_Controller {
 
-	var $empresaId;	
-
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("Categorias_Productos_model");
 		$this->load->library(['ion_auth', 'form_validation']);
+		$this->load->model("Permisos_model");		
+		$this->controlador = 'categorias_productos';
 
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
 		{
@@ -17,16 +17,28 @@ class Categorias_Productos extends CI_Controller {
 		else
 		{
 			$this->empresaId = $this->ion_auth->get_empresa_id();
+			$this->userId = $this->ion_auth->get_user_id();		 
+			$this->permisos = $this->Permisos_model->VerificarPermisos($this->userId,$this->controlador);
 		}	
 	}
 
 	public function index(){
-		$this->load->view("categorias_productos/index");
+		if(array_search('VER', array_column($this->permisos, 'accion'))===false){
+			redirect('Home', 'refresh');			
+		}
+		else{
+			$this->load->view("categorias_productos/index");
+		}
 	}
 
 	public function get_all(){
-		$resultado = $this->Categorias_Productos_model->get_all();
-		echo $resultado;
+		if(array_search('VER', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador , 'refresh');			
+		}
+		else{
+			$resultado = $this->Categorias_Productos_model->get_all();
+			echo $resultado;
+		}
 	}
 
 	public function get_all_array(){
@@ -83,45 +95,70 @@ class Categorias_Productos extends CI_Controller {
 
 	public function ajax_add()
 	{
-		$this->_validate();		
-		$data = array(
-				'nombre' => $this->input->post('nombre'),
-				'descripcion' => $this->input->post('descripcion'),
-				'empresaId'=> $this->empresaId
-			);
+		if(array_search('AGREGAR', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador , 'refresh');			
+		}
+		else{
+			$this->_validate();		
+			$data = array(
+					'nombre' => $this->input->post('nombre'),
+					'descripcion' => $this->input->post('descripcion'),
+					'empresaId'=> $this->empresaId
+				);
 
-		$insert = $this->Categorias_Productos_model->save($data);
-		echo json_encode(array("status" => TRUE));
+			$insert = $this->Categorias_Productos_model->save($data);
+			echo json_encode(array("status" => TRUE));
+		}
 	}
 
 	public function ajax_edit($id)
-	{
-		$data = $this->Categorias_Productos_model->get_by_id($id);
-		echo json_encode($data);
+	{		
+		if(array_search('EDITAR', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador , 'refresh');			
+		}
+		else{
+			$data = $this->Categorias_Productos_model->get_by_id($id);
+			echo json_encode($data);
+		}
 	}
 
 	public function ajax_update()
 	{
-		$this->_validate();
-		$data = array(
-				'nombre' => $this->input->post('nombre'),
-				'descripcion' => $this->input->post('descripcion')
-			);
-		$this->Categorias_Productos_model->update(array('id' => $this->input->post('id')), $data);
-		echo json_encode(array("status" => TRUE));
+		if(array_search('EDITAR', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador , 'refresh');			
+		}
+		else{
+			$this->_validate();
+			$data = array(
+					'nombre' => $this->input->post('nombre'),
+					'descripcion' => $this->input->post('descripcion')
+				);
+			$this->Categorias_Productos_model->update(array('id' => $this->input->post('id')), $data);
+			echo json_encode(array("status" => TRUE));
+		}
 	}
 
 
 	public function ajax_delete($id)
 	{	
-		$this->Categorias_Productos_model->delete_by_id($id);
-		echo json_encode(array("status" => TRUE));
+		if(array_search('BORRAR', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador , 'refresh');			
+		}
+		else{
+			$this->Categorias_Productos_model->delete_by_id($id);
+			echo json_encode(array("status" => TRUE));
+		}
 	}
 
 	public function ajax_enabled($id)
 	{		
-		$this->Categorias_Productos_model->enabled_by_id($id);
-		echo json_encode(array("status" => TRUE));
+		if(array_search('HABILITAR', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador , 'refresh');			
+		}
+		else{
+			$this->Categorias_Productos_model->enabled_by_id($id);
+			echo json_encode(array("status" => TRUE));
+		}
 	}
 
 	private function _validate()
@@ -147,28 +184,34 @@ class Categorias_Productos extends CI_Controller {
 
 	public function createXLS() {
 
-       $this->load->library('excel');
-       $empInfo = $this->Categorias_Productos_model->get_all_export($this->empresaId);
-       $objPHPExcel = new PHPExcel();
-       $objPHPExcel->setActiveSheetIndex(0);
-       // set Header
-       $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Nombre');
-       $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Descripcion');       
-       // set Row
-       $rowCount = 2;
-       foreach ($empInfo as $element) {
-           $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $element['nombre']);
-           $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['descripcion']);           
-           $rowCount++;
-        }
-        
-       $archivo = "Categorias_Productos.xls";
-       header('Content-Type: application/vnd.ms-excel');
-       header('Content-Disposition: attachment;filename="'.$archivo.'"');
-       header('Cache-Control: max-age=0');
-       $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-       //Hacemos una salida al navegador con el archivo Excel.
-       $objWriter->save('php://output');  
+		if(array_search('EXPORTAR_ALL', array_column($this->permisos, 'accion'))===false){
+			redirect($this->controlador , 'refresh');			
+		}
+		else{
+
+			$this->load->library('excel');
+			$empInfo = $this->Categorias_Productos_model->get_all_export($this->empresaId);
+			$objPHPExcel = new PHPExcel();
+			$objPHPExcel->setActiveSheetIndex(0);
+			// set Header
+			$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Nombre');
+			$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Descripcion');       
+			// set Row
+			$rowCount = 2;
+			foreach ($empInfo as $element) {
+				$objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $element['nombre']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $element['descripcion']);           
+				$rowCount++;
+				}
+				
+			$archivo = $this->controlador.".xls";
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="'.$archivo.'"');
+			header('Cache-Control: max-age=0');
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			//Hacemos una salida al navegador con el archivo Excel.
+			$objWriter->save('php://output');  
+		}
    }
 
 

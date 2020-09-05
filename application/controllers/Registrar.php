@@ -16,6 +16,10 @@ class Registrar extends CI_Controller {
 		{
 			redirect('Home', 'refresh');
 		}
+		else
+		{
+			$this->empresaId = $this->ion_auth->get_empresa_id();
+		}	
 
 	}
 
@@ -65,7 +69,7 @@ class Registrar extends CI_Controller {
 	}
 
 	public function get_all(){
-		$resultado = $this->Tipos_Servicios_model->get_all();
+		$resultado = $this->Tipos_Servicios_model->get_all($this->empresaId);
 		echo json_encode($resultado);
 	}
 

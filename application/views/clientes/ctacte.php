@@ -115,17 +115,17 @@
 		});
 		
 		//Combo de Servicios			 
-		$.ajax({
-			url : "<?php echo site_url('Registrar/get_all');?>",
-			type: "POST",
-			dataType:"json",
-			success:function(response){
-				filas = "<option value='-1'></option>";	
-				$.each(response,function(key,item){
-					filas+="<option value='"+item.id+"' precio='"+item.precio+"'>"+item.nombre+"</option>";
-				});			
-			}
-		});
+		// $.ajax({
+		// 	url : "<?php echo site_url('Registrar/get_all');?>",
+		// 	type: "POST",
+		// 	dataType:"json",
+		// 	success:function(response){
+		// 		filas = "<option value='-1'></option>";	
+		// 		$.each(response,function(key,item){
+		// 			filas+="<option value='"+item.id+"' precio='"+item.precio+"'>"+item.nombre+"</option>";
+		// 		});			
+		// 	}
+		// });
 	
 		jQuery(document).on('submit','#form_insert',function(event)
 		{
