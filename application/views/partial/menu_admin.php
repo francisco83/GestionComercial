@@ -1,4 +1,7 @@
 <?php $this->load->library(['ion_auth', 'form_validation']);?>
+<?php if(isset($this->permisos )){
+	$permisos = (array_column($this->permisos, 'accion'));
+}?>
 <nav class="navbar navbar-default">
 	  	<div class="container-fluid">
 	    	<!-- Brand and toggle get grouped for better mobile display -->
@@ -14,9 +17,11 @@
 
 	    	<!-- Collect the nav links, forms, and other content for toggling -->
 	    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	      		<ul class="nav navbar-nav">	        					
-				  	<li><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
-					<li><a href="<?php echo base_url();?>productos">Productos</a></li>	
+	      		<ul class="nav navbar-nav">	        	
+				  <li><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
+				  <li><a href="<?php echo base_url();?>productos">Productos</a></li>					
+				  <!-- <?php if(verifPermiso('VER', $permisos)){echo '<li><a href="'.site_url().'clientes">Clientes</a></li>';}?>	
+				  <?php if(verifPermiso('VER', $permisos)){echo '<li><a href="'.site_url().'productos">Productos</a></li>';}?>	 -->
 					<li><a href="<?php echo base_url();?>proveedores">Proveedores</a></li>	
 					<li><a href="<?php echo base_url();?>registrar/ver">Ver servicios <span class="sr-only">(current)</span></a></li>
 					<li class="dropdown">

@@ -385,7 +385,7 @@ class Ion_auth
 		return NULL;
 	}
 
-	//Agregado para recuperar el Id empresa
+	//fflores- Agregado para recuperar el Id empresa
 	public function get_empresa_id()
 	{
 		$empresa_id = $this->session->userdata('empresa_id');
@@ -397,7 +397,7 @@ class Ion_auth
 	}
 
 
-	//Agregado para recuperar el Id empresa
+	//fflores- Agregado para recuperar el Id empresa
 	public function get_empresa()
 	{
 		$empresa = $this->session->userdata('nombre_empresa');
