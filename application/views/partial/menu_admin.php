@@ -20,6 +20,7 @@
 	      		<ul class="nav navbar-nav">	        	
 				  <li><a href="<?php echo base_url();?>clientes">Clientes</a></li>	
 				  <li><a href="<?php echo base_url();?>productos">Productos</a></li>					
+				  <li><a href="<?php echo base_url();?>materiales">Materiales</a></li>
 				  <!-- <?php if(verifPermiso('VER', $permisos)){echo '<li><a href="'.site_url().'clientes">Clientes</a></li>';}?>	
 				  <?php if(verifPermiso('VER', $permisos)){echo '<li><a href="'.site_url().'productos">Productos</a></li>';}?>	 -->
 					<li><a href="<?php echo base_url();?>proveedores">Proveedores</a></li>	
