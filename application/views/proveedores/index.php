@@ -153,7 +153,7 @@ function edit(id)
 			$('[name="telefono"]').val(data.telefono);			
 			$('[name="email"]').val(data.email);			
             $('#modal_form').modal('show');
-            $('.modal-title').text('Editar Cliente');
+            $('.modal-title').text('Editar Proveedor');
 			$('.modal-backdrop').remove();
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -169,6 +169,8 @@ function edit(id)
 }
 
 </script>
+
+
 
 <!-- Bootstrap modal -->
 <div class="modal" id="modal_form" role="dialog">
@@ -235,6 +237,7 @@ function edit(id)
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- End Bootstrap modal -->
+
 
 </body>
 </html>

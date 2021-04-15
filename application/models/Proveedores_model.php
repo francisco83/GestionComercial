@@ -43,7 +43,7 @@ class Proveedores_model extends CI_Model {
         $this->db->order_by('nombre', 'ASC');
 		$this->db->limit(10);
 		$this->db->group_end();
-        return $this->db->get($this->table)->result();
+        return $this->db->get($this->table)->result();		
 	}
 	
 	public function save($data)

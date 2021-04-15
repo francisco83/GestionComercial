@@ -1,9 +1,9 @@
 <?php  $this->load->view("partial/encabezado"); ?>
 <div class="container">
 	<div class="row">
-		<div class="panel panel-success">
+		<div class="panel panel-danger">
 			<div class="panel-heading">
-				<h4>Ventas</h4>
+				<h4>Compras</h4>
 			</div>					
 			<div class="panel-body">
 
@@ -18,21 +18,21 @@
 						</div>
 						<div class="col-md-6 col-xs-6">
 							<div class="form-group">
-									<label>Cliente:</label>
-									<input type ="text" id="clienteid" name="clienteid" hidden value="">
-									<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">
+									<label>Proveedor:</label>
+									<input type ="text" id="proveedorid" name="proveedorid" hidden value="">
+									<input type="text" class="form-control" id="comboproveedor" name="proveedor" placeholder="Buscar Proveedor">
 							</div>
 						</div>	
 						<div class="col-md-1 col-xs-6">
 							<div class="form-group">
 								<label></label>
-								<a onclick="nuevoCliente()" class="form-control btn btn-info"data-toggle="tooltip" title="Nuevo Cliente" ><i class="glyphicon glyphicon-user"></i></a>						
+								<a onclick="nuevoProveedor()" class="form-control btn btn-info"data-toggle="tooltip" title="Nuevo Proveedor" ><i class="glyphicon glyphicon-user"></i></a>						
 							</div>
 						</div>		
 						<div class="col-md-2 col-xs-6">
 							<div class="form-group">
 								<label></label>
-								<a onclick="nuevaVenta()" class="form-control btn btn-success"><i class="glyphicon glyphicon-plus"></i>Nueva venta</a>						
+								<a onclick="nuevaCompra()" class="form-control btn btn-success"><i class="glyphicon glyphicon-plus"></i>Nueva compra</a>						
 							</div>
 						</div>											
 					</div>	
@@ -79,7 +79,7 @@
 									<th></th>
 									<th></th>
 									<th class='r'>Total</th>
-									<th class='r' id="totalVenta"></th>
+									<th class='r' id="totalCompra"></th>
 									<th></th>
 								</tr>
 						</table>
@@ -102,7 +102,7 @@
 				</div>	
 				<div class="col-md-3" style="font-size: 20px;">
 					<div class="row">				
-						<div class="col-xs-4">Total:$</div><div class="col-xs-8"><input type="text" id="totalVentaFinal" name="totalVentaFinal" value="0" size="7" readonly></div> 
+						<div class="col-xs-4">Total:$</div><div class="col-xs-8"><input type="text" id="totalCompraFinal" name="totalCompraFinal" value="0" size="7" readonly></div> 
 					</div>	
 					<div class="row" style="margin-top:10px;">				
 						<div class="col-xs-4">Pago:$</div><div class="col-xs-8"><input type="text" id="totalPagoFinal" name="totalPagoFinal" value="0" size="7" readonly></div>
@@ -112,7 +112,7 @@
 					</div>
 				</div>
 				<div class="col-md-3">					
-					<!-- <a onclick="" class="form-control btn btn-primary"><i class="glyphicon glyphicon-shopping-cart"></i>Finalizar Venta</a>					 -->
+					<!-- <a onclick="" class="form-control btn btn-primary"><i class="glyphicon glyphicon-shopping-cart"></i>Finalizar Compra</a>					 -->
 					<input class="btn btn-primary" type="submit" value="Finalizar" style="height: 60px;width: 180px;margin-top: 30px;">
 				</div>
 			</div>	
@@ -127,14 +127,14 @@
 	</div>
 </div>
 
-<?php  $this->load->view("partial/cliente_formulario"); ?>
+<?php  $this->load->view("partial/proveedor_formulario"); ?>
 
 <script src="<?php echo base_url();?>assets/js/combos.js"></script>
 <script>
 	
 	var Site="<?php echo site_url()?>"
 	var i = 1;
-	var precioVenta = 0;
+	var precioCompra = 0;
 	var codigoProducto = 0;
 	var cantidad = 1;
 	var total = 0;
@@ -145,13 +145,13 @@
 	
 		$("#fechahoy").val(hoyFecha());
 
-		//Combo Cliente
-		$("#combocliente").autocomplete({
-			source: "<?php echo site_url('Clientes/get_autocomplete/?');?>",
+		//Combo Proveedor
+		$("#comboproveedor").autocomplete({
+			source: "<?php echo site_url('Proveedores/get_autocomplete/?');?>",
 			autoFill:true,
 			select: function(event, ui){			
-				$('#clienteid').val(ui.item.id);
-				$("#combocliente").val(ui.item.value);
+				$('#proveedorid').val(ui.item.id);
+				$("#comboproveedor").val(ui.item.value);
 			},
 		});		
 
@@ -163,7 +163,7 @@
 				$('#productoid').val(ui.item.id);
 				$("#comboproducto").val(ui.item.value);
 				productoId = ui.item.id;
-				precioVenta = ui.item.precioVenta;
+				precioCompra = ui.item.precioCompra;
 				codigoProducto = ui.item.codigoProducto;
 				existencia = ui.item.existencia
 			},
@@ -190,7 +190,7 @@
 
 				event.preventDefault();
 				jQuery.ajax({
-					url:"<?php echo site_url('ventas/insertar');?>",
+					url:"<?php echo site_url('compras/insertar');?>",
 					type: 'POST',
 					datetype: 'json',
 					data: $(this).serialize()
@@ -202,13 +202,13 @@
             		{		
 						$.notify({
 						title: '<strong>Atención!</strong>',
-						message: 'Se registro la venta.'
+						message: 'Se registro la compra.'
 						},
 						{
 							type: 'success'
 						});
 
-						nuevaVenta();
+						nuevaCompra();
 
 					}
 					else{
@@ -282,9 +282,9 @@ function agregarFila() {
 					"<td><input type='text' hidden name='IdProducto[]' value='"+productoId+"'>"+productoId+"</td>"+
 					"<td><input type='text' hidden name='CodigoProducto[]' value='"+codigoProducto+"'>"+codigoProducto+"</td>"+
 					"<td><input type='text' hidden name='NombreProducto[]' value='"+$("#comboproducto").val()+"'></div>"+$("#comboproducto").val()+"</td>"+
-					"<td><input type='text' hidden name='PrecioVenta[]' value='"+precioVenta+"'>"+precioVenta+"</td>"+
+					"<td><input type='text' hidden name='PrecioCompra[]' value='"+precioCompra+"'>"+precioCompra+"</td>"+
 					"<td><input type='text' hidden name='Cantidad[]' value='"+cantidad+"'>"+cantidad+"</td>"+
-					"<td class='r tot total_fila"+i+"'>"+cantidad*precioVenta+"</td>"+
+					"<td class='r tot total_fila"+i+"'>"+cantidad*precioCompra+"</td>"+
 					"<td class='c'>"+'<a class="btn btn-sm btn-danger" onclick="borrarFila('+i+')"><i class="glyphicon glyphicon-trash"></i></a>'+"</td>"+				
 					"</tr>";			
 
@@ -293,7 +293,7 @@ function agregarFila() {
 		$("#comboproducto").focus();
 		$('#cantidadid').val('1');
 		
-		precioVenta = 0;
+		precioCompra = 0;
 		codigoProducto = 0;		
 		
 		i++;
@@ -317,7 +317,7 @@ function agregarFila() {
 
 function recorrer_tabla(){
 	var j=1;
-	var total_venta = 0;
+	var total_compra = 0;
 	var parcial = 0;
 	var n = 0;
 	$("td").each(function(){
@@ -326,15 +326,15 @@ function recorrer_tabla(){
 		 parcial = parseFloat($('.total_fila'+j).text());
 		 if (!isNaN(parcial)){
 			 n++;
-		 	total_venta = total_venta + parcial;
+		 	total_compra = total_compra + parcial;
 			 console.log("fila",j,n);
 			 $("#id"+j).text(n);
 			 
 		 }
 		 j++;
  	});	 
-	 $('#totalVenta').text(total_venta);			
-	 $('#totalVentaFinal').val(total_venta);
+	 $('#totalCompra').text(total_compra);			
+	 $('#totalCompraFinal').val(total_compra);
 }
 
 
@@ -353,7 +353,7 @@ function recorrer_monedas(){
 		 j++;
  	});	 
 	 $('#totalPagoFinal').val(total_pago);			
-	 $('#totalVueltoFinal').val(total_pago - parseFloat($('#totalVentaFinal').val()));	
+	 $('#totalVueltoFinal').val(total_pago - parseFloat($('#totalCompraFinal').val()));	
 	 $('#total_moneda').text(total_pago);
 }
 
@@ -391,40 +391,40 @@ $(".moneda").on('change',function(){
 			recorrer_monedas();
 		});
 
-function nuevaVenta(){	
+function nuevaCompra(){	
 	$('#totalPagoFinal').val(0);			
 	$('#totalVueltoFinal').val(0);	
 	$('#total_moneda').text(0);
 	$("#detalle").html('');
-	$("#totalVenta").text('0');
-	$("#totalVentaFinal").val('0');
-	$("#clienteid").val('');
+	$("#totalCompra").text('0');
+	$("#totalCompraFinal").val('0');
+	$("#proveedorid").val('');
 	$(".moneda").val('0');
-	$("#combocliente").val('');
+	$("#comboproveedor").val('');
 	$("#detalle_moneda").html('');
 }
 
-function nuevoCliente()
+function nuevoProveedor()
 {
     $('#form')[0].reset(); 
     $('.form-group').removeClass('has-error'); 
 	$('.panel-body').removeClass('has-error'); 
     $('.help-block').empty();
     $('#modal_form').modal('show'); 
-    $('.modal-title').text('Agregar Clientes');
+    $('.modal-title').text('Agregar Proveedores');
 	$('.modal-backdrop').remove();
 	cargar_provincias(0);
 }
 
 
-function saveCliente()
+function saveProveedor()
 {
     $('#btnSave').text('Guardando...'); 
     $('#btnSave').attr('disabled',true); 
     var url,men;
 
-	url = Site+"clientes/ajax_add";
-	men="Se creo el usuario correctamente";
+	url = Site+"proveedores/ajax_add";
+	men="Se creo el proveedor correctamente";
  
 	var formData = new FormData($('#form')[0]);
     $.ajax({

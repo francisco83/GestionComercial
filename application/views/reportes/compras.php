@@ -1,9 +1,9 @@
 <?php  $this->load->view("partial/encabezado"); ?>
 <div class="container">
 	<div class="row">
-		<div class="panel panel-success">
+		<div class="panel panel-danger">
 			<div class="panel-heading">
-				<h4>Reporte de Ventas</h4>
+				<h4>Reporte de Compras</h4>
 			</div>					
 			<div class="panel-body">
 
@@ -25,19 +25,19 @@
 						<div class="col-md-1 col-xs-3">
 							<div class="form-group">
 								<label></label>
-								<a onclick="filtrar_venta($('#fechadesde').val(),$('#fechahasta').val())" class="form-control btn btn-info"><i class="glyphicon glyphicon-search"></i></a>												
+								<a onclick="filtrar_compra($('#fechadesde').val(),$('#fechahasta').val())" class="form-control btn btn-info"><i class="glyphicon glyphicon-search"></i></a>												
 							</div>
 						</div>	
 						<div class="col-md-1 col-xs-3">
 							<div class="form-group">
 								<label></label>
-								<a onclick="filtrar_venta_print($('#fechadesde').val(),$('#fechahasta').val())" class="form-control btn btn-primary" target="_blank"><i class="glyphicon glyphicon-print"></i></a>												
+								<a onclick="filtrar_compra_print($('#fechadesde').val(),$('#fechahasta').val())" class="form-control btn btn-primary" target="_blank"><i class="glyphicon glyphicon-print"></i></a>												
 							</div>
 						</div>	
 						<div class="col-md-1 col-xs-3">
 							<div class="form-group">
 								<label></label>
-								<a onclick="filtrar_venta_excel($('#fechadesde').val(),$('#fechahasta').val())" class="form-control btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i></a>												
+								<a onclick="filtrar_compra_excel($('#fechadesde').val(),$('#fechahasta').val())" class="form-control btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i></a>												
 							</div>
 						</div>									
 					</div>	
@@ -50,7 +50,7 @@
 										<th>#</th>
 										<th>Fecha</th>
 										<th>Cliente</th>										
-										<th>Total Venta</th>
+										<th>Total Compra</th>
 										<th>Total Pago</th>
 										<th>Total Vuelto</th>
 										<th>Acciones</th>
@@ -81,31 +81,31 @@
 	});
 
 
-	function filtrar_venta(fecha_desde,fecha_hasta){
+	function filtrar_compra(fecha_desde,fecha_hasta){
 	var i=1;		
 	var total=0;
 	var monto=0;
 	var vuelto=0;
 	$('#detalle').html('');
 	$.ajax({
-		url : "../ventas/ventasXFechas",
+		url : "../compras/comprasXFechas",
 		type: "POST",
 		data: {fecha_desde:fecha_desde,fecha_hasta:fecha_hasta},
 		dataType:"json",
 		success:function(response){			
 			filas = "";
 			$.each(response,function(key,item){		
-				console.log("VENTAS",item);		
+				console.log("COMPRAS",item);		
 				 filas+="<tr>"+
 				 "<td>"+i+"</td>"+
 			     "<td>"+StrToFecha(item.fecha)+"</td>"+
-				 "<td>"+item.nombre+" "+item.apellido+"</td>"+
+				 "<td>"+item.nombre+"</td>"+
 				 "<td class='r'>"+item.total+"</td>"+		
 				 "<td class='r'>"+item.monto+"</td>"+		
 				 "<td class='r'>"+item.vuelto+"</td>"+	
 				 "<td>"+				 				
-				 " <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta/"+item.id+"' target='_blank' data-toggle='tooltip' title='Imprimir'><i class='glyphicon glyphicon-print'></i></a>"+
-				 " <a class='btn btn-sm btn-danger' onclick='javascript:borrar_Venta("+item.id+")' data-toggle='tooltip' title='Cancelar Venta'><i class='glyphicon glyphicon-ban-circle'></i></a></td>"+
+				 " <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_compra/"+item.id+"' target='_blank' data-toggle='tooltip' title='Imprimir'><i class='glyphicon glyphicon-print'></i></a>"+
+				 " <a class='btn btn-sm btn-danger' onclick='javascript:borrar_Compra("+item.id+")' data-toggle='tooltip' title='Cancelar Compra'><i class='glyphicon glyphicon-ban-circle'></i></a></td>"+
 				 "</tr>";
 				 i++;
 
@@ -127,11 +127,11 @@
 		}
 	});
 	}
-	function filtrar_venta_print(fecha_desde,fecha_hasta){
-		location.href = 'ventasXFechas?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+' target="_blank"';
+	function filtrar_compra_print(fecha_desde,fecha_hasta){
+		location.href = 'comprasXFechas?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+' target="_blank"';
 	}
-	function filtrar_venta_excel(fecha_desde,fecha_hasta){
-		location.href = '../Ventas/createXLS?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'';
+	function filtrar_compra_excel(fecha_desde,fecha_hasta){
+		location.href = '../Compras/createXLS?fecha_desde='+fecha_desde+'&fecha_hasta='+fecha_hasta+'';
 
 	}
 

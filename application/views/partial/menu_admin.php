@@ -33,6 +33,18 @@
 						<ul class="dropdown-menu">					
 							<li><a href="<?php echo base_url();?>ventas">Nueva <span class="sr-only">(current)</span></a></li>
 							<li><a href="<?php echo base_url();?>ventas\ver">Ver por cliente <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>reportes\ventas"> Reporte <span class="sr-only">(current)</span></a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="glyphicon glyphicon-shopping-cart"></i> Compras
+						<span class="caret"></span>
+						</a>						
+						<ul class="dropdown-menu">					
+							<li><a href="<?php echo base_url();?>compras">Nueva <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>compras\ver">Ver por proveedor <span class="sr-only">(current)</span></a></li>
+							<li><a href="<?php echo base_url();?>reportes\compras"> Reporte <span class="sr-only">(current)</span></a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -59,7 +71,7 @@
 					</li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="glyphicon glyphicon-cog"></i> Configuración
+						<i class="glyphicon glyphicon-cog"></i> Config.
 						<span class="caret"></span>
 						</a>						
 						<ul class="dropdown-menu">	

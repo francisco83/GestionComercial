@@ -69,6 +69,13 @@ class Reportes extends CI_Controller {
 		$this->load->view("Reportes/ver_detalle_venta",$data);
 	}
 
+	public function ver_compra($id){
+		$this->load->model("Compras_detalle_model");
+		$this->load->view("partial/cabecera_reporte");		
+		$data['filas'] = $this->Compras_detalle_model->buscarDetalleImprimir($id);		
+		$this->load->view("Reportes/ver_detalle_compra",$data);
+	}
+
 	public function ver_venta_ctacte($id){
 		$this->load->model("Ventas_detalle_model");
 		$this->load->view("partial/cabecera_reporte");		
@@ -150,6 +157,11 @@ class Reportes extends CI_Controller {
 		$this->load->view("Reportes/ventas");
 	}
 
+	public function compras(){			
+		$this->load->view("Reportes/compras");
+	}
+
+
 	public function ventasxproductos(){			
 		$this->load->view("Reportes/ventasxproductos");
 	}
@@ -172,6 +184,16 @@ class Reportes extends CI_Controller {
 		$this->load->model("Ventas_model");		
 		$data['filas'] = $this->Ventas_model->ventasProductosXFechasResult($this->empresaId,$fecha_desde,$fecha_hasta);
 		$this->load->view("Reportes/ventasxproductos_print",$data);
+	}
+
+	public function comprasXFechas()
+	{		
+		$fecha_desde = $_GET['fecha_desde']; 
+		$fecha_hasta = $_GET['fecha_hasta'];
+		$this->load->view("partial/cabecera_reporte");	
+		$this->load->model("Compras_model");		
+		$data['filas'] = $this->Compras_model->comprasXFechasResult($this->empresaId,$fecha_desde,$fecha_hasta);
+		$this->load->view("Reportes/compras_print",$data);
 	}
 
 

@@ -1,9 +1,11 @@
+
+<!-- Bootstrap modal -->
 <div class="modal" id="modal_form" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Cliente</h3>
+                <h3 class="modal-title">Servicio</h3>
             </div>
             <div class="modal-body form">
                 <form action="#" id="form" class="form-horizontal">
@@ -17,23 +19,23 @@
                             </div>   
 						</div>
 						<div class="form-group">
-                            <label class="col-sm-2">Apellido:</label>
+                            <label class="col-sm-2">Nombre Contacto:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" name="apellido" required type="text" id="apellido" placeholder="Ingrese el apellido">
+							    <input class="form-control" name="nombre_contacto" required type="text" id="nombre_contacto" placeholder="Ingrese el nombre del contacto">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 	 	
 						<div class="form-group">
-                            <label class="col-sm-2">DNI/CUIT:</label>
+                            <label class="col-sm-2">CUIT:</label>
                             <div class="col-sm-10">
-							    <input class="form-control only_number" name="dni" required type="text" id="dni" placeholder="Ingrese el DNI">
+							    <input class="form-control" name="cuit" required type="text" id="cuit" placeholder="Ingrese el CUIT">
                                 <span class="help-block"></span>
                             </div>   
 						</div> 
 						<div class="form-group">
-                            <label class="col-sm-2">Email:</label>
+                            <label class="col-sm-2">Dirección:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" name="email" required type="text" id="email" placeholder="Ingrese el email">
+							    <input class="form-control" name="direccion" required type="text" id="direccion" placeholder="Ingrese la dirección">
                                 <span class="help-block"></span>
                             </div>   
 						</div>  
@@ -45,27 +47,20 @@
                             </div>   
 						</div> 	 
 						<div class="form-group">
-                            <label class="col-sm-2">Provincia:</label>							
-							<div class="col-sm-10">
-							<select  class="form-control" name="provinciaId" id="provinciaId">
-							</select>							    
-                                <span class="help-block"></span>
-                            </div> 
-						</div> 	
-						<div class="form-group">
-                            <label class="col-sm-2">Dirección:</label>
+                            <label class="col-sm-2">Email:</label>
                             <div class="col-sm-10">
-							    <input class="form-control" name="direccion" required type="text" id="direccion" placeholder="Ingrese una dirección">
+							    <input class="form-control" name="email" required type="text" id="email" placeholder="Ingrese el email">
                                 <span class="help-block"></span>
                             </div>   
-						</div> 		
+						</div>  	
 					</div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" id="btnSave" onclick="saveCliente()" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnSave" onclick="saveProveedor()" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!-- End Bootstrap modal -->

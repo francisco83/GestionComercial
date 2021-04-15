@@ -74,7 +74,7 @@ class Proveedores extends CI_Controller {
 		echo json_encode($json);
 	}
 
-	function get_autocomplete(){
+	function get_autocomplete(){		
         if (isset($_GET['term'])) {
             $result = $this->Proveedores_model->search_autocomplete($this->empresaId,$_GET['term']);
             if (count($result) > 0) {
@@ -82,7 +82,7 @@ class Proveedores extends CI_Controller {
 			{
 				$data[] = array(
 					'id' => $row->id,
-					'value'=> $row->apellido.' '.$row->nombre
+					'value'=> $row->nombre
 				);
 			}				
                 echo json_encode($data);

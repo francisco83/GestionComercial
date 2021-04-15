@@ -83,6 +83,7 @@ class Productos extends CI_Controller {
 					'id' => $row->id,
 					'value'=> $row->nombre,
 					'precioVenta'=> $row->precioVenta,
+					'precioCompra'=> $row->precioCompra,
 					'codigoProducto'=>$row->codigo,
 					'existencia'=>$row->existencia
 				);

@@ -26,9 +26,9 @@
 <div class="container">
 <div class="row">
 			<div class="col-md-12">
-				<div class="panel panel-success">
+				<div class="panel panel-danger">
 					<div class="panel-heading">
-						<h4>Ventas por Clientes</h4>
+						<h4>Compras por Proveedores</h4>
 					</div>
 					
 					<div class="panel-body">
@@ -36,14 +36,14 @@
 						<div class="col-md-12">
 						<div class="col-md-9">
 							<div class="form-group">
-									<!-- <label>Cliente:</label> -->
-									<input type ="text" id="clienteid" name="clienteid" hidden>
+									<!-- <label>Proveedor:</label> -->
+									<input type ="text" id="proveedorid" name="proveedorid" hidden>
 									<div class="row">
 										<div class="col-md-8 col-xs-12">
-											<input type="text" class="form-control" id="combocliente" name="cliente" placeholder="Buscar Cliente">										
+											<input type="text" class="form-control" id="comboproveedor" name="proveedor" placeholder="Buscar Proveedor">										
 										</div>									
 										<div class="col-md-2 col-xs-12">
-											<input class="btn btn-primary btn-block" value="Buscar" onclick="Filtrar($('#clienteid').val())"  >	
+											<input class="btn btn-primary btn-block" value="Buscar" onclick="Filtrar($('#proveedorid').val())"  >	
 										</div>
 									</div>							
 							</div>
@@ -118,18 +118,18 @@
 	<script>
 	
 	var i = 1;
-	var controller ='Ventas';
+	var controller ='Compras';
 	var Site='<?php echo site_url()?>';
 	
 	$(function() {
-			//Buscar Cliente
-			$( "#combocliente" ).autocomplete({
-			source: "<?php echo site_url('Clientes/get_autocomplete/?');?>",
+			//Buscar Proveedor
+			$( "#comboproveedor" ).autocomplete({
+			source: "<?php echo site_url('Proveedores/get_autocomplete/?');?>",
 			autoFill:true,
 			select: function(event, ui){
 				console.log(ui);
-				$('#clienteid').val(ui.item.id);
-				$("#combocliente").val(ui.item.value);
+				$('#proveedorid').val(ui.item.id);
+				$("#comboproveedor").val(ui.item.value);
 
 				Filtrar(ui.item.id);
 				$("#tbldetalle tbody").html('');				
@@ -138,28 +138,28 @@
 
 			$(document).keyup(function(e) {     
 				if(e.keyCode== 27) {
-					$("#combocliente").val(''); 
+					$("#comboproveedor").val(''); 
 					$("#tbldetalle tbody").html('');
 					$("#tbl tbody").html('');
-					$("#combocliente").focus();
+					$("#comboproveedor").focus();
 				} 
 			});
 			
 		});
 
 		
-	function mostrarDatosCliente(clienteId,valorBuscar,pagina,cantidad){
-		console.log("Ingreso a mostrar datos",clienteId, valorBuscar,pagina,cantidad);
+	function mostrarDatosProveedor(proveedorId,valorBuscar,pagina,cantidad){
+		console.log("Ingreso a mostrar datos",proveedorId, valorBuscar,pagina,cantidad);
 	$.ajax({
-		url : "../ventas/mostrarXcliente",
+		url : "../compras/mostrarXproveedor",
 		type: "POST",
-		data: {clienteId:clienteId,buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
+		data: {proveedorId:proveedorId,buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
 		success:function(response){
 			console.log("response",response);
 			
 			filas = "";
-			$.each(response.cli_ventas,function(key,item){
+			$.each(response.cli_compras,function(key,item){
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+StrToFecha(item.fecha)+"</td>"+
@@ -167,8 +167,8 @@
 				"<td>"+
 				//"<a class='btn btn-sm btn-info' onclick='FiltrarDetalle("+item.id+")'><i class='glyphicon glyphicon-tasks'></i></a>"+				
 				//" <a class='btn btn-sm btn-warning'  href='<?php echo site_url()?>registrar/editar/"+item.id+"'><i class='glyphicon glyphicon-edit'></i></a>"+
-				" <a class='btn btn-sm btn-danger' onclick='javascript:borrar_Venta("+item.id+")'><i class='glyphicon glyphicon-trash'></i></a>"+				
-				" <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_venta/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-print'></i></a>"+
+				" <a class='btn btn-sm btn-danger' onclick='javascript:borrar_Compra("+item.id+")'><i class='glyphicon glyphicon-trash'></i></a>"+				
+				" <a class='btn btn-sm btn-primary'  href='<?php echo site_url()?>reportes/ver_compra/"+item.id+"' target='_blank'><i class='glyphicon glyphicon-print'></i></a>"+
 				"</td>"+
 				"</tr>";
 			});
@@ -188,7 +188,7 @@
 }
 
 
-function borrar_Venta(id)
+function borrar_Compra(id)
 {
     if(confirm('¿Esta seguro que desea eliminar el registro?'))
     {
@@ -198,7 +198,7 @@ function borrar_Venta(id)
             dataType: "JSON",
             success: function(data)
             {
-				Filtrar($('#clienteid').val());
+				Filtrar($('#proveedorid').val());
 				$.notify({
                    title: '<strong>Correcto!</strong>',
                    message: 'El registro se elimino correctamente.'
@@ -221,16 +221,16 @@ function borrar_Venta(id)
 }
 
 
-function verDetalle(ventaId,valorBuscar,pagina,cantidad){
-		console.log("Venta a ver",ventaId);
+function verDetalle(compraId,valorBuscar,pagina,cantidad){
+		console.log("Compra a ver",compraId);
 	$.ajax({
-		url : "../ventas/mostrarDetalleXcliente",
+		url : "../compras/mostrarDetalleXproveedor",
 		type: "POST",
-		data: {ventaId:ventaId,buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
+		data: {compraId:compraId,buscar:valorBuscar,nropagina:pagina,cantidad:cantidad},
 		dataType:"json",
 		success:function(response){			
 			filas = "";
-			$.each(response.ventas_detalle,function(key,item){
+			$.each(response.compras_detalle,function(key,item){
 				filas+="<tr>"+
 				"<td>"+item.id+"</td>"+
 				"<td>"+item.nombre+"</td>"+
@@ -252,14 +252,14 @@ function verDetalle(ventaId,valorBuscar,pagina,cantidad){
 	});
 }
 
-function Filtrar($cliente_id){
-	mostrarDatosCliente($cliente_id,"",1,5);
+function Filtrar($proveedor_id){
+	mostrarDatosProveedor($proveedor_id,"",1,5);
 
 	
 	$("input[name=busqueda]").keyup(function(){
 		textobuscar = $(this).val();
 		valoroption = $("#cantidad").val();
-		mostrarDatosCliente($cliente_id,textobuscar,1,valoroption);
+		mostrarDatosProveedor($proveedor_id,textobuscar,1,valoroption);
 	});
 
 	$("body").on("click",".paginacion li a",function(e){
@@ -267,25 +267,25 @@ function Filtrar($cliente_id){
 		valorhref = $(this).attr("href");
 		valorBuscar = $("input[name=busqueda]").val();
 		valoroption = $("#cantidad").val();
-		mostrarDatosCliente($cliente_id,valorBuscar,valorhref,valoroption);
+		mostrarDatosProveedor($proveedor_id,valorBuscar,valorhref,valoroption);
 	});
 
 	$("#cantidad").change(function(){
 		valoroption = $(this).val();
 		valorBuscar = $("input[name=busqueda]").val();
-		mostrarDatosCliente($cliente_id,valorBuscar,1,valoroption);
+		mostrarDatosProveedor($proveedor_id,valorBuscar,1,valoroption);
 	});
 }
 
 
-function FiltrarDetalle($ventaId){
-	verDetalle($ventaId,"",1,5);
+function FiltrarDetalle($compraId){
+	verDetalle($compraId,"",1,5);
 
 	
 	$("input[name=busqueda]").keyup(function(){
 		textobuscar = $(this).val();
 		valoroption = $("#cantidadDetalle").val();
-		verDetalle($ventaId,textobuscar,1,valoroption);
+		verDetalle($compraId,textobuscar,1,valoroption);
 	});
 
 	$("body").on("click",".paginacionDetalle li a",function(e){
@@ -293,14 +293,14 @@ function FiltrarDetalle($ventaId){
 		valorhref = $(this).attr("href");
 		valorBuscar = $("input[name=busqueda]").val();
 		valoroption = $("#cantidadDetalle").val();
-		console.log($ventaId,valorBuscar,valorhref,valoroption);
-		verDetalle($ventaId,valorBuscar,valorhref,valoroption);
+		console.log($compraId,valorBuscar,valorhref,valoroption);
+		verDetalle($compraId,valorBuscar,valorhref,valoroption);
 	});
 
 	$("#cantidadDetalle").change(function(){
 		valoroption = $(this).val();
 		valorBuscar = $("input[name=busqueda]").val();
-		verDetalle($ventaId,valorBuscar,1,valoroption);
+		verDetalle($compraId,valorBuscar,1,valoroption);
 	});
 }
 	
